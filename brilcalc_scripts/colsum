@@ -1,0 +1,6 @@
+#!/bin/sh
+
+column=$1
+file=$2
+
+awk '{sum+=$'$column'} END {print sum}' $file
