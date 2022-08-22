@@ -3,6 +3,8 @@ Folder that contains scripts to compute luminosity loss for a certain subsystem
 
 # How to compute the loss of luminosity using brilcalc?
 
+0. Install brilcalc using the commands in install_brilcalc.sh (bash commands)
+
 1. Go to the run registry web site
 
 https://cmsrunregistry.web.cern.ch/offline/datasets/global
