@@ -5,8 +5,10 @@ pip install --user brilws
 
 timestamp=`date '+%Y%m%d%H%M%S'`
 echo $timestamp
-# Remove any postfix if the input file name has any
-prefix=${1%.*}
+# Remove any postfix if the input file name has any, i.e. callRuns.txt --> callRuns
+temp=${1%.*}
+# Remove the directory name if the input file name has any, i.e. /afs/cern.ch/s/syu/callRuns --> callRuns
+prefix=${temp##*/}
 echo $prefix
 tempdir=$PWD/${timestamp}_${prefix}
 echo "Creating CSV files in " $tempdir
