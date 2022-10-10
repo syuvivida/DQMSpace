@@ -32,7 +32,7 @@ brilcalc_lumis = defaultdict( dict )
 
 sys.stdout = open(options.outfile, "w")
 
-print("Run number, DCS RR lumisections, RR LS Duration, brilcalc LS")
+print("Run number, Offline RR LSs, Online RR LSs (LS Duration), brilcalc LS")
 
 for row in brilcalc_reader:
   if "#" in row[0] : continue
