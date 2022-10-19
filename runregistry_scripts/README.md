@@ -30,7 +30,8 @@ pip install runregistry
 bash
 source setup_runregistry.sh
 ```
-6. Do a test to see if the setup is done correctly
+
+5. Do a test to see if the setup is done correctly
 ```
 python
 import runregistry
