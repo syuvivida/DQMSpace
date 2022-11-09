@@ -4,16 +4,18 @@ import runregistry
 
 ### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # - path to grid certificate
-certPath = "/home/pmandrik/.globus/usercert.pem"
-keyPath = "/home/pmandrik/.globus/userkey.pem"
+certPath = "/afs/cern.ch/user/s/syu/.globus/usercert.pem"
+keyPath = "/afs/cern.ch/user/s/syu/.globus/userkey.pem"
 # - dataset
 dataset = "/PromptReco/Collisions2022/DQM"
 # - path to JSON
-path_to_json = "generated_json.json"
-# - path to brilcalc output
-path_to_brilcal_results = "2022_lumi_355100_357900_allLS.csv"
+path_to_json = "Cert_Collisions2022_360737_361091_Golden.json"
+# - path to brilcalc output, note need to create input.csv using brilcalc stable beam flag on
+# Like: brilcalc lumi -b "STABLE BEAMS" --byls --amodetag PROTPHYS -u /pb -r $1 -o $2 
+# Note, you shall include only the runs in your call 
+path_to_brilcal_results = "input.csv"
 # - path to our results output
-results_csv = "test.csv"
+results_csv = "output.csv"
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -7,3 +7,4 @@ python -V
 #source venv/bin/activate
 source $PWD/setup_virtualenv.sh
 pip install runregistry 
+pip install matplotlib
