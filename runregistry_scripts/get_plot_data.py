@@ -9,7 +9,7 @@ keyPath = "/afs/cern.ch/user/s/syu/.globus/userkey.pem"
 # - dataset
 dataset = "/PromptReco/Collisions2022/DQM"
 # - path to JSON
-path_to_json = "Cert_Collisions2022_360737_361091_Golden.json"
+path_to_json = "Cert_Collisions2022_361105_361417_Golden.json"
 # - path to brilcalc output, note need to create input.csv using brilcalc stable beam flag on
 # Like: brilcalc lumi -b "STABLE BEAMS" --byls --amodetag PROTPHYS -u /pb -r $1 -o $2 
 # Note, you shall include only the runs in your call 
@@ -48,8 +48,8 @@ out_file  = csv.writer(brilcalc_file, delimiter='$')
 
 for run, lumis in brilcalc_lumis.items():
   print( "process run ", run )
-  if str(run) not in json_data:
-    continue
+#  if str(run) not in json_data:
+#    continue
 
   rr_lumisections = runregistry.get_lumisections(run, dataset)
 
