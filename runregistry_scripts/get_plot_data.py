@@ -52,6 +52,8 @@ for run, lumis in brilcalc_lumis.items():
 #    continue
 
   rr_lumisections = runregistry.get_lumisections(run, dataset)
+  oms_lumisections = runregistry.get_oms_lumisections(run, dataset)
+
 
   for lumi_number, lumi_data in lumis.items():
     if lumi_number > len(rr_lumisections):
@@ -73,6 +75,11 @@ for run, lumis in brilcalc_lumis.items():
       out = {}
       for subsystem, values in rr_lumi.items():
         out[subsystem] = values['status']
+      
+      oms_lumi = oms_lumisections[ lumi_number-1 ]  
+      for subsystem, values in oms_lumi.items():
+#        print("subsystem", subsystem, ":", oms_lumi[subsystem])
+        out[subsystem] = oms_lumi[subsystem]
         
       lumi_data += [ out ]
     else :
