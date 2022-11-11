@@ -17,7 +17,7 @@ pip install --user brilws
 brilcalc lumi -c web --byls -i call19_all.json -o input.csv
 ```
 
-4. Prepare an output csv file that contains the DQM flags and DCS information. Note you need to modify the following lines for your correspondin file names
+4. Prepare an output csv file that contains the DQM flags and DCS information. Note you need to modify the following lines in get_plot_data.py for your correspondin file names
 
 ```
 certPath = "/afs/cern.ch/user/s/syu/.globus/usercert.pem" 
@@ -32,7 +32,7 @@ Then, run the python script
 python get_plot_data.py
 ```
 
-5. If you change the name of the output csv file from step4, please remember to change them in the python script of this step as well. 
+5. If you change the name of the output csv file from step4, please remember to change the file name in make_dc_plot.py as well. 
 
 ```
 results_csv = "output.csv"
@@ -44,3 +44,4 @@ Then, run the python script
 python make_dc_plot.py
 ```
 
+6. See output figures for call 19 in the directory example_figures
