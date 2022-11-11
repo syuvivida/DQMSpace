@@ -193,7 +193,7 @@ plt.barh( list(cms_inclusive_loss.keys()), list(cms_inclusive_loss.values()) )
 plt.title('Inclusive Loss of CMS Subsystem', fontsize=14)
 plt.xlabel('Luminosity loss (/pb)', fontsize=14)
 plt.ylabel('Subsystem', fontsize=14)
-plt.savefig( "cmsdect_inclusive_loss.pdf", bbox_inches='tight')
+plt.savefig( "cms_inclusive_loss.pdf", bbox_inches='tight')
 
 #Now make exclusive loss due to each subdetector
 plt.figure(8)
@@ -201,7 +201,7 @@ plt.barh( list(cms_exclusive_loss.keys()), list(cms_exclusive_loss.values()) )
 plt.title('Exclusive Loss of CMS Subsystem', fontsize=14)
 plt.xlabel('Luminosity loss (/pb)', fontsize=14)
 plt.ylabel('Subsystem', fontsize=14)
-plt.savefig( "cmsdect_exclusive_loss.pdf", bbox_inches='tight')
+plt.savefig( "cms_exclusive_loss.pdf", bbox_inches='tight')
 
 #plt.show()
 #plt.close('all')
