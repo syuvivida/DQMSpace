@@ -10,9 +10,7 @@ keyPath = "/afs/cern.ch/user/s/syu/.globus/userkey.pem"
 dataset = "/PromptReco/Collisions2022/DQM"
 # - path to JSON
 path_to_json = "Cert_Collisions2022_361105_361417_Golden.json"
-# - path to brilcalc output, note need to create input.csv using brilcalc stable beam flag on
-# Like: brilcalc lumi -b "STABLE BEAMS" --byls --amodetag PROTPHYS -u /pb -r $1 -o $2 
-# Note, you shall include only the runs in your call 
+# - path to brilcalc output
 path_to_brilcal_results = "input.csv"
 # - path to our results output
 results_csv = "output.csv"

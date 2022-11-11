@@ -4,4 +4,4 @@
 export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
 pip install --user brilws
 
-brilcalc lumi -b "STABLE BEAMS" --byls --beamenergy 6800 --amodetag PROTPHYS --begin $1' 00:00:00' --end $2' 00:00:00' -u /fb
+brilcalc lumi -c web -b "STABLE BEAMS" --byls --beamenergy 6800 --amodetag PROTPHYS --begin $1' 00:00:00' --end $2' 00:00:00' -u /fb
