@@ -1,0 +1,30 @@
+{
+  "and": [
+    {">=": [{"var": "run.oms.energy"}, 6500]},
+    {"<=": [{"var": "run.oms.energy"}, 7000]},
+    {">=": [{"var": "run.oms.run_number"}, 361105]},
+    {"<=": [{"var": "run.oms.run_number"}, 361417]},
+    {">=": [{"var": "run.oms.b_field"}, 3.7]},
+    {"==": [{"in": ["WMass", {"var": "run.oms.hlt_key"}]}, false]},
+    {"==": [{"var": "lumisection.rr.l1t-l1tmu"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.hlt-hlt"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.tracker-pixel"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.tracker-strip"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.tracker-track"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.muon-muon"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.csc-csc"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.dt-dt"}, "GOOD"]},
+    {"==": [{"var": "lumisection.rr.lumi-lumi"}, "GOOD"]},
+    {"==": [{"var": "lumisection.oms.cms_active"}, true]},
+    {"==": [{"var": "lumisection.oms.bpix_ready"}, true]},
+    {"==": [{"var": "lumisection.oms.fpix_ready"}, true]},
+    {"==": [{"var": "lumisection.oms.tibtid_ready"}, true]},
+    {"==": [{"var": "lumisection.oms.tecm_ready"}, true]},
+    {"==": [{"var": "lumisection.oms.tecp_ready"}, true]},
+    {"==": [{"var": "lumisection.oms.tob_ready"}, true]},
+    {"==": [{"var": "lumisection.oms.beam1_present"}, true]},
+    {"==": [{"var": "lumisection.oms.beam2_present"}, true]},
+    {"==": [{"var": "lumisection.oms.beam1_stable"}, true]},
+    {"==": [{"var": "lumisection.oms.beam2_stable"}, true]}
+  ]
+}

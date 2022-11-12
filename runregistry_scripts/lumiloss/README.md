@@ -1,7 +1,7 @@
 # Scripts to obtain luminosity loss figures
 # Note this branch v1.0 contains the scripts for the new Golden and Muon JSON logic (used in Run 3 from call 20) 
 
-The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/goldenJSON.txt 
+The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/muonJSON.txt 
 
 
 0. Setup grid certificate
