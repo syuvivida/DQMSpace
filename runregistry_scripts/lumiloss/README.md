@@ -49,4 +49,4 @@ Then, run the python script
 python make_dc_plot.py
 ```
 
-6. See output figures for call 19 in the directory example_figures
+
