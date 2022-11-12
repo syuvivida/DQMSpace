@@ -1,4 +1,6 @@
 # Scripts to obtain luminosity loss figures
+# Note this branch v0.0 contains the scripts for the old Golden and Muon JSON logic (used in Run 2 and Run 3 before call 20)
+
 0. Setup grid certificate
 https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provide-the-certificate-manually
 
