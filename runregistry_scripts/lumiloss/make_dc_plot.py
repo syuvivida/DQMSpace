@@ -26,14 +26,14 @@ dcs_loss = defaultdict( float )
 tracker_sub =   ["tracker-pixel", "tracker-strip", "tracker-track", "bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
 tracker_loss = defaultdict( float )
 
-ecal_sub =   ["ecal-ecal", "ecal-es", "ebm_ready","ebp_ready","eem_ready","eep_ready","esm_ready","esp_ready"]
+ecal_sub =   ["ecal-ecal", "ecal-es"]
 ecal_loss = defaultdict( float )
 
 hcal_sub =   ["hcal-hcal", "hbhea_ready","hbheb_ready","hbhec_ready","hf_ready","ho_ready"]
 hcal_loss = defaultdict( float )
 
 
-muon_sub =   ["muon-muon", "dtm_ready","dtp_ready","dt0_ready","cscm_ready","cscp_ready"]
+muon_sub =   ["muon-muon", "csc-csc", "dt-dt"]
 muon_loss = defaultdict( float )
 
 cms_sub = ["Mixed","Tracker", "ECAL", "HCAL", "Muon", "L1T", "HLT","JetMET", "EGamma"]
