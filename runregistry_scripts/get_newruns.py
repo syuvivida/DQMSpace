@@ -22,7 +22,7 @@ if __name__ == '__main__':
  
    # generate filter  
     filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] },  
-                   'class': { 'like': 'Collisions22'}, 
+                   'class': { 'like': 'Collisions22%'}, 
                    'oms_attributes.b_field': {">=": 3.7} 
 	          }
  
