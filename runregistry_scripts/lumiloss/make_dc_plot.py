@@ -36,8 +36,9 @@ hcal_loss = defaultdict( float )
 muon_sub =   ["muon-muon", "csc-csc", "dt-dt"]
 muon_loss = defaultdict( float )
 
-cms_sub = ["Mixed","Tracker", "ECAL", "HCAL", "Muon", "L1T", "HLT","JetMET", "EGamma"]
+cms_sub = ["Tracker", "ECAL", "HCAL", "Muon", "L1T", "HLT","JetMET", "EGamma"]
 cms_frac_exclusive_loss = defaultdict( float )
+cms_numerator_exclusive_loss = defaultdict( float )
 cms_exclusive_loss = defaultdict( float )
 cms_inclusive_loss = defaultdict( float )
 cms_status = defaultdict( bool )
@@ -110,30 +111,31 @@ for row in lumi_file_reader:
 
   # Now check if there are mixed system
   count = 0 
-  detector_blame = "Mixed"
+  detector_blame = "" 
   for icms in cms_sub:
     if cms_status [ icms ] == False: 
       cms_inclusive_loss [ icms ] += recorded 
-      detector_blame = icms
+      detector_blame = detector_blame + icms + " "
       count += 1
   
   if count > 1: 
-    cms_status [ "Mixed" ] = False 
-    cms_exclusive_loss [ "Mixed" ] += recorded
-    total_loss += recorded 
+    cms_numerator_exclusive_loss [ "Mixed" ] += recorded
     # For debugging only
 #    for icms in cms_sub:
 #      if cms_status [ icms ] == False: 
 #        print("Mixed:",icms)    
   elif count == 1: 
+    cms_numerator_exclusive_loss [ detector_blame ] += recorded
+
+  if count >= 1:
     cms_exclusive_loss [ detector_blame ] += recorded
     total_loss += recorded
 
 # After accumulation of all LSs
 # Check the fraction of luminosity loss due to each subsystem
 if total_loss > 0.0:
-  for icms in list(cms_exclusive_loss.keys()):
-    cms_frac_exclusive_loss [ icms ] = cms_exclusive_loss [ icms ]/total_loss
+  for icms in list(cms_numerator_exclusive_loss.keys()):
+    cms_frac_exclusive_loss [ icms ] = cms_numerator_exclusive_loss [ icms ]/total_loss
 
 print( "Total recorded luminosity for these runs is: ", total_recorded, "/pb")
 print( "Total recorded luminosity loss for these runs is: ", total_loss, "/pb")
@@ -145,6 +147,7 @@ print( hcal_loss )
 print( muon_loss )
 print( cms_inclusive_loss )
 print( cms_exclusive_loss )
+print( cms_numerator_exclusive_loss )
 print( cms_frac_exclusive_loss )
 
 # NOW MAKE PLOT FROM DICTIONARY VALUES
@@ -220,13 +223,9 @@ plt.savefig( "cms_exclusive_loss.pdf", bbox_inches='tight')
 
 #Now make fraction of exclusive loss due to each subdetector
 plt.figure(9)
-#plt.barh( list(cms_frac_exclusive_loss.keys()), list(cms_frac_exclusive_loss.values()) )
-#plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=14)
-#plt.xlabel('Luminosity loss (/pb)', fontsize=14)
-#plt.ylabel('Subsystem', fontsize=14)
 plt.pie( list(cms_frac_exclusive_loss.values()), labels=list(cms_frac_exclusive_loss.keys()),  autopct='%1.1f%%' )
 plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=14)
-plt.savefig( "cms_frac_exclusive_loss.pdf", bbox_inches='tight')
+plt.savefig( "cms_piechart_exclusive_loss.pdf", bbox_inches='tight')
 
 #plt.show()
 #plt.close('all')
