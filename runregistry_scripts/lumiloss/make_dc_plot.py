@@ -33,7 +33,7 @@ hcal_sub =   ["hcal-hcal", "hbhea_ready","hbheb_ready","hbhec_ready","hf_ready",
 hcal_loss = defaultdict( float )
 
 
-muon_sub =   ["muon-muon", "dt_dt", "csc_csc"]
+muon_sub =   ["muon-muon", "csc-csc", "dt-dt"]
 muon_loss = defaultdict( float )
 
 cms_sub = ["Mixed","Tracker", "ECAL", "HCAL", "Muon", "L1T", "HLT","JetMET", "EGamma"]
