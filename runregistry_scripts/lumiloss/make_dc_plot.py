@@ -37,16 +37,21 @@ muon_sub =   ["muon-muon", "csc-csc", "dt-dt"]
 muon_loss = defaultdict( float )
 
 cms_sub = ["Mixed","Tracker", "ECAL", "HCAL", "Muon", "L1T", "HLT","JetMET", "EGamma"]
+cms_frac_exclusive_loss = defaultdict( float )
 cms_exclusive_loss = defaultdict( float )
 cms_inclusive_loss = defaultdict( float )
 cms_status = defaultdict( bool )
+
+total_recorded = 0.0
+total_loss = 0.0
+
 
 for row in lumi_file_reader:
   run  = int(row[0])
 #  print("Run ",run)
   delivered = float(row[2])/1000000.
   recorded  = float(row[3])/1000000.
-  
+  total_recorded += recorded
   bits = eval( row[4] )
   if not bits : continue # all good in JSON
   
@@ -115,15 +120,23 @@ for row in lumi_file_reader:
   if count > 1: 
     cms_status [ "Mixed" ] = False 
     cms_exclusive_loss [ "Mixed" ] += recorded
+    total_loss += recorded 
     # For debugging only
 #    for icms in cms_sub:
 #      if cms_status [ icms ] == False: 
-#        print("Mixed:",icms)
-    
+#        print("Mixed:",icms)    
   elif count == 1: 
     cms_exclusive_loss [ detector_blame ] += recorded
+    total_loss += recorded
 
+# After accumulation of all LSs
+# Check the fraction of luminosity loss due to each subsystem
+if total_loss > 0.0:
+  for icms in list(cms_exclusive_loss.keys()):
+    cms_frac_exclusive_loss [ icms ] = cms_exclusive_loss [ icms ]/total_loss
 
+print( "Total recorded luminosity for these runs is: ", total_recorded, "/pb")
+print( "Total recorded luminosity loss for these runs is: ", total_loss, "/pb")
 print( subsystems_loss )
 print( dcs_loss )
 print( tracker_loss )
@@ -132,6 +145,7 @@ print( hcal_loss )
 print( muon_loss )
 print( cms_inclusive_loss )
 print( cms_exclusive_loss )
+print( cms_frac_exclusive_loss )
 
 # NOW MAKE PLOT FROM DICTIONARY VALUES
 import matplotlib.pyplot as plt
@@ -190,7 +204,7 @@ plt.savefig( "muon_loss.pdf", bbox_inches='tight')
 #Now make inclusive loss due to each subdetector
 plt.figure(7)
 plt.barh( list(cms_inclusive_loss.keys()), list(cms_inclusive_loss.values()) )
-plt.title('Inclusive Loss of CMS Subsystem', fontsize=14)
+plt.title('Inclusive Loss from Each CMS Subsystem', fontsize=14)
 plt.xlabel('Luminosity loss (/pb)', fontsize=14)
 plt.ylabel('Subsystem', fontsize=14)
 plt.savefig( "cms_inclusive_loss.pdf", bbox_inches='tight')
@@ -198,10 +212,21 @@ plt.savefig( "cms_inclusive_loss.pdf", bbox_inches='tight')
 #Now make exclusive loss due to each subdetector
 plt.figure(8)
 plt.barh( list(cms_exclusive_loss.keys()), list(cms_exclusive_loss.values()) )
-plt.title('Exclusive Loss of CMS Subsystem', fontsize=14)
+plt.title('Exclusive Loss from Each CMS Subsystem', fontsize=14)
 plt.xlabel('Luminosity loss (/pb)', fontsize=14)
 plt.ylabel('Subsystem', fontsize=14)
 plt.savefig( "cms_exclusive_loss.pdf", bbox_inches='tight')
+
+
+#Now make fraction of exclusive loss due to each subdetector
+plt.figure(9)
+#plt.barh( list(cms_frac_exclusive_loss.keys()), list(cms_frac_exclusive_loss.values()) )
+#plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=14)
+#plt.xlabel('Luminosity loss (/pb)', fontsize=14)
+#plt.ylabel('Subsystem', fontsize=14)
+plt.pie( list(cms_frac_exclusive_loss.values()), labels=list(cms_frac_exclusive_loss.keys()),  autopct='%1.1f%%' )
+plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=14)
+plt.savefig( "cms_frac_exclusive_loss.pdf", bbox_inches='tight')
 
 #plt.show()
 #plt.close('all')
