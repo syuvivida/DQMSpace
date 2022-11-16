@@ -203,7 +203,7 @@ if __name__ == '__main__':
     sorted_thissub = sort_dict(dict_this)    
     plt.barh( list(sorted_thissub.keys()), list(sorted_thissub.values()) )
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=14)
-    plt.xlabel('Luminosity loss (/pb)', fontsize=14)
+    plt.xlabel(xtitle_default, fontsize=14)
     plt.ylabel('Component', fontsize=14)
     plt.savefig( isub+"_loss.pdf", bbox_inches='tight')
 
