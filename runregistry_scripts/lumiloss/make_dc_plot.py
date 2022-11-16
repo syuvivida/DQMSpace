@@ -3,6 +3,15 @@ from collections import defaultdict
 import runregistry
 import matplotlib
 
+class MyPlot:
+  def __init__(self, title, xtitle, ytitle, labelsize, inputdict):
+    self.title  = title
+    self.xtitle = xtitle
+    self.ytitle = ytitle
+    self.labelsize = labelsize
+    self.inputdict = inputdict
+
+
 def sort_dict(inputdict, mode=0):
   if mode==1: # for pie chart, ignore the contribution less than 1%
     for iele in list(inputdict.keys()):
@@ -11,6 +20,10 @@ def sort_dict(inputdict, mode=0):
   elif mode==2: # for bar chart, ignore the contribution less than 1%, numbers are displayed in percentange
     for iele in list(inputdict.keys()):
       if(inputdict[iele]<1.0):
+        del inputdict[iele]
+  elif mode==3: # for bar chart, ignore the contribution less than 1/nb 
+    for iele in list(inputdict.keys()):
+      if(inputdict[iele]<1e-3):
         del inputdict[iele]
 
   sorted_dictionary = dict(sorted(inputdict.items(), key=lambda item: item[1]))
@@ -149,55 +162,52 @@ if __name__ == '__main__':
   sorted_dcs_loss = sort_dict(dcs_loss)
 
   sorted_cms_inclusive_loss = sort_dict(cms_inclusive_loss)
-  sorted_cms_exclusive_loss = sort_dict(cms_exclusive_loss)
+  sorted_cms_exclusive_loss = sort_dict(cms_exclusive_loss, 3)
   sorted_cms_numerator_exclusive_loss = sort_dict(cms_numerator_exclusive_loss)
   sorted_cms_frac_exclusive_loss = sort_dict(cms_frac_exclusive_loss, 1)
-  sorted_cms_detailed_frac_exclusive_loss = sort_dict(cms_detailed_frac_exclusive_loss,2)
+  sorted_cms_detailed_frac_exclusive_loss = sort_dict(cms_detailed_frac_exclusive_loss, 2)
 
   import matplotlib.pyplot as plt
 
 # NOW MAKE PLOT FROM DICTIONARY VALUES
-  plot_dict= defaultdict(dict)
-  title_dict= defaultdict(list)
   xtitle_default = 'Luminosity Loss (/pb)'
   ytitle_default = 'Subsystem'
-
+  labelsize_default = 10
+  small_labelsize = labelsize_default 
+  titlesize_default = 14
+  
   # DQM flag
-  plot_dict['subsystemDQMFlag_loss'] = sorted_subsystems_loss
-  title_dict['subsystemDQMFlag_loss'] = ['DQM Flags vs. Inclusive Loss',xtitle_default,'DQM Flag']
+  plot_dict = defaultdict(MyPlot)
+  plot_dict['subsystemDQMFlag_loss'] = MyPlot('DQM Flags vs. Inclusive Loss', xtitle_default, 'DQM Flag', labelsize_default, sorted_subsystems_loss)
   
   # DCS bits
-  plot_dict['DCS_loss'] = sorted_dcs_loss
-  title_dict['DCS_loss'] = ['DCS Bits vs. Inclusive Loss',xtitle_default,'DCS Bit']
+  plot_dict['DCS_loss'] = MyPlot('DCS Bits vs. Inclusive Loss', xtitle_default, 'DCS Bit', labelsize_default, sorted_dcs_loss)
 
   # CMS subsystem inclusive loss
-  plot_dict['cms_inclusive_loss'] = sorted_cms_inclusive_loss
-  title_dict['cms_inclusive_loss'] = ['Inclusive Loss from Each CMS Subsystem',xtitle_default,ytitle_default]
-
+  plot_dict['cms_inclusive_loss'] = MyPlot('Inclusive Loss from Each CMS Subsystem', xtitle_default, ytitle_default, labelsize_default, sorted_cms_inclusive_loss)
   
   # CMS subsystem exclusive loss
-  plot_dict['cms_exclusive_loss'] = sorted_cms_exclusive_loss
-  title_dict['cms_exclusive_loss'] = ['Exclusive Loss from Each CMS Subsystem',xtitle_default,ytitle_default]
+  if len(sorted_cms_exclusive_loss)>12:
+    small_labelsize = 6
+  plot_dict['cms_exclusive_loss'] = MyPlot('Exclusive Loss from Each CMS Subsystem', xtitle_default, ytitle_default, small_labelsize, sorted_cms_exclusive_loss)
 
   #Now make a detailed bar chart: fraction of exclusive loss due to each subdetector
-  plot_dict['cms_detailed_fraction_exclusive_loss'] = sorted_cms_detailed_frac_exclusive_loss
-  title_dict['cms_detailed_fraction_exclusive_loss'] = ['Fraction of Exclusive Loss from Each CMS Subsystem', 'Percentage %', ytitle_default]
-
+  plot_dict['cms_detailed_fraction_exclusive_loss'] = MyPlot('Fraction of Exclusive Loss from Each CMS Subsystem', 'Percentage %', ytitle_default, labelsize_default, sorted_cms_detailed_frac_exclusive_loss)
 
   #loop over plot_dict
   icount=0
   for isub in list(plot_dict.keys()):
     dict_this = defaultdict(float)
-    dict_this = plot_dict[isub]
+    dict_this = plot_dict[isub].inputdict
 #    print(dict_this)
     icount += 1
 #    axes = plt.figure(icount, [5, 20]) # this line moved and figure size changed to suit data
     axes = plt.figure(icount) # this line moved and figure size changed to suit data
-    plt.tick_params(axis='both', which='major', labelsize=6) # makes axis labels smaller
+    plt.tick_params(axis='both', which='major', labelsize=plot_dict[isub].labelsize) # makes axis labels smaller
     bar_plot(dict_this,ax=axes)
-    plt.title(title_dict[isub][0], fontsize=14)
-    plt.xlabel(title_dict[isub][1], fontsize=14)
-    plt.ylabel(title_dict[isub][2], fontsize=14)
+    plt.title(plot_dict[isub].title, fontsize=titlesize_default)
+    plt.xlabel(plot_dict[isub].xtitle, fontsize=titlesize_default)
+    plt.ylabel(plot_dict[isub].ytitle, fontsize=titlesize_default)
     plt.savefig( isub+".pdf", bbox_inches='tight')
 
 
@@ -213,9 +223,9 @@ if __name__ == '__main__':
     sorted_thissub = sort_dict(dict_this)
     axes = plt.figure(icount)
     bar_plot(sorted_thissub,ax=axes)
-    plt.title('Inclusive Loss of ' + isub + ' System', fontsize=14)
-    plt.xlabel(xtitle_default, fontsize=14)
-    plt.ylabel('Component', fontsize=14)
+    plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
+    plt.xlabel(xtitle_default, fontsize=titlesize_default)
+    plt.ylabel('Component', fontsize=titlesize_default)
     plt.savefig( isub+"_loss.pdf", bbox_inches='tight')
 
 
@@ -229,24 +239,10 @@ if __name__ == '__main__':
     myexplode.append(0.01+ele*0.01)
     ele +=1 
   pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode)
-  plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=14)
+  plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
   plt.savefig( "cms_piechart_exclusive_loss.pdf", bbox_inches='tight')
 
 
 
 #plt.show()
 #plt.close('all')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
