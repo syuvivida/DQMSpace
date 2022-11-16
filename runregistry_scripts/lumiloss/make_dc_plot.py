@@ -152,17 +152,17 @@ if __name__ == '__main__':
   plt.ylabel('Subsystem', fontsize=14)
   plt.savefig( "DCS_loss.pdf", bbox_inches='tight')
 
-
-#Now make inclusive loss due to each sub system separately
+#Now make inclusive loss due to each sub system separately                                                                   
   icount=2
   for isub in cms_sub:
     list2 = list(detector_sub[isub])
-    list3 = []
+    dict_this = defaultdict(float)
     icount +=1
     plt.figure(icount)
     for isub2 in list2:
-        list3.append(detector_loss[isub][isub2])
-    plt.barh( list2, list3 )
+        dict_this[isub2] = detector_loss[isub][isub2]
+    sorted_thissub = sort_dict(dict_this)
+    plt.barh( list(sorted_thissub.keys()), list(sorted_thissub.values()) )
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=14)
     plt.xlabel('Luminosity loss (/pb)', fontsize=14)
     plt.ylabel('Component', fontsize=14)
