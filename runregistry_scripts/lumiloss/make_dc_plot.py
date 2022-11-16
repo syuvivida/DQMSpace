@@ -23,7 +23,7 @@ lumi_file_reader = csv.reader(lumi_file, delimiter='$')
       
 # AS WE HAVE ALL THE DATA NOW WE CAN CALCULATE LOSES
 # FOR EXAMPLE LOSES PER SUBSYSTEMS
-subsystems = ["l1t-l1tmu", "l1t-l1tcalo", "hlt-hlt", "tracker-pixel", "tracker-strip", "tracker-track", "ecal-ecal", "ecal-es", "egamma-egamma", "hcal-hcal", "muon-muon", "jetmet-jetmet"]
+subsystems = ["tracker-pixel", "tracker-strip", "tracker-track", "ecal-ecal", "ecal-es", "hcal-hcal", "l1t-l1tmu", "l1t-l1tcalo", "hlt-hlt", "egamma-egamma", "muon-muon", "jetmet-jetmet"]
 subsystems_loss = defaultdict( float )
 
 dcs_sub =   ["bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready","ebm_ready","ebp_ready","eem_ready","eep_ready","esm_ready","esp_ready","hbhea_ready","hbheb_ready","hbhec_ready","hf_ready","ho_ready","dtm_ready","dtp_ready","dt0_ready","cscm_ready","cscp_ready"]
