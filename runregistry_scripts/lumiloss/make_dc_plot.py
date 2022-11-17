@@ -38,15 +38,15 @@ def bar_plot(inputdict, ax=None,**plt_kwargs):
 
 
 def pie_plot(inputdict, ax=None, **plt_kwargs):
-    if ax is None:
-        ax = plt.gca()
-#    plt.pie( list(inputdict.values()), labels=list(inputdict.keys()),  autopct='%1.1f%%', **plt_kwargs) ## example plot here
-    plt.pie( list(inputdict.values()), labels=None,  autopct='%1.1f%%', **plt_kwargs) ## example plot here
+  if ax is None:
+    ax = plt.gca()
+    plt.pie( list(inputdict.values()), labels=list(inputdict.keys()),  autopct='%1.1f%%', **plt_kwargs) ## example plot here
+#    plt.pie( list(inputdict.values()), labels=None,  autopct='%1.1f%%', **plt_kwargs) ## example plot here
     return(ax)
 
 ### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # - path to our results output
-results_csv = "output.csv"
+results_csv = "/afs/cern.ch/work/a/asingla/public/csv/output_eraF.csv"
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -57,7 +57,7 @@ lumi_file_reader = csv.reader(lumi_file, delimiter='$')
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       
 # AS WE HAVE ALL THE DATA NOW WE CAN CALCULATE LOSES
-# FOR EXAMPLE LOSES PER SUBSYSTEMS
+# FOR EXAMPLE LOSES PER SUBSYSTE
 subsystems = ["tracker-pixel", "tracker-strip", "tracker-track", "ecal-ecal", "ecal-es", "hcal-hcal", "l1t-l1tmu", "l1t-l1tcalo", "hlt-hlt", "egamma-egamma", "muon-muon", "jetmet-jetmet"]
 subsystems_loss = defaultdict( float )
 
@@ -234,14 +234,26 @@ if __name__ == '__main__':
 
 
 #Now make a pie chart: fraction of exclusive loss due to each subdetector
-  axes = plt.figure(icount+1)  
+  colors=['brown', 'purple', 'red', 'green', 'orange', 'blue', 'pink', 'gray', 'olive' ]
+  colors_dict = defaultdict(str)
+  colors_dict['Mixed'] = colors[0]
+  icolor=1
+  for icms in cms_sub:
+    colors_dict[icms+' '] = colors[icolor]
+    icolor += 1
+  print(colors_dict)
+  color_keys = list(sorted_cms_frac_exclusive_loss.keys())
+  print(color_keys)
+#  axes = plt.figure(icount+1)  
   myexplode = []
   ele = 0
-  for isub in list(sorted_cms_frac_exclusive_loss.keys()):
+  for isub in color_keys:
     myexplode.append(0.01+ele*0.01)
     ele +=1 
-  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True)
-  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
+  plt.figure(icount+1)
+  plt.pie( list(sorted_cms_frac_exclusive_loss.values()), labels=color_keys,  autopct='%1.1f%%', explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys]) ## example plot here
+#  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
+#  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
   plt.savefig( "cms_piechart_exclusive_loss.pdf", bbox_inches='tight')
 
