@@ -239,7 +239,8 @@ if __name__ == '__main__':
   for isub in list(sorted_cms_frac_exclusive_loss.keys()):
     myexplode.append(0.01+ele*0.01)
     ele +=1 
-  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode)
+  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True)
+#  plt.legend(loc='lower right')
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
   plt.savefig( "cms_piechart_exclusive_loss.pdf", bbox_inches='tight')
 
