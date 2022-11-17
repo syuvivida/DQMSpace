@@ -40,7 +40,8 @@ def bar_plot(inputdict, ax=None,**plt_kwargs):
 def pie_plot(inputdict, ax=None, **plt_kwargs):
     if ax is None:
         ax = plt.gca()
-    plt.pie( list(inputdict.values()), labels=list(inputdict.keys()),  autopct='%1.1f%%', **plt_kwargs) ## example plot here
+#    plt.pie( list(inputdict.values()), labels=list(inputdict.keys()),  autopct='%1.1f%%', **plt_kwargs) ## example plot here
+    plt.pie( list(inputdict.values()), labels=None,  autopct='%1.1f%%', **plt_kwargs) ## example plot here
     return(ax)
 
 ### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -240,7 +241,7 @@ if __name__ == '__main__':
     myexplode.append(0.01+ele*0.01)
     ele +=1 
   pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True)
-#  plt.legend(loc='lower right')
+  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
   plt.savefig( "cms_piechart_exclusive_loss.pdf", bbox_inches='tight')
 
