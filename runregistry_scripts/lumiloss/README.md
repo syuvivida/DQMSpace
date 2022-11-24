@@ -19,7 +19,7 @@ source setup_runregistry.sh
 ```
 export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH 
 pip install --user brilws 
-brilcalc lumi -c web --byls -i call19_all.json -o input.csv
+brilcalc lumi -b "STABLE BEAMS" -c web --byls -i call19_all.json -o input.csv
 ```
 
 4. Prepare an output csv file that contains the DQM flags and DCS information. Note you need to modify the following lines in get_plot_data.py for your correspondin file names
