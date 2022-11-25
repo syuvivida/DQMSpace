@@ -32,14 +32,15 @@ def get_run_ls( run_in ):
        quality = True
 
        # for call 7, OMS beam1_present and beam2_present flags are not correct
-       if (run_in >= 355100 and run_in <= 355208) and (oms_lumisections[lumi][flags_list[2]] == False or oms_lumisections[lumi][flags_list[3]] == False):
-         quality = False
        # for other calls, beam1_present and beam2_present are required  
-       elif run_in > 355208:
-         for flag in flags_list:
-           if oms_lumisections[lumi][flag] == False:
-             quality = False
-             break
+       count=-1
+       for flag in flags_list:
+         count +=1
+         if (run_in >= 355100 and run_in <= 355208) and count<2:
+           continue
+         if oms_lumisections[lumi][flag] == False:
+           quality = False
+           break
        if quality is False:
          check_lumi_range=False           
          continue
