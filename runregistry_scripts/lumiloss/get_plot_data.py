@@ -9,11 +9,11 @@ keyPath = "/afs/cern.ch/user/s/syu/.globus/userkey.pem"
 # - dataset
 dataset = "/PromptReco/Collisions2022/DQM"
 # - path to JSON
-path_to_json = "Cert_Collisions2022_361105_361417_Golden.json"
+path_to_json = "Era/eraB_golden.json"
 # - path to brilcalc output
-path_to_brilcal_results = "input.csv"
+path_to_brilcal_results = "Era/input_eraB.csv"
 # - path to our results output
-results_csv = "output.csv"
+results_csv = "Era/output_eraB.csv"
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
