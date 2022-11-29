@@ -46,7 +46,7 @@ def pie_plot(inputdict, ax=None, **plt_kwargs):
 
 ### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # - path to our results output
-results_csv = "/afs/cern.ch/work/a/asingla/public/csv/output_eraF.csv"
+results_csv = "Era/output_eraB.csv"
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     plt.title(plot_dict[isub].title, fontsize=titlesize_default)
     plt.xlabel(plot_dict[isub].xtitle, fontsize=titlesize_default)
     plt.ylabel(plot_dict[isub].ytitle, fontsize=titlesize_default)
-    plt.savefig( isub+".pdf", bbox_inches='tight')
+    plt.savefig( isub+".png", bbox_inches='tight')
 
 
 
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
     plt.xlabel(xtitle_default, fontsize=titlesize_default)
     plt.ylabel('Component', fontsize=titlesize_default)
-    plt.savefig( isub+"_loss.pdf", bbox_inches='tight')
+    plt.savefig( isub+"_loss.png", bbox_inches='tight')
 
 
 
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 #  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
 #  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
-  plt.savefig( "cms_piechart_exclusive_loss.pdf", bbox_inches='tight')
+  plt.savefig( "cms_piechart_exclusive_loss.png", bbox_inches='tight')
 
 
 
