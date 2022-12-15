@@ -2,7 +2,7 @@
 from collections import defaultdict
 import runregistry
 import matplotlib
-import sys
+import os
 
 class MyPlot:
   def __init__(self, title, xtitle, ytitle, labelsize, inputdict):
@@ -77,7 +77,8 @@ detector_sub["EGamma"] = ["egamma-egamma"]
 
 
 detector_loss = defaultdict(dict)
-jetmet_loss = defaultdict(float)
+# For dumping run vs lumi loss for each system
+subsystem_run_loss = defaultdict()
 
 ## Initialize the values of detector_loss
 cms_sub = list(detector_sub.keys())
@@ -141,14 +142,15 @@ if __name__ == '__main__':
       
     if count > 1: 
       cms_numerator_exclusive_loss [ "Mixed" ] += recorded
-      if detector_blame == 'L1T JetMET ':
-        jetmet_loss[ run ] += recorded
     elif count == 1: 
       cms_numerator_exclusive_loss [ detector_blame ] += recorded
 
     if count >= 1:
       cms_exclusive_loss [ detector_blame ] += recorded
       total_loss += recorded
+      if detector_blame not in subsystem_run_loss:
+        subsystem_run_loss[detector_blame] = defaultdict(float)
+      subsystem_run_loss[detector_blame][ run ] += recorded
 
 # After accumulation of all LSs
 # Check the fraction of luminosity loss due to each subsystem
@@ -173,12 +175,19 @@ if __name__ == '__main__':
   sorted_cms_frac_exclusive_loss = sort_dict(cms_frac_exclusive_loss, 1)
   sorted_cms_detailed_frac_exclusive_loss = sort_dict(cms_detailed_frac_exclusive_loss, 2)
 
-  print(jetmet_loss)
-  #dump jetmet loss
-  sys.stdout = open('l1tjetmet_loss.txt', "w")
-  for irun in list(jetmet_loss.keys()):
-    print(irun,": ", jetmet_loss[irun])
-  sys.stdout.close()
+  print(subsystem_run_loss)
+  #dump loss vs run in text files
+  dirName = 'textFiles'
+  os.mkdir(dirName)
+  for isub in list(subsystem_run_loss.keys()):
+    filename = isub.replace(' ', '_')
+    filename = dirName + '/' + filename + 'loss.txt'
+    print(filename)
+    file = open(filename, "w")
+    for irun in list(subsystem_run_loss[isub]):
+      thisline = str(irun) + ' : ' + str(subsystem_run_loss[isub][irun]) + ' /pb \n'
+      file.write(thisline)
+    file.close()
 
 """
   import matplotlib.pyplot as plt
