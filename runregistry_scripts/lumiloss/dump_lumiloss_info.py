@@ -179,7 +179,8 @@ if __name__ == '__main__':
   #dump loss vs run in text files
   dirName = 'textFiles'
   os.mkdir(dirName)
-  for isub in list(subsystem_run_loss.keys()):
+#  for isub in list(subsystem_run_loss.keys()):
+  for isub in list(sorted_cms_detailed_frac_exclusive_loss.keys()):
     filename = isub.replace(' ', '_')
     filename = dirName + '/' + filename + 'loss.txt'
     print(filename)
