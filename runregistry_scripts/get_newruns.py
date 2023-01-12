@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument("-min", "--min_run", dest="min_run", type=int, default=355100, help="minimum run for json") 
     parser.add_argument("-max", "--max_run", dest="max_run",type=int, default=999999, help="maximum run for json")  
     options = parser.parse_args() 
-
+    print(sys.argv)
  
    # generate filter  
     filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] },  
