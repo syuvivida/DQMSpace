@@ -8,8 +8,13 @@ bash
 source setup_runregistry.sh
 ```
 
-2. check the missing LS
+2. check the missing LS, you can find out the usuage by running
 ```
-./checkLS_inRROMS.sh 355100 355110
+./checkLS_inRROMS.sh 355100 355110 runList.txt results.txt
+```
+
+3. You can also use the default input parameters (the minimum requirement is 1)
+```
+./checkLS_inRROMS.sh 355100 
 ```
 
