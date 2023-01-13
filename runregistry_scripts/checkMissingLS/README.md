@@ -10,8 +10,8 @@ git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git
 2. set up of run registry environment
 ```
 bash
-source setup_runregistry.sh
 cd DQMSpace/runregistry_scripts/checkMissingLS/
+source setup_runregistry.sh
 ```
 
 3. check the missing LS, you can find out the usuage by running
