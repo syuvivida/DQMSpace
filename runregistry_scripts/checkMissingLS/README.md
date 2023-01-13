@@ -11,6 +11,7 @@ git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git
 ```
 bash
 source setup_runregistry.sh
+cd DQMSpace/runregistry_scripts/checkMissingLS/
 ```
 
 3. check the missing LS, you can find out the usuage by running
