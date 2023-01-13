@@ -2,19 +2,25 @@
 0. Setup grid certificate
 https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provide-the-certificate-manually
 
-1. set up of run registry environment
+1. Check out the DQMSpace package
+```
+git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git 
+```
+
+2. set up of run registry environment
 ```
 bash
 source setup_runregistry.sh
 ```
 
-2. check the missing LS, you can find out the usuage by running
+3. check the missing LS, you can find out the usuage by running
 ```
-./checkLS_inRROMS.sh 355100 355110 runList.txt results.txt
+./checkLS_inRROMS.sh
 ```
 
-3. You can also use the default input parameters (the minimum requirement is 1)
+4. You can also use the default input parameters (the minimum number of input parameters is 1)
 ```
 ./checkLS_inRROMS.sh 355100 
+./checkLS_inRROMS.sh 355100 355110
 ```
 
