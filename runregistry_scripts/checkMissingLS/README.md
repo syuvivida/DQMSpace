@@ -25,3 +25,10 @@ source setup_runregistry.sh
 ./checkLS_inRROMS.sh 355100 355110
 ```
 
+
+5. If you want to know the number of LSs from brilcalc, you can run the following scripts
+```
+./checkLS_inBrilCalcRROMS.sh 355100 
+./checkLS_inBrilCalcRROMS.sh 355100 355110
+```
+
