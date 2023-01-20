@@ -28,7 +28,8 @@ For example, Era/eraB_runs.txt
 ./runAllSteps_lumiloss.sh
 ```
 
-5. The script runAllSteps_lumiloss.sh can be run step by step or in one go. For longer run list, sometimes you can lose connection to the runregistry database and need to repeat certain steps. You can also use the default input parameters (the minimum number of input parameters is 1)
+5. The script runAllSteps_lumiloss.sh can be run step by step or in one go. For longer run list, sometimes you can lose connection to the runregistry database and need to repeat certain steps. You can also use the default input parameters (the minimum number of input parameters is 1). The steps include 
+all, inputcsv, json, outputcsv, plot, and dump.
 ```
 ./runAllSteps_lumiloss.sh eraB
 ./runAllSteps_lumiloss.sh eraB inputcsv
