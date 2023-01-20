@@ -7,7 +7,7 @@ https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provid
 git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git 
 ```
 
-2. set up of run registry environment
+2. Go to the proper directory
 ```
 bash
 cd DQMSpace/runregistry_scripts/checkMissingLS/

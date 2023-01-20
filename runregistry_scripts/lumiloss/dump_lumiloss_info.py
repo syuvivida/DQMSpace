@@ -3,6 +3,9 @@ from collections import defaultdict
 import runregistry
 import matplotlib
 import os
+import argparse
+import sys
+
 
 class MyPlot:
   def __init__(self, title, xtitle, ytitle, labelsize, inputdict):
@@ -45,15 +48,6 @@ def pie_plot(inputdict, ax=None, **plt_kwargs):
 #    plt.pie( list(inputdict.values()), labels=None,  autopct='%1.1f%%', **plt_kwargs) ## example plot here
     return(ax)
 
-### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# - path to our results output
-results_csv = "/afs/cern.ch/work/s/syu/output_call7to23.csv"
-### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-import csv
-lumi_file = open(results_csv, newline='') 
-lumi_file_reader = csv.reader(lumi_file, delimiter='$')
 
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       
@@ -100,6 +94,23 @@ total_recorded = 0.0
 total_loss = 0.0
 
 if __name__ == '__main__':
+
+  parser = argparse.ArgumentParser(description='Give list of file names')
+  parser.add_argument("-c", "--csv",
+                    dest="csvfile", type=str, default="Era/output_eraB.csv", help="Path to csv file from the previous step")
+  parser.add_argument("-p", "--period",
+                    dest="period", type=str, default="eraB", help="Period name, will be used as postfix")
+
+  options = parser.parse_args()
+  print(sys.argv)
+
+  postfix = options.period
+  results_csv = options.csvfile
+  import csv
+
+  lumi_file = open(results_csv, newline='')
+  lumi_file_reader = csv.reader(lumi_file, delimiter='$')
+
 
   for row in lumi_file_reader:
     run  = int(row[0])
@@ -182,7 +193,7 @@ if __name__ == '__main__':
 #  for isub in list(subsystem_run_loss.keys()):
   for isub in list(sorted_cms_detailed_frac_exclusive_loss.keys()):
     filename = isub.replace(' ', '_')
-    filename = dirName + '/' + filename + 'loss.txt'
+    filename = dirName + '/' + filename + 'loss_'+ postfix + '.txt'
     print(filename)
     file = open(filename, "w")
     for irun in list(subsystem_run_loss[isub]):

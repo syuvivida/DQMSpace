@@ -2,6 +2,9 @@
 from collections import defaultdict
 import runregistry
 import matplotlib
+import argparse
+import sys
+
 
 class MyPlot:
   def __init__(self, title, xtitle, ytitle, labelsize, inputdict):
@@ -44,15 +47,6 @@ def pie_plot(inputdict, ax=None, **plt_kwargs):
 #    plt.pie( list(inputdict.values()), labels=None,  autopct='%1.1f%%', **plt_kwargs) ## example plot here
     return(ax)
 
-### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# - path to our results output
-results_csv = "Era/output_eraB.csv"
-### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-import csv
-lumi_file = open(results_csv, newline='') 
-lumi_file_reader = csv.reader(lumi_file, delimiter='$')
 
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       
@@ -97,6 +91,23 @@ total_recorded = 0.0
 total_loss = 0.0
 
 if __name__ == '__main__':
+
+
+  parser = argparse.ArgumentParser(description='Give list of file names')
+  parser.add_argument("-c", "--csv",
+                    dest="csvfile", type=str, default="Era/output_eraB.csv", help="Path to csv file from the previous step")
+  parser.add_argument("-p", "--period",
+                    dest="period", type=str, default="eraB", help="Period name, will be used as postfix")
+
+  options = parser.parse_args()
+  print(sys.argv)
+
+  postfix = options.period
+  results_csv = options.csvfile
+  import csv
+
+  lumi_file = open(results_csv, newline='') 
+  lumi_file_reader = csv.reader(lumi_file, delimiter='$')
 
   for row in lumi_file_reader:
     run  = int(row[0])
@@ -210,7 +221,7 @@ if __name__ == '__main__':
     plt.title(plot_dict[isub].title, fontsize=titlesize_default)
     plt.xlabel(plot_dict[isub].xtitle, fontsize=titlesize_default)
     plt.ylabel(plot_dict[isub].ytitle, fontsize=titlesize_default)
-    plt.savefig( isub+".png", bbox_inches='tight')
+    plt.savefig( isub+"_"+postfix+".png", bbox_inches='tight')
 
 
 
@@ -228,7 +239,7 @@ if __name__ == '__main__':
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
     plt.xlabel(xtitle_default, fontsize=titlesize_default)
     plt.ylabel('Component', fontsize=titlesize_default)
-    plt.savefig( isub+"_loss.png", bbox_inches='tight')
+    plt.savefig( isub+"_loss_"+postfix+".png", bbox_inches='tight')
 
 
 
@@ -255,7 +266,7 @@ if __name__ == '__main__':
 #  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
 #  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
-  plt.savefig( "cms_piechart_exclusive_loss.png", bbox_inches='tight')
+  plt.savefig( "cms_piechart_exclusive_loss_"+postfix+".png", bbox_inches='tight')
 
 
 

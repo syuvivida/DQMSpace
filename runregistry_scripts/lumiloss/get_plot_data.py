@@ -1,24 +1,37 @@
 
 from collections import defaultdict
 import runregistry
+import argparse
+import sys
+
 
 ### SET FOLLOWING :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # - path to grid certificate
-certPath = "/afs/cern.ch/user/s/syu/.globus/usercert.pem"
-keyPath = "/afs/cern.ch/user/s/syu/.globus/userkey.pem"
+
+parser = argparse.ArgumentParser(description='Give list of file names')
+parser.add_argument("-j", "--json",
+                    dest="jsonfile", type=str, default="Era/eraB_golden.json", help="Path to golden JSON file")
+parser.add_argument("-i", "--inputcsv",
+                    dest="inputcsvfile", type=str, default="Era/input_eraB.csv", help="Path to input csv file")
+parser.add_argument("-o", "--outputcsv",
+                    dest="outputcsvfile", type=str, default="Era/output_eraB.csv", help="Path to output csv file")
+
+options = parser.parse_args()
+print(sys.argv)
+
 # - dataset
 dataset = "/PromptReco/Collisions2022/DQM"
 # - path to JSON
-path_to_json = "Era/eraB_golden.json"
-# - path to brilcalc output
-path_to_brilcal_results = "Era/input_eraB.csv"
+path_to_json = options.jsonfile
+# - path to input csv (produced by brilcalc)
+path_to_inputcsv = options.inputcsvfile
 # - path to our results output
-results_csv = "Era/output_eraB.csv"
+results_csv = options.outputcsvfile
 ### :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### GET ALL DATA WE NEED ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 import csv
-brilcalc_file = open(path_to_brilcal_results, newline='') 
+brilcalc_file = open(path_to_inputcsv, newline='') 
 brilcalc_reader = csv.reader(brilcalc_file, delimiter=',')
 brilcalc_lumis = defaultdict( dict )
 
