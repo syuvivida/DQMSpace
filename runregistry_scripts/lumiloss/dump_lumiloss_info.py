@@ -100,6 +100,8 @@ if __name__ == '__main__':
                     dest="csvfile", type=str, default="Era/output_eraB.csv", help="Path to csv file from the previous step")
   parser.add_argument("-p", "--period",
                     dest="period", type=str, default="eraB", help="Period name, will be used as postfix")
+  parser.add_argument("-d", "--dir",
+                    dest="dirname", type=str, default="textFiles", help="output directory")
 
   options = parser.parse_args()
   print(sys.argv)
@@ -188,8 +190,8 @@ if __name__ == '__main__':
 
   print(subsystem_run_loss)
   #dump loss vs run in text files
-  dirName = 'textFiles'
-  os.mkdir(dirName)
+  dirName = options.dirname
+#  os.mkdir(dirName)
 #  for isub in list(subsystem_run_loss.keys()):
   for isub in list(sorted_cms_detailed_frac_exclusive_loss.keys()):
     filename = isub.replace(' ', '_')

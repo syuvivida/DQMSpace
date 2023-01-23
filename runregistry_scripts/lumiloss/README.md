@@ -19,8 +19,9 @@ bash
 cd DQMSpace/runregistry_scripts/lumiloss
 ```
 
-3. Prepare a text file that includes the list of runs for the period of data you want to produce luminosity loss figures and put it in your work directory. 
-For example, Era/eraB_runs.txt
+3. Prepare a text file that includes the list of runs for the period of data you want to produce luminosity loss figures and put it in your output directory. 
+For example, Era/eraB_runs.txt. Note, if your input run list text file is not 
+located in the output directory, you need to specify it explicitly (see blow).
 
 
 4. The main script is runAllSteps_lumiloss.sh. You can find out the usuage by running
@@ -29,13 +30,20 @@ For example, Era/eraB_runs.txt
 ```
 
 5. The script runAllSteps_lumiloss.sh can be run step by step or in one go. For longer run list, sometimes you can lose connection to the runregistry database and need to repeat certain steps. You can also use the default input parameters (the minimum number of input parameters is 1). The steps include 
-all, inputcsv, json, outputcsv, plot, and dump.
+all, inputcsv, json, outputcsv, plot, and dump. 
+Note, if you run the script step by step, the output directory name must be the same in all steps.
 ```
 ./runAllSteps_lumiloss.sh eraB
 ./runAllSteps_lumiloss.sh eraB inputcsv
 ```
 
-6. If you run the full step (option: all), you will get the luminosity loss figures in the same directory and text file in textFiles
+6. if your input run list text file is not located in the output directory, you need to specify it explicitly (the last input argument).
+```
+./runAllSteps_lumiloss.sh eraB inputcsv outputtest Era/eraB_runs.txt
+```
+
+
+7. If you run the full step (option: all), you will get the luminosity loss figures in the same directory and text file in textFiles
 ```
 ls *png
 ls textFiles/*

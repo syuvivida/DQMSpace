@@ -98,10 +98,13 @@ if __name__ == '__main__':
                     dest="csvfile", type=str, default="Era/output_eraB.csv", help="Path to csv file from the previous step")
   parser.add_argument("-p", "--period",
                     dest="period", type=str, default="eraB", help="Period name, will be used as postfix")
+  parser.add_argument("-d", "--outdir",
+                    dest="outdir", type=str, default="figures_eraB", help="directory of output figures")
 
   options = parser.parse_args()
   print(sys.argv)
 
+  outputdir = options.outdir
   postfix = options.period
   results_csv = options.csvfile
   import csv
@@ -221,7 +224,7 @@ if __name__ == '__main__':
     plt.title(plot_dict[isub].title, fontsize=titlesize_default)
     plt.xlabel(plot_dict[isub].xtitle, fontsize=titlesize_default)
     plt.ylabel(plot_dict[isub].ytitle, fontsize=titlesize_default)
-    plt.savefig( isub+"_"+postfix+".png", bbox_inches='tight')
+    plt.savefig( outputdir+"/"+isub+"_"+postfix+".png", bbox_inches='tight')
 
 
 
@@ -239,7 +242,7 @@ if __name__ == '__main__':
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
     plt.xlabel(xtitle_default, fontsize=titlesize_default)
     plt.ylabel('Component', fontsize=titlesize_default)
-    plt.savefig( isub+"_loss_"+postfix+".png", bbox_inches='tight')
+    plt.savefig( outputdir+"/"+isub+"_loss_"+postfix+".png", bbox_inches='tight')
 
 
 
@@ -266,7 +269,7 @@ if __name__ == '__main__':
 #  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
 #  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
-  plt.savefig( "cms_piechart_exclusive_loss_"+postfix+".png", bbox_inches='tight')
+  plt.savefig( outputdir+"/cms_piechart_exclusive_loss_"+postfix+".png", bbox_inches='tight')
 
 
 
