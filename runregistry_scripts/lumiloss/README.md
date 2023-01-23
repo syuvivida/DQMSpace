@@ -4,6 +4,8 @@
 The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/muonJSON.txt 
 
 
+Note, if you need to update lumiloss figures because of an update of certain runs, please see point 8.
+
 0. Setup grid certificate
 https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provide-the-certificate-manually
 
@@ -50,3 +52,4 @@ ls textFiles/*
 ```
 
 
+8. Note, if you need to update lumiloss figures because of an update of certain runs, please run the full step "all" using a text file that includes the updated runs. Carefully remove the lines with the updated runs in the output_*csv file and replace them with the new ones from the job output. Then, run the "plot" or "dump" step only. This will save much more time as the connection to the run registry can be broken from time to time.

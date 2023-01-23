@@ -28,4 +28,12 @@ echo -e "\n"
 echo "Now we are going to produce lumiloss plots in $period"
 echo "using the input from $outputCSVFile"
 python make_dc_plot.py -c $outputCSVFile -p $period -d $outputdir
+
+if [ $? -ne 0 ]; then
+    echo -e "\n"
+    echo "step plot failed!"
+    exit 1
+fi
+
+
 echo "The png files are in the directory $PWD/$outputdir"

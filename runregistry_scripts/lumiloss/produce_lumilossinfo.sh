@@ -29,5 +29,12 @@ echo "Now we are going to produce lumiloss text files in $period"
 echo "using the input from $outputCSVFile"
 python dump_lumiloss_info.py -c $outputCSVFile -p $period -d $outputdir
 
+if [ $? -ne 0 ]; then
+    echo -e "\n"
+    echo "step dump failed!"
+    exit 1
+fi
+
+
 echo -e "\n"
 echo "The text files that include loss info are in the directory $PWD/$outputdir"

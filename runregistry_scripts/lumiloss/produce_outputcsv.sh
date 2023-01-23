@@ -25,6 +25,15 @@ echo "using the input from $goldenJSONFile and $inputCSVFile"
 testFile=testoutput.csv
 python get_plot_data.py -j $goldenJSONFile -i $inputCSVFile -o $testFile
 
+
+if [ $? -ne 0 ]; then
+    echo -e "\n"
+    echo "step outputcsv failed!"
+    echo "Likely due to the broken connection with the run registry database"
+    exit 1
+fi
+
+
 if [ ! -f $testFile ]; then
     echo "The file $testFile does not exist!"
     exit 1
