@@ -52,4 +52,11 @@ ls textFiles/*
 ```
 
 
-8. Note, if you need to update lumiloss figures because of an update of certain runs, please run the full step "all" using a text file that includes the updated runs. Carefully remove the lines with the updated runs in the output_*csv file and replace them with the new ones from the job output. Then, run the "plot" or "dump" step only. This will save much more time as the connection to the run registry can be broken from time to time.
+8. Note, if you need to update lumiloss figures because of an update of certain runs, please run the step "all" using a text file that includes the updated runs. Carefully remove the lines with the updated runs in the output_*csv file and replace them with the new ones from the job output. Then, run the "plot" or "dump" step only. This will save much more time as the connection to the run registry can be broken from time to time.
+
+In some cases, you may have too many runs to process (say 100 runs), the chance of having broken connection with the run registry is high. 
+You can use the following script to split the run list. 
+```
+./splitFile.sh
+./splitFile.sh Era/eraC_runs.txt 20
+```
