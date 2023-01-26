@@ -1,10 +1,12 @@
 # Scripts to obtain luminosity loss figures
-# Note this branch v1.0 contains the scripts for the new Golden and Muon JSON logic (used in Run 3 from call 20) 
+# Note this branch v1.0 contains the scripts for the new Golden and Muon JSON 
+logic (used in Run 3 from call 20) 
 
 The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/muonJSON.txt 
 
 
-Note, if you need to update lumiloss figures because of an update of certain runs, please see point 8.
+Note, if you need to update lumiloss figures because of an update of certain 
+runs, please see point 8.
 
 0. Setup grid certificate
 https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provide-the-certificate-manually
@@ -21,25 +23,58 @@ bash
 cd DQMSpace/runregistry_scripts/lumiloss
 ```
 
-3. Prepare a text file that includes the list of runs for the period of data you want to produce luminosity loss figures and put it in your output directory. 
-For example, Era/eraB_runs.txt. Note, if your input run list text file is not 
-located in the output directory, you need to specify it explicitly (see blow).
+3. Prepare a text file that includes the list of runs for the period of data 
+you want to produce luminosity loss figures and put it in your output 
+directory. For example, Era/eraB_runs.txt. Note, if your input run list text 
+file is not located in the output directory, you need to specify it explicitly
+ (see blow).
 
 
-4. The main script is runAllSteps_lumiloss.sh. You can find out the usuage by running
+4. The main script is runAllSteps_lumiloss.sh. You can find out the usuage by 
+running
 ```
 ./runAllSteps_lumiloss.sh
+
+Usage: runAllSteps_lumiloss.sh period step outputDirName inputRunFile
+Example: ./runAllSteps_lumiloss.sh eraB all Era Era/eraB_runs.txt
+The name of the period will be used as prefix/postfix of the output files
+The inputRunFile must exist
+
+
+Steps include: all        --> running all steps (inputcsv, json, outputcsv, plot, dump)
+The following options are only one step per job
+               inputcsv   --> producing csv files for the input runs using brilcalc
+               json       --> producing muon and golden JSON files
+                              Note, only golden JSON files are required for the next step
+                              If you lose connection to the DB after producing golden JSON file, you can move on to the next step
+               outputcsv  --> producing run registry info for the input runs
+               plot       --> make luminosity loss plots
+               dump       --> dump the major lumi loss into text files
+
+
+The following options run the job from step xx to the last step
+               json_all       --> running json, outputcsv, plot, dump
+               outputcsv_all  --> running outputcsv, plot, dump
+               plot_all       --> running plot, dump
+
 ```
 
-5. The script runAllSteps_lumiloss.sh can be run step by step or in one go. For longer run list, sometimes you can lose connection to the runregistry database and need to repeat certain steps. You can also use the default input parameters (the minimum number of input parameters is 1). The steps include 
-all, inputcsv, json, outputcsv, plot, and dump. 
-Note, if you run the script step by step, the output directory name must be the same in all steps.
+5. The script runAllSteps_lumiloss.sh can be run step by step, or from one 
+certain step until the end, or in one go. 
+For longer run list, sometimes you can lose connection to the runregistry 
+database and need to repeat certain steps. 
+You can also use the default input parameters (the minimum number of input 
+parameters is 1). The options of steps include all, inputcsv, json, outputcsv, 
+plot, dump, json_all, outputcsv_all, plot_all. 
+Note, if you run the script step by step, the output directory name must be 
+the same in all steps.
 ```
 ./runAllSteps_lumiloss.sh eraB
 ./runAllSteps_lumiloss.sh eraB inputcsv
 ```
 
-6. if your input run list text file is not located in the output directory, you need to specify it explicitly (the last input argument).
+6. if your input run list text file is not located in the output directory, 
+you need to specify it explicitly (the last input argument).
 ```
 ./runAllSteps_lumiloss.sh eraB inputcsv outputtest Era/eraB_runs.txt
 ```
@@ -52,10 +87,17 @@ ls textFiles/*
 ```
 
 
-8. Note, if you need to update lumiloss figures because of an update of certain runs, please run the step "all" using a text file that includes the updated runs. Carefully remove the lines with the updated runs in the output_*csv file and replace them with the new ones from the job output. Then, run the "plot" or "dump" step only. This will save much more time as the connection to the run registry can be broken from time to time.
+8. Note, if you need to update lumiloss figures because of an update of 
+certain runs, please run the step "all" using a text file that includes the 
+updated runs. Carefully remove the lines with the updated runs in the 
+output_*csv file and replace them with the new ones from the job output. Then,
+ run the "plot" or "dump" step only. This will save much more time as the 
+connection to the run registry can be broken from time to time.
 
-9. In some cases, you may have too many runs to process (say 100 runs), the chance of having broken connection with the run registry is high. 
-You can use the following script to split the run list. In general, 20 runs per file is reasonable and the full job could finish without problems. 
+9. In some cases, you may have too many runs to process (say 100 runs), the 
+chance of having broken connection with the run registry is high. 
+You can use the following script to split the run list. In general, 20 runs 
+per file is reasonable and the full job could finish without problems. 
 ```
 ./splitFile.sh
 ./splitFile.sh Era/eraC_runs.txt 20

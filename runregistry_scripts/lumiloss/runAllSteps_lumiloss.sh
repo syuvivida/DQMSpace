@@ -5,6 +5,7 @@ EXPECTED_ARGS=4
 print_steps(){
     echo -e "\n"
     echo "Steps include: all        --> running all steps (inputcsv, json, outputcsv, plot, dump)" 
+    echo "The following options are only one step per job" 
     echo "               inputcsv   --> producing csv files for the input runs using brilcalc"
     echo "               json       --> producing muon and golden JSON files" 
     echo "                              Note, only golden JSON files are required for the next step"
@@ -12,6 +13,11 @@ print_steps(){
     echo "               outputcsv  --> producing run registry info for the input runs" 
     echo "               plot       --> make luminosity loss plots"
     echo "               dump       --> dump the major lumi loss into text files"
+    echo -e "\n"
+    echo "The following options run the job from step xx to the last step" 
+    echo "               json_all       --> running json, outputcsv, plot, dump"
+    echo "               outputcsv_all  --> running outputcsv, plot, dump" 
+    echo "               plot_all       --> running plot, dump"
     echo -e "\n"
 }
 
@@ -40,8 +46,12 @@ then
     dir=$3
     inputRunFile=$4
 else
+    echo -e "\n"
+    echo "======================================================================="
     echo "Usage: $scriptname period step outputDirName inputRunFile"
     echo "Example: ./$scriptname eraB $step $dir $dir/eraB_runs.txt"
+    echo "======================================================================="
+    echo -e "\n"
     echo "The name of the period will be used as prefix/postfix of the output files"
     echo "The inputRunFile must exist"
     print_steps
@@ -97,7 +107,7 @@ muonJSONFile=${dir}/${period}_muon.json
 goldenJSONFile=${dir}/${period}_golden.json
 scriptJSON=produce_json.sh
 
-if [[ "$step" == "json" || "$step" == "all" ]]; then
+if [[ "$step" == "json" || "$step" == "all" || "$step" == "json_all" ]]; then
     ./$scriptJSON $inputRunFile $muonJSONFile $goldenJSONFile
     if [ $? -ne 0 ]; then
 	echo "step json failed!"
@@ -114,7 +124,8 @@ fi
 outputCSVFile=${dir}/output_${period}.csv
 scriptCSVOutput=produce_outputcsv.sh
 
-if [[ "$step" == "outputcsv" || "$step" == "all" ]]; then
+if [[ "$step" == "outputcsv" || "$step" == "all" 
+      || "$step" == "outputcsv_all" || "$step" == "json_all" ]]; then
     ./$scriptCSVOutput $goldenJSONFile $inputCSVFile $outputCSVFile
     if [ $? -ne 0 ]; then
 	echo "step outputcsv failed!"
@@ -130,7 +141,9 @@ fi
 
 # Now we will produce lumiloss plots using the files from previous steps
 scriptPlot=produce_lumilossplots.sh
-if [[ "$step" == "plot" || "$step" == "all" ]]; then
+if [[ "$step" == "plot" || "$step" == "all" 
+	    || "$step" == "plot_all" || "$step" == "json_all" 
+	    || "$step" == "outputcsv_all" ]]; then
     ./$scriptPlot $outputCSVFile $period
     if [ $? -ne 0 ]; then
 	echo "step plot failed!"
@@ -146,7 +159,9 @@ fi
 
 # Now we will dump lumiloss information into text files using the files from previous steps
 scriptDump=produce_lumilossinfo.sh
-if [[ "$step" == "dump" || "$step" == "all" ]]; then
+if [[ "$step" == "dump" || "$step" == "all" 
+	    || "$step" == "plot_all" || "$step" == "json_all" 
+	    || "$step" == "outputcsv_all" ]]; then
     ./$scriptDump $outputCSVFile $period
     if [ $? -ne 0 ]; then
 	echo "step dump failed!"
