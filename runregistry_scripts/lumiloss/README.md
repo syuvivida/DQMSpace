@@ -19,7 +19,6 @@ git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git
 
 2. Go to the proper directory
 ```
-bash
 cd DQMSpace/runregistry_scripts/lumiloss
 ```
 
@@ -101,4 +100,16 @@ per file is reasonable and the full job could finish without problems.
 ```
 ./splitFile.sh
 ./splitFile.sh Era/eraC_runs.txt 20
+```
+
+
+10. If some subsystems recertify a number of runs, you can prepare an input 
+file containing these runs only, say L1TRecover_runs.txt. Copy all the files 
+from the json_tools directory to your work directory and run the following 
+script to get updated JSON files and output csv file. Then, run the plotting 
+command. 
+```
+cp -p ../../json_tools/* .
+./replace_outputloss.sh L1TRecover_runs.txt Era
+./runAllSteps_lumiloss.sh eraC plot output_Era Era/eraC_runs.txt
 ```
