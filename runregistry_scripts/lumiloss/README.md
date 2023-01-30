@@ -86,12 +86,19 @@ ls textFiles/*
 ```
 
 
-8. Note, if you need to update lumiloss figures because of an update of 
-certain runs, please run the step "all" using a text file that includes the 
-updated runs. Carefully remove the lines with the updated runs in the 
-output_*csv file and replace them with the new ones from the job output. Then,
- run the "plot" or "dump" step only. This will save much more time as the 
-connection to the run registry can be broken from time to time.
+8. Note, if you need to update lumiloss figures because some subsystems 
+recertify a number of runs, you can prepare an input file containing these 
+runs only, say L1TRecover_runs.txt. Copy all the scripts from the 
+DQMSpace/json_tools directory to your work directory and run the following 
+script to get updated JSON files and output csv file. Then, run the plotting 
+command. 
+```
+cp -p ../../json_tools/* .
+./replace_outputloss.sh L1TRecover_runs.txt Era
+./runAllSteps_lumiloss.sh eraC plot output_Era Era/eraC_runs.txt
+```
+
+
 
 9. In some cases, you may have too many runs to process (say 100 runs), the 
 chance of having broken connection with the run registry is high. 
@@ -103,13 +110,3 @@ per file is reasonable and the full job could finish without problems.
 ```
 
 
-10. If some subsystems recertify a number of runs, you can prepare an input 
-file containing these runs only, say L1TRecover_runs.txt. Copy all the files 
-from the json_tools directory to your work directory and run the following 
-script to get updated JSON files and output csv file. Then, run the plotting 
-command. 
-```
-cp -p ../../json_tools/* .
-./replace_outputloss.sh L1TRecover_runs.txt Era
-./runAllSteps_lumiloss.sh eraC plot output_Era Era/eraC_runs.txt
-```
