@@ -77,7 +77,7 @@ cp -p $allcalls_goldenjson $allcalls_goldenjson_copy
 
 # Remove the directory name if the input file name has any, i.e. /afs/cern.ch/s/syu/callRu 
 csvDir=${allcallsCSV%/*}
-allcallsCSV_final=${csvDir}$/output_final_${allcallsName}.csv
+allcallsCSV_final=${csvDir}/output_final_${allcallsName}.csv
 cp -p $allcallsCSV $allcallsCSV_final
 
 for iteration in {B,C,D,E,F,G}
@@ -111,36 +111,42 @@ do
 	    echo -e "\n"
 	    echo "Checking moun JSON files" 
 	    # first delete the original lines 
-	    sed -i '/"'$runnumber'"/,/^ ]/d' $muonjson_copy 
-	    sed -i '/"'$runnumber'"/,/^ ]/d' $allcalls_muonjson_copy
+	    ./myFilterJSON.sh $runnumber $muonjson_copy tmp.json
+	    mv tmp.json $muonjson_copy
+	    ./myFilterJSON.sh $runnumber $allcalls_muonjson_copy tmp.json
+	    mv tmp.json $allcalls_muonjson_copy
+#	    awk '/^ "'$runnumber'"/{flag=1; next} /^ ]/{flag=0} flag' $outputdir/${era}_golden.json > $newfile
+#	    sed '/"'$runnumber'"/,/^ ]/!b;//!d;/^ ]/e cat '$newfile $goldenjson > $goldenjson2
+	    #sed -i '/"'$runnumber'"/,/^ ]/d' $muonjson_copy 
+	    #sed -i '/"'$runnumber'"/,/^ ]/d' $allcalls_muonjson_copy
       
 	    echo -e "\n"
 	    echo "Checking golden JSON files"
-#	    awk '/^ "'$runnumber'"/{flag=1; next} /^ ]/{flag=0} flag' $outputdir/${era}_golden.json > $newfile
-#	    sed '/"'$runnumber'"/,/^ ]/!b;//!d;/^ ]/e cat '$newfile $goldenjson > $goldenjson2
 	    # first delete the original lines 
-	    sed -i '/"'$runnumber'"/,/^ ]/d' $goldenjson_copy
-	    sed -i '/"'$runnumber'"/,/^ ]/d' $allcalls_goldenjson_copy
+	    ./myFilterJSON.sh $runnumber $goldenjson_copy tmp.json
+	    mv tmp.json $goldenjson_copy
+	    ./myFilterJSON.sh $runnumber $allcalls_goldenjson_copy tmp.json
+	    mv tmp.json $allcalls_goldenjson_copy
 
 	    echo -e "\n"
 	    echo "replacing output csv"
 	    appendfile=tmp2.txt
-	    grep -e '^'$runumber'\$' output_Era/output_${era}.csv > $appendfile
+	    grep -e '^'$runnumber'\$' $outputdir/output_${era}.csv > $appendfile
 	    #now loop over runs to replace outputcsv
 	    sed -i -e '/^'$runnumber'/{R '$appendfile -e 'd}' $testfile
 	    sed -i -e '/^'$runnumber'/{R '$appendfile -e 'd}' $allcallsCSV_final
 
-	done < "$runfile"
+	done < "$runfile" ## Done of looping the updated run list per Era
 
 	# now use mergeJSON.py, need to unsetup python2.7
 	append_muonjson=$outputdir/${era}_muon.json
-	./myReplaceJSON.sh $muonjson_copy $append_muonjson $muonjson_final
-	./myReplaceJSON.sh $allcalls_muonjson_copy $append_muonjson $allcalls_muonjson_final
+	./myMergeJSON.sh $muonjson_copy $append_muonjson $muonjson_final
+	./myMergeJSON.sh $allcalls_muonjson_copy $append_muonjson $allcalls_muonjson_final
 	cp -p $allcalls_muonjson_final $allcalls_muonjson_copy
 
 	append_goldenjson=$outputdir/${era}_golden.json
-	./myReplaceJSON.sh $goldenjson_copy $append_goldenjson $goldenjson_final
-	./myReplaceJSON.sh $allcalls_goldenjson_copy $append_goldenjson $allcalls_goldenjson_final
+	./myMergeJSON.sh $goldenjson_copy $append_goldenjson $goldenjson_final
+	./myMergeJSON.sh $allcalls_goldenjson_copy $append_goldenjson $allcalls_goldenjson_final
 	cp -p $allcalls_goldenjson_final $allcalls_goldenjson_copy
 
 	# now compare the original JSON and the new one

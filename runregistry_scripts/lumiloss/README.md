@@ -97,6 +97,7 @@ cp -p ../../json_tools/* .
 ./replace_outputloss.sh L1TRecover_runs.txt Era
 ./produce_lumilossplots.sh output_Era/output_final_eraC.csv eraC
 ./produce_lumilossplots.sh <locationofbigcsv> calls7to23
+./produce_lumilossinfo.sh <locationofbigcsv> calls7to23
 ```
 
 Note, produce_lumilossplots.sh is the plotting script called by runAllSteps_lumiloss.sh. The output csv file after combining all the calls could be big so we 
