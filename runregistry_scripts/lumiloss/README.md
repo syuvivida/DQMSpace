@@ -95,7 +95,7 @@ command.
 ```
 cp -p ../../json_tools/* .
 ./replace_outputloss.sh L1TRecover_runs.txt Era
-./runAllSteps_lumiloss.sh eraC plot output_Era Era/eraC_runs.txt
+./runAllSteps_lumiloss.sh final_eraC plot output_Era Era/eraC_runs.txt
 ```
 
 

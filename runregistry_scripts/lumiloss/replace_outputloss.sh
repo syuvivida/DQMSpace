@@ -74,7 +74,7 @@ do
 	cp -p $dir/${era}_golden.json $goldenjson
 	cp -p $dir/${era}_golden.json $goldenjson_copy
 
-	testfile=$outputdir/final_output_${era}.csv
+	testfile=$outputdir/output_final_${era}.csv
 	cp -p $dir/output_${era}.csv $testfile
 	while read -r runnumber
 	do
