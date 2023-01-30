@@ -95,9 +95,12 @@ command.
 ```
 cp -p ../../json_tools/* .
 ./replace_outputloss.sh L1TRecover_runs.txt Era
-./runAllSteps_lumiloss.sh final_eraC plot output_Era Era/eraC_runs.txt
+./produce_lumilossplots.sh output_Era/output_final_eraC.csv eraC
+./produce_lumilossplots.sh <locationofbigcsv> calls7to23
 ```
 
+Note, produce_lumilossplots.sh is the plotting script called by runAllSteps_lumiloss.sh. The output csv file after combining all the calls could be big so we 
+suggest you to put this big CSV file in the afs work area. 
 
 
 9. In some cases, you may have too many runs to process (say 100 runs), the 
