@@ -15,11 +15,12 @@ then
     dir=$2
 else
     echo -e "\n"
-    echo "============================================================================================================="
-    echo "Usage: $scriptname inputfile directoryOfEraRuns cmsswdir scramarch"
-    echo "Example: ./$scriptname L1T_runs.txt Era $cmsswdir $scramarch"
-    echo "CMSSW area is needed to merge JSON Files"
-    echo "============================================================================================================="
+    echo "======================================================================"
+    echo "Usage: $scriptname inputfile directoryOfEraRuns"
+    echo "Example: ./$scriptname L1T_runs.txt $dir"
+    echo "directorOfEraRuns is the directory where the input run lists per Era" 
+    echo "are stored. The files are used to check the era of the updated runs"
+    echo "======================================================================"
     echo -e "\n"
     exit 1
 fi
