@@ -1,0 +1,1 @@
+../setup_github_runregistry.sh
