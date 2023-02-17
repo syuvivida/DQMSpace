@@ -1,13 +1,22 @@
 #!/bin/bash
 
 WORKDIR=$PWD
+rm -rf $WORKDIR/venv
 source /opt/rh/rh-python36/enable
 python -V 
-
 source $WORKDIR/setup_virtualenv.sh
 pip install requests
 pip install cernrequests
 pip install matplotlib
+
+## By default there is no need for argument
+## checkout run registry from master or pip
+mode="default"
+if [ $# -eq 1 ]
+then
+    mode=$1
+fi
+
 
 ## the following command needs to be run once before sourcing this setup
 # so check first if the repository exists
@@ -28,7 +37,11 @@ if [ -d "$RRDIR" ]; then
 else
   # Take action if $DIR does not exist 
     #git clone -b dev git@github.com:cms-DQM/runregistry.git              
-    git clone git@github.com:cms-DQM/runregistry.git
+    if [ "$mode" == "default" ]; then
+	git clone git@github.com:cms-DQM/runregistry.git
+    else
+	git clone -b $mode git@github.com:cms-DQM/runregistry.git
+    fi
     export GITHUB_PATH=$RRDIR/runregistry_api_client/runregistry
 fi
 
