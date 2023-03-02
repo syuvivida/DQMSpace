@@ -27,7 +27,11 @@ mkdir -p $PWD/$outputdir
 echo -e "\n"
 echo "Now we are going to produce lumiloss text files in $period"
 echo "using the input from $outputCSVFile"
-python dump_lumiloss_info.py -c $outputCSVFile -p $period -d $outputdir
+#dump_lumiloss_info.py groups muon POG and muon DPG results, 
+#dump_lumiloss_info.py groups Tracker DPG and Track POG results 
+#python dump_lumiloss_info.py -c $outputCSVFile -p $period -d $outputdir
+
+python dump_lumiloss_info_sub.py -c $outputCSVFile -p $period -d $outputdir
 
 if [ $? -ne 0 ]; then
     echo -e "\n"

@@ -27,7 +27,11 @@ mkdir -p $PWD/$outputdir
 echo -e "\n"
 echo "Now we are going to produce lumiloss plots in $period"
 echo "using the input from $outputCSVFile"
-python make_dc_plot.py -c $outputCSVFile -p $period -d $outputdir
+#make_dc_plot.py groups muon POG and muon DPG results, 
+#make_dc_plot.py groups Tracker DPG and Track POG results 
+#python make_dc_plot.py -c $outputCSVFile -p $period -d $outputdir
+
+python make_dc_plot_sub.py -c $outputCSVFile -p $period -d $outputdir
 
 if [ $? -ne 0 ]; then
     echo -e "\n"
