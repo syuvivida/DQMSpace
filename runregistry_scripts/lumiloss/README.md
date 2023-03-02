@@ -1,6 +1,5 @@
 # Scripts to obtain luminosity loss figures
-# Note this branch v1.0 contains the scripts for the new Golden and Muon JSON 
-logic (used in Run 3 from call 20) 
+## Note this branch v1.0 contains the scripts for the new Golden and Muon JSON logic (used in Run 3 from call 20) 
 
 The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/muonJSON.txt 
 
@@ -8,6 +7,7 @@ The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpa
 Note, if you need to update lumiloss figures because of an update of certain 
 runs, please see point 8.
 
+## Normal running for /PromptReco/Collisions2022/DQM
 0. Setup grid certificate
 https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provide-the-certificate-manually
 
@@ -81,11 +81,11 @@ you need to specify it explicitly (the last input argument).
 
 7. If you run the full step (option: all), you will get the luminosity loss figures in the same directory and text file in textFiles
 ```
-ls *png
-ls textFiles/*
+ls figures_eraB/_*png
+ls textFiles_eraB/*
 ```
 
-
+## When you need to update luminosity loss after re-certification 
 8. Note, if you need to update lumiloss figures because some subsystems 
 recertify a number of runs, you can prepare an input file containing these 
 runs only, say L1TRecover_runs.txt. Copy all the scripts from the 
