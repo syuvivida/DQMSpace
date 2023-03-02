@@ -59,13 +59,16 @@ dcs_sub =   ["bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_rea
 dcs_loss = defaultdict( float )
 
 detector_sub = {}
-detector_sub["Tracker"] = ["tracker-pixel", "tracker-strip", "bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
-detector_sub["ECAL"] = ["ecal-ecal", "ecal-es"]
+detector_sub["PixelPhase1"] = ["tracker-pixel", "bpix_ready", "fpix_ready"]
+detector_sub["SiStrip"] = ["tracker-strip", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
+detector_sub["ECAL"] = ["ecal-ecal"]
+detector_sub["ES"] = ["ecal-es"]
 detector_sub["HCAL"] = ["hcal-hcal", "hbhea_ready","hbheb_ready","hbhec_ready","hf_ready","ho_ready"]
-detector_sub["MuonDet"] = ["csc-csc", "dt-dt"]
+detector_sub["CSC"] = ["csc-csc"]
+detector_sub["DT"] = ["dt-dt"]
 detector_sub["L1T"] = ["l1t-l1tcalo","l1t-l1tmu"]
 detector_sub["HLT"] = ["hlt-hlt"]
-detector_sub["TrackPOG"] = ["tracker-track"]
+detector_sub["Tracking"] = ["tracker-track"]
 detector_sub["MuonPOG"] = ["muon-muon"]
 detector_sub["JetMET"] = ["jetmet-jetmet"]
 detector_sub["EGamma"] = ["egamma-egamma"]
@@ -267,6 +270,9 @@ if __name__ == '__main__':
     list2 = list(detector_exclusive_loss[isub])
     dict_this = defaultdict(float)
     icount +=1
+    ## No need to make plots for the system with only Mixed and one flag
+    ## since inclusive and exclusive loss are the same
+    if len(list2) <= 2: continue 
     for isub2 in list2:
         dict_this[isub2] = detector_exclusive_loss[isub][isub2]
     sorted_thissub = sort_dict(dict_this)
@@ -281,7 +287,7 @@ if __name__ == '__main__':
 
 
 #Now make a pie chart: fraction of exclusive loss due to each subdetector
-  colors=['brown', 'purple', 'red', 'green', 'orange', 'blue', 'pink', 'orchid', 'yellow', 'gray', 'olive' ]
+  colors=['brown', 'purple', 'plum', 'red', 'pink', 'green', 'orange', 'yellow', 'blue', 'pink', 'orchid', 'goldenrod', 'gray', 'olive' ]
   colors_dict = defaultdict(str)
   colors_dict['Mixed'] = colors[0]
   icolor=1
