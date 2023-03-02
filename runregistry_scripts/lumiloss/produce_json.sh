@@ -38,7 +38,6 @@ fi
 
 
 ########################################################################################
-echo << EOF
 echo -e "\n"
 echo "Now we are going to produce $muonJSONFile"
 python create_muonJSON.py -i $inputRunFile -o $testFile -d $dataset
@@ -64,4 +63,4 @@ if [ ! -f $muonJSONFile ]; then
     exit 1
 fi
 
-EOF
+
