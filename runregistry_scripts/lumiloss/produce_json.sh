@@ -5,6 +5,7 @@ source ./setup_runregistry.sh
 inputRunFile=$1
 muonJSONFile=$2
 goldenJSONFile=$3
+dataset=$4
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"
@@ -16,7 +17,7 @@ fi
 echo -e "\n"
 echo "Now we are going to produce $goldenJSONFile"
 testFile=test.json
-python create_goldenJSON.py -i $inputRunFile -o $testFile
+python create_goldenJSON.py -i $inputRunFile -o $testFile -d $dataset
 
 if [ $? -ne 0 ]; then
     echo -e "\n"
@@ -37,10 +38,10 @@ fi
 
 
 ########################################################################################
-
+echo << EOF
 echo -e "\n"
 echo "Now we are going to produce $muonJSONFile"
-python create_muonJSON.py -i $inputRunFile -o $testFile
+python create_muonJSON.py -i $inputRunFile -o $testFile -d $dataset
 
 if [ $? -ne 0 ]; then
     echo -e "\n"
@@ -63,3 +64,4 @@ if [ ! -f $muonJSONFile ]; then
     exit 1
 fi
 
+EOF

@@ -15,12 +15,13 @@ parser.add_argument("-i", "--inputcsv",
                     dest="inputcsvfile", type=str, default="Era/input_eraB.csv", help="Path to input csv file")
 parser.add_argument("-o", "--outputcsv",
                     dest="outputcsvfile", type=str, default="Era/output_eraB.csv", help="Path to output csv file")
+parser.add_argument("-d", "--dataset",
+                    dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
 
 options = parser.parse_args()
 print(sys.argv)
 
-# - dataset
-dataset = "/PromptReco/Collisions2022/DQM"
+
 # - path to JSON
 path_to_json = options.jsonfile
 # - path to input csv (produced by brilcalc)
@@ -62,8 +63,8 @@ for run, lumis in brilcalc_lumis.items():
 #  if str(run) not in json_data:
 #    continue
 
-  rr_lumisections = runregistry.get_lumisections(run, dataset)
-  oms_lumisections = runregistry.get_oms_lumisections(run, dataset)
+  rr_lumisections = runregistry.get_lumisections(run, options.dataset)
+  oms_lumisections = runregistry.get_oms_lumisections(run, options.dataset)
 
 
   for lumi_number, lumi_data in lumis.items():

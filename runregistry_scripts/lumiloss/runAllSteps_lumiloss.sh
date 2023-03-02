@@ -1,6 +1,6 @@
 #!/bin/bash
 scriptname=`basename $0`
-EXPECTED_ARGS=4
+EXPECTED_ARGS=5
 
 print_steps(){
     echo -e "\n"
@@ -22,7 +22,9 @@ print_steps(){
 }
 
 step='all'
-dir="Era"
+dir='Era'
+dataset="/PromptReco/Collisions2022/DQM"
+#dataset="/ReReco/Run2022B_10Dec2022/DQM"
 
 if [ $# -eq 1 ]
 then
@@ -39,21 +41,29 @@ then
     step=$2
     dir=$3
     inputRunFile=${dir}/${period}_runs.txt
+elif [ $# -eq 4 ]
+then
+    period=$1
+    step=$2
+    dir=$3
+    inputRunFile=$4
 elif [ $# -eq $EXPECTED_ARGS ]
 then
     period=$1
     step=$2
     dir=$3
     inputRunFile=$4
+    dataset=$5
 else
     echo -e "\n"
     echo "======================================================================="
-    echo "Usage: $scriptname period step outputDirName inputRunFile"
-    echo "Example: ./$scriptname eraB $step $dir $dir/eraB_runs.txt"
+    echo "Usage: $scriptname period step outputDirName inputRunFile dataset"
+    echo "Example: ./$scriptname eraB $step $dir $dir/eraB_runs.txt $dataset"
     echo "======================================================================="
     echo -e "\n"
     echo "The name of the period will be used as prefix/postfix of the output files"
-    echo "The inputRunFile must exist"
+    echo "The inputRunFile must exist!"
+    echo "The dataset name is the name in run registry"
     print_steps
     exit 1
 fi
@@ -62,6 +72,8 @@ echo -e "\n"
 echo "The period to process lumiloss plots is $period"
 echo "We will run step $step"
 echo "The output csv/JSON files are in the directory $dir"
+echo "The input run file is $inputRunFile"
+echo "The dataset in offline RR is $dataset"
 echo -e "\n"
 print_steps
 # first get the list of runs from the run registry, given a run range                                                                                
@@ -90,7 +102,7 @@ inputJSONFile=${dir}/${period}.json
 inputCSVFile=${dir}/input_${period}.csv
 scriptCSV=produce_inputcsv.sh
 if [[ "$step" == "inputcsv" || "$step" == "all" ]]; then
-    ./$scriptCSV $inputRunFile $inputJSONFile $inputCSVFile
+    ./$scriptCSV $inputRunFile $inputJSONFile $inputCSVFile $dataset
     if [ $? -ne 0 ]; then
 	echo "step inputcsv failed!"
 	exit 1
@@ -108,7 +120,7 @@ goldenJSONFile=${dir}/${period}_golden.json
 scriptJSON=produce_json.sh
 
 if [[ "$step" == "json" || "$step" == "all" || "$step" == "json_all" ]]; then
-    ./$scriptJSON $inputRunFile $muonJSONFile $goldenJSONFile
+    ./$scriptJSON $inputRunFile $muonJSONFile $goldenJSONFile $dataset
     if [ $? -ne 0 ]; then
 	echo "step json failed!"
 	exit 1
@@ -126,7 +138,7 @@ scriptCSVOutput=produce_outputcsv.sh
 
 if [[ "$step" == "outputcsv" || "$step" == "all" 
       || "$step" == "outputcsv_all" || "$step" == "json_all" ]]; then
-    ./$scriptCSVOutput $goldenJSONFile $inputCSVFile $outputCSVFile
+    ./$scriptCSVOutput $goldenJSONFile $inputCSVFile $outputCSVFile $dataset
     if [ $? -ne 0 ]; then
 	echo "step outputcsv failed!"
 	exit 1

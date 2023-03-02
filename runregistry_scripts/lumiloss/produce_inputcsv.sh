@@ -5,6 +5,7 @@ source ./setup_runregistry.sh
 inputRunFile=$1
 inputJSONFile=$2
 inputCSVFile=$3
+dataset=$4
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"
@@ -15,7 +16,7 @@ fi
 echo -e "\n"
 echo "Now we are going to produce $inputJSONFile"
 testFile=test.json
-python create_preJSON.py -i $inputRunFile -o $testFile
+python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset
 
 if [ $? -ne 0 ]; then
     echo -e "\n"

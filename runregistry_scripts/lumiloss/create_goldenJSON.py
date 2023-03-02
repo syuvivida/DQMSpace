@@ -6,7 +6,6 @@ import argparse
 import sys
 from operator import itemgetter
 
-dataset = "/PromptReco/Collisions2022/DQM"
 
 def runs_list(filter_in): 
   runs = runregistry.get_runs(filter = filter_in)
@@ -16,8 +15,8 @@ def runs_list(filter_in):
 
 def get_run_ls( run_in ):
 
-     oms_lumisections = runregistry.get_oms_lumisections(run_in,dataset)
-     rr_lumisections = runregistry.get_lumisections(run_in,dataset)
+     oms_lumisections = runregistry.get_oms_lumisections(run_in,options.dataset)
+     rr_lumisections = runregistry.get_lumisections(run_in,options.dataset)
      lumi_store = []
      omsflags_list = ['beam1_present','beam2_present','beam1_stable','beam2_stable','cms_active','bpix_ready', 'fpix_ready', 'tibtid_ready', 'tecm_ready', 'tecp_ready', 'tob_ready', 'hbhea_ready', 'hbheb_ready', 'hbhec_ready', 'hf_ready', 'ho_ready']
      rrflags_list = ['tracker-pixel', 'tracker-strip', 'tracker-track', 'ecal-ecal', 'ecal-es', 'hcal-hcal', 'csc-csc', 'dt-dt', 'l1t-l1tmu', 'l1t-l1tcalo', 'hlt-hlt', 'egamma-egamma', 'muon-muon', 'jetmet-jetmet']
@@ -105,6 +104,8 @@ if __name__ == '__main__':
         dest="outfile", type=str, default="eraB_golden.json", help="Output file name")
     parser.add_argument("-v", "--verbose",
             dest="verbose", action="store_true", default=False, help="Display more info")
+    parser.add_argument("-d", "--dataset",
+        dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
 
     options = parser.parse_args()
     print(sys.argv)
