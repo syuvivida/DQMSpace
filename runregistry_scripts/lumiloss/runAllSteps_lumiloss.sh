@@ -83,7 +83,7 @@ print_steps
 if [ -d "$dir" ]; then
     echo "The directory $PWD/$dir exists."
 else
-    echo "Tge directory $PWD/$dir does not exist."
+    echo "The directory $PWD/$dir does not exist."
     echo "Creating a new directory $PWD/$dir"
     mkdir -p $PWD/$dir
 fi
