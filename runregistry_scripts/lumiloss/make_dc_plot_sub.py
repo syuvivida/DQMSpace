@@ -281,7 +281,7 @@ if __name__ == '__main__':
 
 
 #Now make a pie chart: fraction of exclusive loss due to each subdetector
-  colors=['brown', 'purple', 'red', 'green', 'orange', 'blue', 'pink', 'purple1', 'yellow1', 'gray', 'olive' ]
+  colors=['brown', 'purple', 'red', 'green', 'orange', 'blue', 'pink', 'orchid', 'yellow', 'gray', 'olive' ]
   colors_dict = defaultdict(str)
   colors_dict['Mixed'] = colors[0]
   icolor=1
