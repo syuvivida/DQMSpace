@@ -1,7 +1,7 @@
 # Scripts to obtain luminosity loss figures
-## Note this branch v1.0 contains the scripts for the new Golden and Muon JSON logic (used in Run 3 from call 20) 
+## Note this branch v2.0 contains the scripts for the new Golden and Muon JSON logic (used in Run 3 from call 20) 
 
-The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v1.0/runregistry_scripts/lumiloss/muonJSON.txt 
+The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/lumiloss/muonJSON.txt 
 
 
 Note, if you need to update lumiloss figures because of an update of certain 
@@ -16,7 +16,7 @@ https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provid
 
 1. Check out the DQMSpace package
 ```
-git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git
+git clone -b v2.0 git@github.com:syuvivida/DQMSpace.git
 ```
 
 2. Go to the proper directory
