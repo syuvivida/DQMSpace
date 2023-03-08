@@ -13,6 +13,7 @@ If you need to create lumiloss figure for ReReco dataset, see point 10.
 0. Setup grid certificate
 https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provide-the-certificate-manually
 
+To make sure the grid certificate is set up properly, please follow the instruction here to do a simple test via python interface directly. See https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/README.md
 
 1. Check out the DQMSpace package
 ```
