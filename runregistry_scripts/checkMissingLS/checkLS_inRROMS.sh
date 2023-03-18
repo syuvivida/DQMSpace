@@ -34,6 +34,7 @@ fi
 echo "Run range to process: $minRun -- $maxRun" 
 echo "The list of runs is included in $runListFile"
 echo "The output of LS check is included in $outputFile"
+echo -e "\n"
 
 # first get newRuns 
 source setup_runregistry.sh
@@ -42,7 +43,11 @@ python get_newruns.py -min $minRun -max $maxRun -o $runListFile
 sort -g $runListFile > temp.txt
 mv temp.txt $runListFile
 
+echo -e "\n"
+
 python compare_oms_rr_ls.py  -i $runListFile -o $outputFile
+
+echo -e "\n"
 
 grep -q '!' $outputFile
 if [ $? -eq 0 ] 

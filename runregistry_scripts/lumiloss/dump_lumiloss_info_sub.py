@@ -2,6 +2,7 @@
 from collections import defaultdict
 import runregistry
 import matplotlib
+import os
 import argparse
 import sys
 
@@ -59,17 +60,24 @@ dcs_sub =   ["bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_rea
 dcs_loss = defaultdict( float )
 
 detector_sub = {}
-detector_sub["Tracker"] = ["tracker-pixel", "tracker-strip", "tracker-track", "bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
-detector_sub["ECAL"] = ["ecal-ecal", "ecal-es"]
+detector_sub["PixelPhase1"] = ["tracker-pixel", "bpix_ready", "fpix_ready"]
+detector_sub["SiStrip"] = ["tracker-strip", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
+detector_sub["ECAL"] = ["ecal-ecal"]
+detector_sub["ES"] = ["ecal-es"]
 detector_sub["HCAL"] = ["hcal-hcal", "hbhea_ready","hbheb_ready","hbhec_ready","hf_ready","ho_ready"]
-detector_sub["Muon"] = ["muon-muon", "csc-csc", "dt-dt"]
+detector_sub["CSC"] = ["csc-csc"]
+detector_sub["DT"] = ["dt-dt"]
 detector_sub["L1T"] = ["l1t-l1tcalo","l1t-l1tmu"]
 detector_sub["HLT"] = ["hlt-hlt"]
+detector_sub["Tracking"] = ["tracker-track"]
+detector_sub["MuonPOG"] = ["muon-muon"]
 detector_sub["JetMET"] = ["jetmet-jetmet"]
 detector_sub["EGamma"] = ["egamma-egamma"]
 
 
 detector_loss = defaultdict(dict)
+# For dumping run vs lumi loss for each system
+subsystem_run_loss = defaultdict()
 
 ## Initialize the values of detector_loss
 cms_sub = list(detector_sub.keys())
@@ -92,25 +100,24 @@ total_loss = 0.0
 
 if __name__ == '__main__':
 
-
   parser = argparse.ArgumentParser(description='Give list of file names')
   parser.add_argument("-c", "--csv",
                     dest="csvfile", type=str, default="Era/output_eraB.csv", help="Path to csv file from the previous step")
   parser.add_argument("-p", "--period",
                     dest="period", type=str, default="eraB", help="Period name, will be used as postfix")
-  parser.add_argument("-d", "--outdir",
-                    dest="outdir", type=str, default="figures_eraB", help="directory of output figures")
+  parser.add_argument("-d", "--dir",
+                    dest="dirname", type=str, default="textFiles", help="output directory")
 
   options = parser.parse_args()
   print(sys.argv)
 
-  outputdir = options.outdir
   postfix = options.period
   results_csv = options.csvfile
   import csv
 
-  lumi_file = open(results_csv, newline='') 
+  lumi_file = open(results_csv, newline='')
   lumi_file_reader = csv.reader(lumi_file, delimiter='$')
+
 
   for row in lumi_file_reader:
     run  = int(row[0])
@@ -159,6 +166,9 @@ if __name__ == '__main__':
     if count >= 1:
       cms_exclusive_loss [ detector_blame ] += recorded
       total_loss += recorded
+      if detector_blame not in subsystem_run_loss:
+        subsystem_run_loss[detector_blame] = defaultdict(float)
+      subsystem_run_loss[detector_blame][ run ] += recorded
 
 # After accumulation of all LSs
 # Check the fraction of luminosity loss due to each subsystem
@@ -183,6 +193,22 @@ if __name__ == '__main__':
   sorted_cms_frac_exclusive_loss = sort_dict(cms_frac_exclusive_loss, 1)
   sorted_cms_detailed_frac_exclusive_loss = sort_dict(cms_detailed_frac_exclusive_loss, 2)
 
+  print(subsystem_run_loss)
+  #dump loss vs run in text files
+  dirName = options.dirname
+#  os.mkdir(dirName)
+#  for isub in list(subsystem_run_loss.keys()):
+  for isub in list(sorted_cms_detailed_frac_exclusive_loss.keys()):
+    filename = isub.replace(' ', '_')
+    filename = dirName + '/' + filename + 'loss_'+ postfix + '.txt'
+    print(filename)
+    file = open(filename, "w")
+    for irun in list(subsystem_run_loss[isub]):
+      thisline = str(irun) + ' : ' + str(subsystem_run_loss[isub][irun]) + ' /pb \n'
+      file.write(thisline)
+    file.close()
+
+"""
   import matplotlib.pyplot as plt
 
 # NOW MAKE PLOT FROM DICTIONARY VALUES
@@ -224,7 +250,7 @@ if __name__ == '__main__':
     plt.title(plot_dict[isub].title, fontsize=titlesize_default)
     plt.xlabel(plot_dict[isub].xtitle, fontsize=titlesize_default)
     plt.ylabel(plot_dict[isub].ytitle, fontsize=titlesize_default)
-    plt.savefig( outputdir+"/"+isub+"_"+postfix+".png", bbox_inches='tight')
+    plt.savefig( isub+".png", bbox_inches='tight')
 
 
 
@@ -242,7 +268,7 @@ if __name__ == '__main__':
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
     plt.xlabel(xtitle_default, fontsize=titlesize_default)
     plt.ylabel('Component', fontsize=titlesize_default)
-    plt.savefig( outputdir+"/"+isub+"_loss_"+postfix+".png", bbox_inches='tight')
+    plt.savefig( isub+"_loss.png", bbox_inches='tight')
 
 
 
@@ -269,9 +295,10 @@ if __name__ == '__main__':
 #  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
 #  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
   plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
-  plt.savefig( outputdir+"/cms_piechart_exclusive_loss_"+postfix+".png", bbox_inches='tight')
+  plt.savefig( "cms_piechart_exclusive_loss.png", bbox_inches='tight')
 
 
 
 #plt.show()
 #plt.close('all')
+"""

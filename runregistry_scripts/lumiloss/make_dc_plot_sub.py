@@ -59,24 +59,35 @@ dcs_sub =   ["bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_rea
 dcs_loss = defaultdict( float )
 
 detector_sub = {}
-detector_sub["Tracker"] = ["tracker-pixel", "tracker-strip", "tracker-track", "bpix_ready", "fpix_ready", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
-detector_sub["ECAL"] = ["ecal-ecal", "ecal-es"]
+detector_sub["PixelPhase1"] = ["tracker-pixel", "bpix_ready", "fpix_ready"]
+detector_sub["SiStrip"] = ["tracker-strip", "tibtid_ready", "tecm_ready", "tecp_ready","tob_ready"]
+detector_sub["ECAL"] = ["ecal-ecal"]
+detector_sub["ES"] = ["ecal-es"]
 detector_sub["HCAL"] = ["hcal-hcal", "hbhea_ready","hbheb_ready","hbhec_ready","hf_ready","ho_ready"]
-detector_sub["Muon"] = ["muon-muon", "csc-csc", "dt-dt"]
+detector_sub["CSC"] = ["csc-csc"]
+detector_sub["DT"] = ["dt-dt"]
 detector_sub["L1T"] = ["l1t-l1tcalo","l1t-l1tmu"]
 detector_sub["HLT"] = ["hlt-hlt"]
+detector_sub["Tracking"] = ["tracker-track"]
+detector_sub["MuonPOG"] = ["muon-muon"]
 detector_sub["JetMET"] = ["jetmet-jetmet"]
 detector_sub["EGamma"] = ["egamma-egamma"]
 
+## this is used for the inclusive loss of each subsystem
+detector_inclusive_loss = defaultdict(dict)
 
-detector_loss = defaultdict(dict)
+## this is used for exclusive loss of the subcomponent of each subsystem
+detector_exclusive_loss = defaultdict(dict)
 
-## Initialize the values of detector_loss
+
+## Initialize the values of detector_inclusive_loss
 cms_sub = list(detector_sub.keys())
 for isub in cms_sub:
-    list2 = list(detector_sub[isub])
-    for isub2 in list2:
-        detector_loss[isub][isub2] = 0.0
+  list2 = list(detector_sub[isub])
+  for isub2 in list2:
+    detector_inclusive_loss[isub][isub2] = 0.0
+    detector_exclusive_loss[isub][isub2] = 0.0
+  detector_exclusive_loss[isub]['Mixed'] = 0.0
 
 
 
@@ -137,10 +148,19 @@ if __name__ == '__main__':
 
     for isub in cms_sub:
       list2 = list(detector_sub[isub])
+      count_list2 = 0
+      subcomponent_blame= ""
       for isub2 in list2:
         if bits[isub2] == True or bits[isub2]== "GOOD" : continue
+        count_list2 += 1
+        subcomponent_blame= isub2 
         cms_status [ isub ] = False 
-        detector_loss[isub][isub2] += recorded
+        detector_inclusive_loss[isub][isub2] += recorded
+      # for each subsystem, check the exclusive loss
+      if count_list2 > 1:
+        detector_exclusive_loss[isub]['Mixed'] += recorded
+      elif count_list2 ==1:
+        detector_exclusive_loss[isub][subcomponent_blame] += recorded
 
   # Now check if there are mixed system
     count = 0 
@@ -235,20 +255,39 @@ if __name__ == '__main__':
     dict_this = defaultdict(float)
     icount +=1
     for isub2 in list2:
-        dict_this[isub2] = detector_loss[isub][isub2]
+        dict_this[isub2] = detector_inclusive_loss[isub][isub2]
     sorted_thissub = sort_dict(dict_this)
     axes = plt.figure(icount)
     bar_plot(sorted_thissub,ax=axes)
     plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
     plt.xlabel(xtitle_default, fontsize=titlesize_default)
     plt.ylabel('Component', fontsize=titlesize_default)
-    plt.savefig( outputdir+"/"+isub+"_loss_"+postfix+".png", bbox_inches='tight')
+    plt.savefig( outputdir+"/"+isub+"_inclusiveloss_"+postfix+".png", bbox_inches='tight')
+
+
+#Now make exclusive loss due to each sub system separately
+  for isub in list(detector_exclusive_loss.keys()):
+    list2 = list(detector_exclusive_loss[isub])
+    dict_this = defaultdict(float)
+    icount +=1
+    ## No need to make plots for the system with only Mixed and one flag
+    ## since inclusive and exclusive loss are the same
+    if len(list2) <= 2: continue 
+    for isub2 in list2:
+        dict_this[isub2] = detector_exclusive_loss[isub][isub2]
+    sorted_thissub = sort_dict(dict_this)
+    axes = plt.figure(icount)
+    bar_plot(sorted_thissub,ax=axes)
+    plt.title('Exclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
+    plt.xlabel(xtitle_default, fontsize=titlesize_default)
+    plt.ylabel('Component', fontsize=titlesize_default)
+    plt.savefig( outputdir+"/"+isub+"_exclusiveloss_"+postfix+".png", bbox_inches='tight')
 
 
 
 
 #Now make a pie chart: fraction of exclusive loss due to each subdetector
-  colors=['brown', 'purple', 'red', 'green', 'orange', 'blue', 'pink', 'gray', 'olive' ]
+  colors=['brown', 'purple', 'plum', 'red', 'pink', 'green', 'orange', 'yellow', 'blue', 'pink', 'orchid', 'goldenrod', 'gray', 'olive' ]
   colors_dict = defaultdict(str)
   colors_dict['Mixed'] = colors[0]
   icolor=1
