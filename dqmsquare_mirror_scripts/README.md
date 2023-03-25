@@ -29,7 +29,17 @@ source setup_dqmsquare.sh
 
 5. Setup DQM_PASSWORD as instructed
 
-6. Run the python script
+6. Open another local terminal (syu and lxplus806 shall be replaced by your user name and lxplus8 hostname)
+```
+ssh -NL 8887:localhost:8887 syu@lxplus806.cern.ch
+```
+
+7. Run the python script
 ```
 python dqmsquare_server_flask.py
+```
+
+8. At a firefox web browser, in the url, type. One could see the header of DQM^2 mirror k8 web site, but nothing is revealed. 
+```
+http://localhost:8887
 ```
