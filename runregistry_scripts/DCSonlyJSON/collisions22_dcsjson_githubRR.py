@@ -14,6 +14,8 @@ import argparse
 import sys
 from operator import itemgetter
 
+isCollisionClass=False
+
 def runs_list(filter_in): 
   runs = runregistry.get_runs(filter = filter_in)
   return runs
@@ -33,23 +35,72 @@ def get_run_ls( run_in ):
        print(oms_lumisections[lumi])
 
      for lumi in range(0, len(oms_lumisections)):
-       if any(flag not in oms_lumisections[lumi] for flag in ['fpix_ready','bpix_ready','tecm_ready','tecp_ready','tob_ready','tibtid_ready','cms_active']):continue;
-       if (oms_lumisections[lumi]['fpix_ready'] == True and oms_lumisections[lumi]["bpix_ready"] == True and oms_lumisections[lumi]["tecm_ready"] == True and oms_lumisections[lumi]["tecp_ready"] == True and oms_lumisections[lumi]["tob_ready"] == True and oms_lumisections[lumi]["tibtid_ready"] == True and oms_lumisections[lumi]["cms_active"]  == True and ((run_in>355208 and oms_lumisections[lumi]["beam1_present"] == True and oms_lumisections[lumi]["beam2_present"] == True ) or (run_in<=355208)) and oms_lumisections[lumi]["beam1_stable"] == True and oms_lumisections[lumi]["beam2_stable"] == True ):
-               if check_lumi_range:
-                    start_of_current_range = main_obj[run_in][-1][0] 
-                    main_obj[run_in][-1] = [start_of_current_range,lumi+1]   
+       # first check if flags exist in OMS
+       if any(flag not in oms_lumisections[lumi] for flag in 
+              ['fpix_ready','bpix_ready','tecm_ready','tecp_ready','tob_ready','tibtid_ready','cms_active']):
+         check_lumi_range=False
+         continue
 
-               if check_lumi_range is False:
-                    main_obj[run_in].append([lumi+1,lumi+1]) 
-                    check_lumi_range=True
+       # check if CMS is taking data  
+       if oms_lumisections[lumi]["cms_active"] != True:
+         check_lumi_range=False
+         continue
 
-       else:
-           check_lumi_range=False
+       # check if forward pixel DCS status is good
+       if oms_lumisections[lumi]['fpix_ready'] != True: 
+         check_lumi_range=False
+         continue 
 
-#     for el in main_obj:                                                                                              
-#          main_obj[el] = sorted(main_obj[el], key=itemgetter(0))
+       # check if barrel pixel DCS status is good
+       if oms_lumisections[lumi]["bpix_ready"] != True:
+         check_lumi_range=False
+         continue
+
+       # check if strip outer endcaps minus side  DCS status is good
+       if oms_lumisections[lumi]["tecm_ready"] != True:
+         check_lumi_range=False
+         continue
+
+       # check if strip outer endcaps plus side  DCS status is good
+       if oms_lumisections[lumi]["tecp_ready"] != True:
+         check_lumi_range=False
+         continue
+
+       # check if strip outer barrel side  DCS status is good
+       if oms_lumisections[lumi]["tob_ready"] != True:
+         check_lumi_range=False
+         continue
+
+       # check if strip inner barrel and inner disk  DCS status is good
+       if oms_lumisections[lumi]["tibtid_ready"] != True:
+         check_lumi_range=False
+         continue
+
+       # for runs > 355208, impose beam present requirement 
+       # OMS beam present flags are not working for runs <= 355208
+       if isCollisionClass and not ( (run_in <= 355208) or 
+                                     (run_in>355208 
+                                      and oms_lumisections[lumi]["beam1_present"] == True 
+                                      and oms_lumisections[lumi]["beam2_present"] == True)):
+         check_lumi_range=False
+         continue
+
+       # for all collision runs, impose beam stable requirements
+       if isCollisionClass and not (oms_lumisections[lumi]["beam1_stable"] == True and oms_lumisections[lumi]["beam2_stable"] == True):
+         check_lumi_range=False
+         continue
+
+       if check_lumi_range:
+         start_of_current_range = main_obj[run_in][-1][0] 
+         main_obj[run_in][-1] = [start_of_current_range,lumi+1]   
+
+       if check_lumi_range is False:
+         main_obj[run_in].append([lumi+1,lumi+1]) 
+         check_lumi_range=True
 
      return main_obj[run_in]
+
+
 def write_json(main_obj_read, out):
     main_temp = {}
     for i in main_obj_read:
@@ -63,7 +114,7 @@ def write_json(main_obj_read, out):
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(
-            description='Give list of Collisions runs for Online datasets')
+            description='Give DCS-only JSONs for Online datasets')
     parser.add_argument("-min", "--min_run", dest="min_run", type=int, default=362167, help="minimum run for json")
     parser.add_argument("-max", "--max_run", dest="max_run",type=int, default=999999, help="maximum run for json")
     parser.add_argument("-g", "--group",
@@ -71,18 +122,24 @@ if __name__ == '__main__':
     parser.add_argument("-v", "--verbose",
             dest="verbose", action="store_true", default=False, help="Display more info")
 
-#    parser.add_argument("-o", "--outfile",
-#        dest="outfile", type=str, default="cosmics21_CRAFT_345737_345876_call1_DcsTrackerPixelJSON.json", help="Output file name")
+    parser.add_argument("-o", "--outpath",
+        dest="outpath", type=str, default=os.getenv('PWD'), help="Output file path")
 
     options = parser.parse_args()
+
+    # Check if the class is a Collision class
+    if 'Collisions' in options.dataset_group:
+      isCollisionClass=True
+      print("this is a Collision class and beam requirements will be imposed\n")
+      
 
     # generate filter 
     filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] }, 
                    'class': { 'like': options.dataset_group},
+                   'significant': { "=": True},
                    'oms_attributes.b_field': {">=": 3.7},
                    'oms_attributes.tracker_included': {"=": True},
-                   'oms_attributes.pixel_included': {"=": True},              
-                   
+                   'oms_attributes.pixel_included': {"=": True}
                    }
 
     out_runs = runs_list(filter_arg)
@@ -97,7 +154,9 @@ if __name__ == '__main__':
     for el in main_obj:
          main_obj[el] = sorted(main_obj[el], key=itemgetter(0))
 
-
-    output_file = 'Cert_Collisions2022_'+str(options.min_run)+'_'+str(options.max_run)+'_13p6TeV_DCSOnly_TkPx.json'
+    postfix='_DCSOnly_TkPx.json'     
+    if isCollisionClass:
+      postfix='_13p6TeV_DCSOnly_TkPx.json'
+    output_file = options.outpath+ '/Cert_'+options.dataset_group+'_'+str(options.min_run)+'_'+str(options.max_run)+ postfix
     write_json(main_obj,output_file)
 
