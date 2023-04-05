@@ -137,6 +137,7 @@ if __name__ == '__main__':
     filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] }, 
                    'class': { 'like': options.dataset_group},
                    'significant': { "=": True},
+                   'state': { "=": 'SIGNOFF'},
                    'oms_attributes.b_field': {">=": 3.7},
                    'oms_attributes.tracker_included': {"=": True},
                    'oms_attributes.pixel_included': {"=": True}
