@@ -3,8 +3,8 @@
 python3 -V 
 
 source $PWD/setup_virtualenv.sh
-pip3 install PyInstaller
 pip3 install setuptools
+pip3 install PyInstaller
 pip3 install sqlalchemy
 pip3 install requests
 pip3 install flask
