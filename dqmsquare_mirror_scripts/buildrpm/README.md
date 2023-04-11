@@ -24,16 +24,17 @@ wget https://raw.githubusercontent.com/syuvivida/DQMSpace/main/dqmsquare_mirror_
 
 4. Setup a virtual environment and install all required packages
 ```
+bash
 source setup_dqmsquare_build.sh
 ```
 
 5. Build first
 ```
-dqmsquare_deploy.sh build
+./dqmsquare_deploy.sh build
 ```
 
 
 6. try to build rpm
 ```
-dqmsquare_deploy.sh rpm
+./dqmsquare_deploy.sh rpm
 ```

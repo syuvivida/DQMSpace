@@ -24,6 +24,7 @@ wget https://raw.githubusercontent.com/syuvivida/DQMSpace/main/dqmsquare_mirror_
 
 4. Setup a virtual environment and install all required packages
 ```
+bash
 source setup_dqmsquare.sh
 ```
 
