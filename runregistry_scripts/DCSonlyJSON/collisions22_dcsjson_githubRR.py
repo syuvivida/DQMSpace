@@ -156,8 +156,8 @@ if __name__ == '__main__':
          main_obj[el] = sorted(main_obj[el], key=itemgetter(0))
 
     postfix='_DCSOnly_TkPx.json'     
-    if isCollisionClass:
-      postfix='_13p6TeV_DCSOnly_TkPx.json'
+#    if isCollisionClass:
+#      postfix='_13p6TeV_DCSOnly_TkPx.json'
     output_file = options.outpath+ '/Cert_'+options.dataset_group+'_'+str(options.min_run)+'_'+str(options.max_run)+ postfix
     write_json(main_obj,output_file)
 

@@ -36,14 +36,14 @@ else
 fi
 
 echo "Run range to process: $minRun -- $maxRun"
-echo "Run class: "$class
+echo "Run class: $class"
 if [ $githubmode -eq 0 ]
 then
     echo "Will install runregistry via pip install"
     source $workdir/setup_runregistry.sh
 else
     echo "Will install runregistry from github"
-    source $workdir/setup_github_runregistry.sh
+    source $workdir/setup_github_runregistry.sh default
 fi
 echo -e "\n"
 
