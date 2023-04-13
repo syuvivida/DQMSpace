@@ -6,10 +6,18 @@ JSON1=$1
 JSON2=$2
 outputJSON=$3
 
-if [[ ! -f $JSON1 || ! -f $JSON2 ]]; then
-    echo "Either file $JSON1 or file $JSON2 does not exist!"
+python checkJSON.py $JSON1
+
+if [ $? -ne 0 ]; then
     exit 1
 fi
+
+python checkJSON.py $JSON2
+
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
 
 ##############################################################################
 echo -e "\n"

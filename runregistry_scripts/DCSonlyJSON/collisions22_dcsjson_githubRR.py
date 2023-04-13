@@ -126,6 +126,7 @@ if __name__ == '__main__':
         dest="outpath", type=str, default=os.getenv('PWD'), help="Output file path")
 
     options = parser.parse_args()
+    print(sys.argv)
 
     # Check if the class is a Collision class
     if 'Collisions' in options.dataset_group:
