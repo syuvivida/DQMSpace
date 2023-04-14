@@ -1,1 +1,0 @@
-../../json_tools/setup_virtualenv_python27.sh

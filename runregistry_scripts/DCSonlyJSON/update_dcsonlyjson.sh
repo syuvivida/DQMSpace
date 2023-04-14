@@ -53,7 +53,7 @@ fileprefix=Cert_${class}
 echo "Change directory to $workdir"
 cd $workdir
 ## cleaning up
-rm -rf out.txt out2.txt out3.txt out4.txt out5.txt
+rm -rf out.txt out2.txt out3.txt
 
 
 
@@ -71,10 +71,12 @@ else
   existOldJSONFile=true
   lastjsonfilename=`tail -n 1 out.txt | awk '{print $9}'`	
   echo "The latest JSON file created is $lastjsonfilename"
-  ./myPrintJSON.sh ${lastjsonfilename} min | tee out2.txt; test ${PIPESTATUS[0]} -eq 0  || exit 1
-  minRunOld=`tail -n 1 out2.txt`
-  ./myPrintJSON.sh ${lastjsonfilename} max | tee out3.txt; test ${PIPESTATUS[0]} -eq 0  || exit 2
-  minRun=`tail -n 1 out3.txt`
+  ./myPrintJSON.sh ${lastjsonfilename} range | tee out2.txt; test ${PIPESTATUS[0]} -eq 0  || exit 2
+  ## The minimum run number from the latest JSON file (produced previously)
+  minRunOld=`tail -n 2 out2.txt | head -n 1`
+  ## Use the maximum run number from the  latest JSON file
+  ## as the minimum run number for our update of JSON file
+  minRun=`tail -n 1 out2.txt` 
   echo "Use minimum run number $minRun instead"
 fi
 
@@ -84,10 +86,10 @@ echo "Run class: $class"
 if [ $githubmode -eq 0 ]
 then
     echo "Will install runregistry via pip install"
-    source $workdir/setup_runregistry.sh
+    source $workdir/setup_virtualenv_RR.sh
 else
     echo "Will install runregistry from github"
-    source $workdir/setup_github_runregistry.sh default
+    source $workdir/setup_virtualenv_githubRR.sh default
 fi
 echo -e "\n"
 
@@ -113,19 +115,20 @@ postfix='DCSOnly_TkPx.json'
 tempJSONfile=${outputdir}/Cert_${class}_${minRun}_${maxRun}_${postfix}
 
 #tempJSONfile=`ls -lrt ${outputdir}/${fileprefix} | tail -n 1 | awk '{print $9}'` 
-./myPrintJSON.sh ${tempJSONfile} max | tee out4.txt;  test ${PIPESTATUS[0]} -eq 0  || exit 3 
-maxRunNow=`tail -n 1 out4.txt`
+# Now check the maximum and minimum run numbers in the JSON file produced in this job
+./myPrintJSON.sh ${tempJSONfile} range | tee out3.txt;  test ${PIPESTATUS[0]} -eq 0  || exit 3 
+minRunNew=`tail -n 2 out3.txt | head -n 1`
+maxRunNew=`tail -n 1 out3.txt`
 
 echo "exist old JSONfile: $existOldJSONFile"
 if [ "$existOldJSONFile" == "true" ]; then 
-    finalJSONfile=${outputdir}/Cert_${class}_${minRunOld}_${maxRunNow}_${postfix}
+    finalJSONfile=${outputdir}/Cert_${class}_${minRunOld}_${maxRunNew}_${postfix}
     echo "merging $lastjsonfilename and $tempJSONfile to $finalJSONfile"
     ./myMergeJSON.sh $lastjsonfilename $tempJSONfile $finalJSONfile;  test ${PIPESTATUS[0]} -eq 0  || exit 4
     rm -rf $tempJSONfile
 else
-    ./myPrintJSON.sh ${tempJSONfile} min | tee out5.txt;  test ${PIPESTATUS[0]} -eq 0  || exit 5 
-    minRunNow=`tail -n 1 out5.txt`
-    finalJSONfile=${outputdir}/Cert_${class}_${minRunNow}_${maxRunNow}_${postfix}
+    # change the name of the new JSON file to show the min/max run numbers
+    finalJSONfile=${outputdir}/Cert_${class}_${minRunNew}_${maxRunNew}_${postfix}
     echo "moving file $tempJSONfile to $finalJSONfile"
     mv $tempJSONfile $finalJSONfile
 fi

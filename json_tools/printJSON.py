@@ -25,6 +25,8 @@ if __name__ == '__main__':
     maxRun = max (keys)
     if options.range:
         print "runs %s - %s" % (minRun, maxRun)
+        print "%s" % (minRun)
+        print "%s" % (maxRun)
         sys.exit()
     elif options.minRun:
         print "%s" % (minRun)

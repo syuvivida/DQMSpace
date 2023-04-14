@@ -40,10 +40,10 @@ echo "Run class: $class"
 if [ $githubmode -eq 0 ]
 then
     echo "Will install runregistry via pip install"
-    source $workdir/setup_runregistry.sh
+    source $workdir/setup_virtualenv_RR.sh
 else
     echo "Will install runregistry from github"
-    source $workdir/setup_github_runregistry.sh default
+    source $workdir/setup_virtualenv_githubRR.sh default
 fi
 echo -e "\n"
 
