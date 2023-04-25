@@ -46,8 +46,9 @@ fi
 
 # first check if there is any existing json files 
 # the minimum run number will be over-written
-outputdir=/eos/user/c/cmsdqm/www/CAF/certification/Collisions23/DCSOnly_JSONS/dailyDCSOnlyJSON/test
-fileprefix=${class}
+outputdir=/eos/user/c/cmsdqm/www/CAF/certification/Collisions23/DCSOnly_JSONS/dailyDCSOnlyJSON
+#fileprefix=${class}_900GeV
+fileprefix=${class}_13p6TeV
 
 # change to work directory
 echo "Change directory to $workdir"
@@ -60,7 +61,7 @@ rm -rf out.txt out2.txt out3.txt
 existOldJSONFile=false
 minRunOld=$minRun
 
-ls -lrt ${outputdir}/${fileprefix}*13p6TeV*.json | tee out.txt 
+ls -lrt ${outputdir}/${fileprefix}*.json | tee out.txt 
 
 
 ## If no file exits, just use the default minimum
@@ -111,8 +112,7 @@ fi
 
 python Run2023_dcsjson_githubRR.py -min $minRun -max $maxRun -g $class -o $outputdir
 
-postfix='13p6TeV_DCSOnly_TkPx.json'     
-#postfix='900GeV_DCSOnly_TkPx.json'     
+postfix='DCSOnly_TkPx.json'     
 tempJSONfile=${outputdir}/${fileprefix}_${minRun}_${maxRun}_${postfix}
 
 #tempJSONfile=`ls -lrt ${outputdir}/${fileprefix} | tail -n 1 | awk '{print $9}'` 

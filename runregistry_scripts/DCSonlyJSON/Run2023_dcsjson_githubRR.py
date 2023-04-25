@@ -172,19 +172,19 @@ if __name__ == '__main__':
          main_obj[el] = sorted(main_obj[el], key=itemgetter(0))
 
     postfix='_DCSOnly_TkPx.json'     
-    if isCollisionClass and options.minEnergy >= 6500 and options.maxEnergy <= 7000:
-      postfix='_13p6TeV_DCSOnly_TkPx.json'
-    elif isCollisionClass and options.minEnergy >= 400 and options.maxEnergy <= 500:
-      postfix='_900GeV_DCSOnly_TkPx.json'
 
-    bfieldtag='_'
+    infotag='_'
     if 'Cosmics' in options.dataset_group: 
       if options.zeroBField is False:
-        bfieldtag='_CRAFT_'
+        infotag='_CRAFT_'
       else:  
-        bfieldtag='_CRUZET_'
+        infotag='_CRUZET_'
 
+    if isCollisionClass and options.minEnergy >= 6500 and options.maxEnergy <= 7000:
+      infotag='_13p6TeV_'
+    elif isCollisionClass and options.minEnergy >= 400 and options.maxEnergy <= 500:
+      infotag='_900GeV_'
 
-    output_file = options.outpath+ '/'+options.dataset_group+ bfieldtag +str(options.min_run)+'_'+str(options.max_run)+ postfix
+    output_file = options.outpath+ '/'+options.dataset_group+ infotag +str(options.min_run)+'_'+str(options.max_run)+ postfix
     write_json(main_obj,output_file)
 
