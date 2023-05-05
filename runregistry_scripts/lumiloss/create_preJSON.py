@@ -85,6 +85,9 @@ if __name__ == '__main__':
             dest="verbose", action="store_true", default=False, help="Display more info")
     parser.add_argument("-d", "--dataset",
         dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
+    parser.add_argument("-c", "--class",
+	dest="runclass", type=str, default="Collisions22", help="Run class type")
+
 
     options = parser.parse_args()
     print(sys.argv)
@@ -93,7 +96,7 @@ if __name__ == '__main__':
     # generate filter 
       print("Using mode 0 and the runs from ", options.min_run, " to ", options.max_run)
       filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] }, 
-                     'class': { '=': 'Collisions22'},
+                     'class': { '=': options.runclass},
                    'oms_attributes.b_field': {">=": 3.7}
                    }
 
@@ -115,7 +118,7 @@ if __name__ == '__main__':
       print(inputrun_list)
       # generate filter 
       filter_arg = { 'run_number': {'or': inputrun_list},
-                     'class': { '=': 'Collisions22'},
+                     'class': { '=': options.runclass},
                      'oms_attributes.b_field': {">=": 3.7}
                    }
 

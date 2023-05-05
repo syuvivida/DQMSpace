@@ -17,6 +17,9 @@ parser.add_argument("-o", "--outputcsv",
                     dest="outputcsvfile", type=str, default="Era/output_eraB.csv", help="Path to output csv file")
 parser.add_argument("-d", "--dataset",
                     dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
+parser.add_argument("-t", "--hlt", 
+            dest="requireHLTPath", action="store_true", default=False, help="Require a specific HLT path") 
+
 
 options = parser.parse_args()
 print(sys.argv)
@@ -42,9 +45,13 @@ for row in brilcalc_reader:
   lumi = int(row[1].split(":")[0])
   lumi_ = int(row[1].split(":")[1])
 
-  delivered = float(row[5])
-  recorded  = float(row[6])
-  
+  if options.requireHLTPath is True:
+    delivered = float(row[4])
+    recorded  = float(row[5])
+  else:
+    delivered = float(row[5])
+    recorded  = float(row[6])
+
   #if lumi != lumi_ : 
   #  print("something unusual ...")
   # print( run, lumi, lumi_, delivered, recorded )

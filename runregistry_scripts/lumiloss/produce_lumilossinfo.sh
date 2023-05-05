@@ -4,7 +4,8 @@
 source ./setup_runregistry.sh 
 outputCSVFile=$1
 period=$2
-outputdir=textFiles_${period}
+topdir=$3
+outputdir=${topdir}/textFiles_${period}
 
 if [ ! -f "$outputCSVFile" ]; then
     echo "The file $outputCSVFile does not exist!"

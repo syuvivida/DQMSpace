@@ -6,6 +6,7 @@ inputRunFile=$1
 muonJSONFile=$2
 goldenJSONFile=$3
 dataset=$4
+class=$5
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"
@@ -17,7 +18,7 @@ fi
 echo -e "\n"
 echo "Now we are going to produce $goldenJSONFile"
 testFile=test.json
-python create_goldenJSON.py -i $inputRunFile -o $testFile -d $dataset
+python create_goldenJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class
 
 if [ $? -ne 0 ]; then
     echo -e "\n"
@@ -40,7 +41,7 @@ fi
 ########################################################################################
 echo -e "\n"
 echo "Now we are going to produce $muonJSONFile"
-python create_muonJSON.py -i $inputRunFile -o $testFile -d $dataset
+python create_muonJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class
 
 if [ $? -ne 0 ]; then
     echo -e "\n"

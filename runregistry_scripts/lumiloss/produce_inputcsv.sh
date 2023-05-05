@@ -6,6 +6,8 @@ inputRunFile=$1
 inputJSONFile=$2
 inputCSVFile=$3
 dataset=$4
+class=$5
+mode=$6 # either with HLT to require HLT path or no
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"
@@ -16,7 +18,7 @@ fi
 echo -e "\n"
 echo "Now we are going to produce $inputJSONFile"
 testFile=test.json
-python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset
+python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class
 
 if [ $? -ne 0 ]; then
     echo -e "\n"
@@ -43,7 +45,7 @@ fi
 echo -e "\n"
 echo "Now we are going to produce $inputCSVFile"
 testFile=test.csv
-./run_brilcalc_inputcsv.sh $inputJSONFile $testFile
+./run_brilcalc_inputcsv.sh $inputJSONFile $testFile $mode
 
 if [ $? -ne 0 ]; then
     echo -e "\n"

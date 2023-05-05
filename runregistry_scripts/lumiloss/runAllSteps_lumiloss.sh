@@ -1,6 +1,6 @@
 #!/bin/bash
 scriptname=`basename $0`
-EXPECTED_ARGS=5
+EXPECTED_ARGS=6
 
 print_steps(){
     echo -e "\n"
@@ -22,9 +22,19 @@ print_steps(){
 }
 
 step='all'
-dir='Era'
-dataset="/PromptReco/Collisions2022/DQM"
-#dataset="/ReReco/Run2022B_10Dec2022/DQM"
+dir='testoutput'
+dataset='/PromptReco/Collisions2023/DQM'
+class='Collisions23'
+#dataset='/PromptReco/Collisions2022/DQM'
+#dataset='/ReReco/Run2022B_10Dec2022/DQM'
+#class='Collisions22'
+
+## The following is not an input argument
+## must be set by hand
+## If mode is default, take all luminosity
+## If mode is hlt, take lumi with a certain HLT path
+mode='default'
+#mode='hlt'
 
 if [ $# -eq 1 ]
 then
@@ -54,16 +64,17 @@ then
     dir=$3
     inputRunFile=$4
     dataset=$5
+    class=$6
 else
     echo -e "\n"
     echo "======================================================================="
-    echo "Usage: $scriptname period step outputDirName inputRunFile dataset"
-    echo "Example: ./$scriptname eraB $step $dir $dir/eraB_runs.txt $dataset"
+    echo "Usage: $scriptname period step outputDirName inputRunFile dataset run_class"
+    echo "Example: ./$scriptname eraB $step $dir $dir/eraB_runs.txt $dataset $class"
     echo "======================================================================="
     echo -e "\n"
     echo "The name of the period will be used as prefix/postfix of the output files"
-    echo "The inputRunFile must exist!"
-    echo "The dataset name is the name in run registry"
+    echo "The inputRunFile must exist but the file path can be anywhere!"
+    echo "The dataset name is the name in run registry and must have corresponding run class"
     print_steps
     exit 1
 fi
@@ -74,11 +85,16 @@ echo "We will run step $step"
 echo "The output csv/JSON files are in the directory $dir"
 echo "The input run file is $inputRunFile"
 echo "The dataset in offline RR is $dataset"
+echo "The class in offline RR is $class"
 echo -e "\n"
 print_steps
 # first get the list of runs from the run registry, given a run range                                                                                
 
-
+if [ "$mode" == "hlt" ]; then
+    echo "Computing luminosity loss by requiring HLT path HLT_DoublePhoton70 or HLT_PFJet500"
+else
+    echo "Computing luminosity loss without requiring HLT path"
+fi
 
 if [ -d "$dir" ]; then
     echo "The directory $PWD/$dir exists."
@@ -102,7 +118,7 @@ inputJSONFile=${dir}/${period}.json
 inputCSVFile=${dir}/input_${period}.csv
 scriptCSV=produce_inputcsv.sh
 if [[ "$step" == "inputcsv" || "$step" == "all" ]]; then
-    ./$scriptCSV $inputRunFile $inputJSONFile $inputCSVFile $dataset
+    ./$scriptCSV $inputRunFile $inputJSONFile $inputCSVFile $dataset $class $mode
     if [ $? -ne 0 ]; then
 	echo "step inputcsv failed!"
 	exit 1
@@ -120,7 +136,7 @@ goldenJSONFile=${dir}/${period}_golden.json
 scriptJSON=produce_json.sh
 
 if [[ "$step" == "json" || "$step" == "all" || "$step" == "json_all" ]]; then
-    ./$scriptJSON $inputRunFile $muonJSONFile $goldenJSONFile $dataset
+    ./$scriptJSON $inputRunFile $muonJSONFile $goldenJSONFile $dataset $class
     if [ $? -ne 0 ]; then
 	echo "step json failed!"
 	exit 1
@@ -138,7 +154,7 @@ scriptCSVOutput=produce_outputcsv.sh
 
 if [[ "$step" == "outputcsv" || "$step" == "all" 
       || "$step" == "outputcsv_all" || "$step" == "json_all" ]]; then
-    ./$scriptCSVOutput $goldenJSONFile $inputCSVFile $outputCSVFile $dataset
+    ./$scriptCSVOutput $goldenJSONFile $inputCSVFile $outputCSVFile $dataset $mode
     if [ $? -ne 0 ]; then
 	echo "step outputcsv failed!"
 	exit 1
@@ -156,7 +172,7 @@ scriptPlot=produce_lumilossplots.sh
 if [[ "$step" == "plot" || "$step" == "all" 
 	    || "$step" == "plot_all" || "$step" == "json_all" 
 	    || "$step" == "outputcsv_all" ]]; then
-    ./$scriptPlot $outputCSVFile $period
+    ./$scriptPlot $outputCSVFile $period $dir
     if [ $? -ne 0 ]; then
 	echo "step plot failed!"
 	exit 1
@@ -174,7 +190,7 @@ scriptDump=produce_lumilossinfo.sh
 if [[ "$step" == "dump" || "$step" == "all" 
 	    || "$step" == "plot_all" || "$step" == "json_all" 
 	    || "$step" == "outputcsv_all" ]]; then
-    ./$scriptDump $outputCSVFile $period
+    ./$scriptDump $outputCSVFile $period $dir
     if [ $? -ne 0 ]; then
 	echo "step dump failed!"
 	exit 1

@@ -6,6 +6,7 @@ goldenJSONFile=$1
 inputCSVFile=$2
 outputCSVFile=$3
 dataset=$4
+mode=$5
 
 if [ ! -f $inputCSVFile ]; then
     echo "The file $inputCSVFile does not exist!"
@@ -23,7 +24,16 @@ echo -e "\n"
 echo "Now we are going to produce output csv file $outputCSVFile for making lumiloss plots"
 echo "using the input from $goldenJSONFile and $inputCSVFile"
 testFile=testoutput.csv
-python get_plot_data.py -j $goldenJSONFile -i $inputCSVFile -o $testFile -d $dataset
+
+
+if [ "$mode" == "hlt" ]; then
+    python get_plot_data.py -j $goldenJSONFile -i $inputCSVFile -o $testFile -d $dataset --hlt
+else
+    python get_plot_data.py -j $goldenJSONFile -i $inputCSVFile -o $testFile -d $dataset
+fi
+
+
+
 
 
 if [ $? -ne 0 ]; then
