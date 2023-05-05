@@ -37,10 +37,15 @@ running
 ```
 ./runAllSteps_lumiloss.sh
 
-Usage: runAllSteps_lumiloss.sh period step outputDirName inputRunFile
-Example: ./runAllSteps_lumiloss.sh eraB all Era Era/eraB_runs.txt
+=======================================================================
+Usage: runAllSteps_lumiloss.sh period step outputDirName inputRunFile dataset run_class
+Example: ./runAllSteps_lumiloss.sh eraB all testoutput testoutput/eraB_runs.txt /PromptReco/Collisions2023/DQM Collisions23
+=======================================================================
+
+
 The name of the period will be used as prefix/postfix of the output files
-The inputRunFile must exist
+The inputRunFile must exist but the file path can be anywhere!
+The dataset name is the name in run registry and must have corresponding run class
 
 
 Steps include: all        --> running all steps (inputcsv, json, outputcsv, plot, dump)
@@ -84,8 +89,8 @@ you need to specify it explicitly (the last input argument).
 
 7. If you run the full step (option: all), you will get the luminosity loss figures in the same directory and text file in textFiles
 ```
-ls figures_eraB/_*png
-ls textFiles_eraB/*
+ls outputtest/figures_eraB/_*png
+ls outputtest/textFiles_eraB/*
 ```
 
 ## When you need to update luminosity loss after re-certification 
@@ -98,7 +103,7 @@ command.
 ```
 cp -p ../../json_tools/* .
 ./replace_outputloss.sh L1TRecover_runs.txt Era
-./produce_lumilossplots.sh output_Era/output_final_eraC.csv eraC
+./produce_lumilossplots.sh output_Era/output_final_eraC.csv eraC 
 ./produce_lumilossplots.sh <locationofbigcsv> calls7to23 output_Era
 ./produce_lumilossinfo.sh <locationofbigcsv> calls7to23 output_Era
 ```
@@ -122,7 +127,7 @@ per file is reasonable and the full job could finish without problems.
 11. You can modify the dataset name directly in the script runAllSteps_lumiloss.sh or add the dataset name in the input argument. 
 For example
 ```
-./runAllSteps_lumiloss.sh eraB inputcsv outputtest Era/eraB_runs.txt /ReReco/Run2022B_10Dec2022/DQM
+./runAllSteps_lumiloss.sh eraB inputcsv outputtest Era/eraB_runs.txt /ReReco/Run2022B_10Dec2022/DQM Collisions22
 ```
 
 
