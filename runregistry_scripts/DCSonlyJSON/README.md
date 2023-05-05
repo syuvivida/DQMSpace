@@ -4,7 +4,7 @@ https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provid
 
 1. Check out the DQMSpace package
 ```
-git clone -b v1.0 git@github.com:syuvivida/DQMSpace.git 
+git clone git@github.com:syuvivida/DQMSpace.git 
 ```
 
 2. Go to the proper directory
