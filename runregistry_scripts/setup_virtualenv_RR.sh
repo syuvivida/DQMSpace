@@ -12,4 +12,3 @@ activate () {
 activate
 
 pip install runregistry 
-pip install matplotlib
