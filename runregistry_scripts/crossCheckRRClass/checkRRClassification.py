@@ -49,7 +49,9 @@ def isCollisionRun( run_in ):
        # for runs > 355208, impose beam present requirement 
        # OMS beam present flags are not working for runs <= 355208
        # for all collision runs, impose beam stable requirements
-       collisionRequirement = beam1_stable and beam2_stable and ( (run_in <= 355208) or (run_in>355208 and beam1_present and beam2_present )) 
+       collisionRequirement = beam1_stable and beam2_stable \
+                              and ( (run_in <= 355208) or 
+                                    (run_in>355208 and beam1_present and beam2_present )) 
        if not collisionRequirement:
          continue
 
@@ -87,13 +89,16 @@ def isCosmicsRun( run_in ):
        beam1_present = oms_lumisections[lumi]["beam1_present"]
        beam2_present = oms_lumisections[lumi]["beam2_present"]
        # check cosmics data, beam shall not be present for any LSs  
-       cosmicsRequirement0 = (beam1_present == False) and (beam2_present == False)
+       cosmicsRequirement0 = (beam1_present == False) \
+                             and (beam2_present == False)
        if not cosmicsRequirement0:
          return False
        # check strip DCS status   
-       cosmicsRequirement1 = trackerIncluded and (oms_lumisections[lumi]["tecm_ready"] and oms_lumisections[lumi]["tecp_ready"] and 
-        oms_lumisections[lumi]["tob_ready"] and 
-        oms_lumisections[lumi]["tibtid_ready"])
+       cosmicsRequirement1 = trackerIncluded  \
+                             and (oms_lumisections[lumi]["tecm_ready"] 
+                                  and oms_lumisections[lumi]["tecp_ready"] 
+                                  and oms_lumisections[lumi]["tob_ready"]  
+                                  and oms_lumisections[lumi]["tibtid_ready"])
    
        nMuon=0
        if cscIncluded and (oms_lumisections[lumi]["cscm_ready"] == True or
@@ -149,7 +154,10 @@ def isCommissioningRun( run_in ):
        beam2_stable = oms_lumisections[lumi]["beam2_stable"]
 
 
-       commRequirement = (beam1_present == False) or (beam2_present == False) or (beam1_stable == False) or ( beam2_stable == False)
+       commRequirement = ( (beam1_present == False) 
+                           or (beam2_present == False)  
+                           or (beam1_stable == False) 
+                           or ( beam2_stable == False) )
        if not commRequirement:
          continue
 
@@ -204,7 +212,7 @@ if __name__ == '__main__':
     file = open(filename, "w")
     file.write("Run\t"+"RRClass\t"+"CorectClass\n")
 
-    bugfilename = options.outpath + '/incorrect_' + str(options.min_run) + '_' + str(options.max_run) + '_runs.txt'
+    bugfilename = options.outpath + '/incorrect_' +  str(options.min_run) + '_' + str(options.max_run) + '_runs.txt'
     print(bugfilename)
     file2 = open(bugfilename, "w")
     file2.write("Run\t"+"RRClass\t"+"CorectClass\n")
@@ -240,7 +248,9 @@ if __name__ == '__main__':
         dtIncluded = False if 'dt_included' not in run["oms_attributes"] else run["oms_attributes"]["dt_included"]  
         rpcIncluded = False if 'rpc_included' not in run["oms_attributes"] else run["oms_attributes"]["rpc_included"]  
 
-        if trackerIncluded and (cscIncluded or dtIncluded or rpcIncluded ) and isCosmicsRun(thisrun):
+        if ( trackerIncluded  
+             and (cscIncluded or dtIncluded or rpcIncluded )  
+             and isCosmicsRun(thisrun)):
           className = 'Cosmics23'
         else:
           if isCommissioningRun(thisrun):

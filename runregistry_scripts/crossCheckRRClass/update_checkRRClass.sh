@@ -5,8 +5,8 @@ EXPECTED_ARGS=3
 # check the classification of RR
 minRun=367336
 maxRun=999999
-#workdir=$PWD
-workdir=/afs/cern.ch/user/c/cmsdqm/cronjob_checkRRClass
+workdir=$PWD
+#workdir=/afs/cern.ch/user/c/cmsdqm/cronjob_checkRRClass
 
 
 if [ $# -eq 1 ]
@@ -29,7 +29,8 @@ fi
 
 # first check if there is any existing json files 
 # the minimum run number will be over-written
-outputdir=/eos/user/c/cmsdqm/www/CAF/DQMTest
+#outputdir=/eos/user/c/cmsdqm/www/CAF/DQMTest
+outputdir=$workdir
 
 # change to work directory
 echo "Change directory to $workdir"
@@ -108,6 +109,8 @@ if [ "$existOldJSONFile" == "true" ]; then
     head -n 1 $tempfile > out0.txt
     tail -n +2 $tempfile |sort -g > out3.txt
     tail -n +2 $lastfilename |sort -g > out4.txt
+    rm -rf $tempfile
+    rm -rf $lastfilename
     cat out0.txt out4.txt out3.txt > $finalJSONfile
 
     finalJSONfile2=${outputdir}/${fileprefix2}_${minRunOld}_${maxRunNew}_${postfix}
@@ -115,25 +118,24 @@ if [ "$existOldJSONFile" == "true" ]; then
     head -n 1 $tempfile2 > out20.txt
     tail -n +2 $tempfile2 |sort -g > out23.txt
     tail -n +2 $lastfilename2 |sort -g > out24.txt
-    cat out20.txt out24.txt out23.txt > $finalJSONfile2
-    rm -rf $tempfile
     rm -rf $tempfile2
-    rm -rf $lastfilename
     rm -rf $lastfilename2
+    cat out20.txt out24.txt out23.txt > $finalJSONfile2
 else
     # change the name of the new file to show the min/max run numbers
     finalJSONfile=${outputdir}/${fileprefix}_${minRunNew}_${maxRunNew}_${postfix}
     echo "moving file $tempfile to $finalJSONfile"
     head -n 1  $tempfile > out30.txt
     tail -n +2 $tempfile | sort -g > out33.txt
+    rm -rf $tempfile
     cat out30.txt out33.txt > $finalJSONfile
+
     finalJSONfile2=${outputdir}/${fileprefix2}_${minRunNew}_${maxRunNew}_${postfix}
     echo "moving file $tempfile2 to $finalJSONfile2"
     head -n 1  $tempfile2 > out40.txt
     tail -n +2 $tempfile2 | sort -g > out43.txt
-    cat out40.txt out43.txt > $finalJSONfile2
-    rm -rf $tempfile
     rm -rf $tempfile2
+    cat out40.txt out43.txt > $finalJSONfile2
 fi
 
 # Going back to the original directory
