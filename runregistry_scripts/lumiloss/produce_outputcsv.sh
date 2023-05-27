@@ -1,5 +1,5 @@
 #!/bin/bash
-## produce input.csv
+## produce output.csv
 
 source ./setup_runregistry.sh 
 goldenJSONFile=$1

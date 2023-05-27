@@ -1,5 +1,5 @@
 #!/bin/bash
-## produce input.csv
+## produce final plots
 
 source ./setup_runregistry.sh 
 outputCSVFile=$1
