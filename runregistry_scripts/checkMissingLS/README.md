@@ -4,7 +4,7 @@ https://github.com/cms-DQM/runregistry/tree/master/runregistry_api_client#provid
 
 1. Check out the DQMSpace package
 ```
-git clone -b v2.0 git@github.com:syuvivida/DQMSpace.git 
+git clone git@github.com:syuvivida/DQMSpace.git 
 ```
 
 2. Go to the proper directory
@@ -20,14 +20,14 @@ cd DQMSpace/runregistry_scripts/checkMissingLS/
 
 4. You can also use the default input parameters (the minimum number of input parameters is 1)
 ```
-./checkLS_inRROMS.sh 355100 
-./checkLS_inRROMS.sh 355100 355110
+./checkLS_inRROMS.sh 367104 
+./checkLS_inRROMS.sh 367104 367120
 ```
 
 
 5. If you want to know the number of LSs from brilcalc, you can run the following scripts
 ```
-./checkLS_inBrilCalcRROMS.sh 355100 
-./checkLS_inBrilCalcRROMS.sh 355100 355110
+./checkLS_inBrilCalcRROMS.sh 367104 
+./checkLS_inBrilCalcRROMS.sh 367104 367120
 ```
 

@@ -1,11 +1,13 @@
 #!/bin/bash
 
 scriptname=`basename $0`
-EXPECTED_ARGS=4
+EXPECTED_ARGS=6
 
 runListFile='runsToCheck_bril.txt'
 outputFile='checkResults_bril.txt'
 maxRun=999999
+class='Collisions23'
+dataset='/PromptReco/Collisions2023/DQM'
     
 if [ $# -eq 1 ]
 then 
@@ -19,27 +21,36 @@ then
     minRun=$1
     maxRun=$2
     runListFile=$3
+elif [ $# -eq 4 ]
+then
+    minRun=$1
+    maxRun=$2
+    runListFile=$3
+    outputFile=$4
 elif [ $# -eq $EXPECTED_ARGS ]
 then
     minRun=$1
     maxRun=$2
     runListFile=$3
     outputFile=$4
+    class=$5
+    dataset=$6
 else
-    echo "Usage: $scriptname minRun maxRun runListFile outputFile"
-    echo "Example: ./$scriptname 355100 362760 $runListFile $outputFile"           
+    echo "Usage: $scriptname minRun maxRun runListFile outputFile runClass dataset"
+    echo "Example: ./$scriptname 355100 362760 $runListFile $outputFile $class $dataset"           
     exit 1
 fi
 
 echo "Run range to process: $minRun -- $maxRun" 
 echo "The list of runs is included in $runListFile"
 echo "The output of LS check is included in $outputFile"
+echo "The run class is $class and the dataset is $dataset"
 
 echo -e "\n"
 
 # first get newRuns 
 source setup_runregistry.sh
-python get_newruns.py -min $minRun -max $maxRun -o $runListFile
+python get_newruns.py -min $minRun -max $maxRun -o $runListFile -c $class
 
 echo -e "\n"
 
@@ -77,7 +88,7 @@ echo -e "\n"
 
 ## Compare the LS in OMS, RR, and Brilcalc
 source setup_runregistry.sh 
-python compare_brilcalc_oms_rr_ls.py  -i $csvFile -o $outputFile
+python compare_brilcalc_oms_rr_ls.py  -i $csvFile -o $outputFile -d $dataset
 
 
 echo -e "\n"
@@ -85,7 +96,7 @@ echo -e "\n"
 grep -q '!' $outputFile
 if [ $? -eq 0 ] 
 then 
-  echo "The follow runs have different number of LSs in OMS and in offline RR!"
+  echo "The follow runs have different number of LSs in OMS cmsActive and in offline RR!"
   grep -a '!' $outputFile
 fi
 

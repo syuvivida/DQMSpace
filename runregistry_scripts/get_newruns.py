@@ -17,12 +17,14 @@ if __name__ == '__main__':
         dest="outfile", type=str, default="newRuns", help="Output file name") 
     parser.add_argument("-min", "--min_run", dest="min_run", type=int, default=355100, help="minimum run for json") 
     parser.add_argument("-max", "--max_run", dest="max_run",type=int, default=999999, help="maximum run for json")  
+    parser.add_argument("-c", "--runClass",
+                        dest="runClass", type=str, default="Collisions23", help="run registry class")
     options = parser.parse_args() 
     print(sys.argv)
  
    # generate filter  
     filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] },  
-                   'class': { 'like': 'Collisions22%'}, 
+                   'class': { 'like': options.runClass+'%'}, 
                    'oms_attributes.b_field': {">=": 3.7} 
 	          }
  
