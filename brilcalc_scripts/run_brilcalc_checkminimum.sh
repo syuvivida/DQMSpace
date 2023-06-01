@@ -21,6 +21,8 @@ while read -r line; do
     lumi=`brilcalc lumi -b "STABLE BEAMS" --amodetag PROTPHYS --byls -c web -r $line -u /$lumiUnit | tail -2 | head -1 | awk '{print $12}'`  
     if (( $(echo "$lumi < $miniLumi" |bc -l) )); then
       echo "run "$line" has integrated luminosity "$lumi" /"$lumiUnit", shall be removed from the DC call"
+    else   
+      echo "run "$line" has integrated luminosity "$lumi" /"$lumiUnit", ok"
     fi
   done < $inputRunList
 
