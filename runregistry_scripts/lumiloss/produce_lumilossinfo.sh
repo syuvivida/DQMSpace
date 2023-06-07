@@ -1,5 +1,6 @@
 #!/bin/bash
-## produce input.csv
+## produce luminosity loss information in text files
+## containing the loss from each run
 
 source ./setup_runregistry.sh 
 outputCSVFile=$1

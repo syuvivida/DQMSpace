@@ -1,5 +1,5 @@
 #!/bin/bash
-## produce input.csv
+## produce luminosity loss figures
 
 source ./setup_runregistry.sh 
 outputCSVFile=$1
