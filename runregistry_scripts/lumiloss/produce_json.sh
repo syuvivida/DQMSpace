@@ -1,5 +1,5 @@
 #!/bin/bash
-## produce json
+## produce input.csv
 
 source ./setup_runregistry.sh 
 inputRunFile=$1

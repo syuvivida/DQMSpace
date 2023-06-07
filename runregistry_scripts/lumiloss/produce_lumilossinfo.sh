@@ -1,5 +1,5 @@
 #!/bin/bash
-## produce loss information in text
+## produce input.csv
 
 source ./setup_runregistry.sh 
 outputCSVFile=$1

@@ -1,5 +1,5 @@
 #!/bin/bash
-## produce final plots
+## produce input.csv
 
 source ./setup_runregistry.sh 
 outputCSVFile=$1
@@ -16,7 +16,7 @@ fi
 if [ -d "$outputdir" ];then
     echo "$outputdir directory exists."
     echo "moving the original $outputdir to tmp"
-    mv $outputdir tmp
+#    mv $outputdir tmp
 fi
 
 
