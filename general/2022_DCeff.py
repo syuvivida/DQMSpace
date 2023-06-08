@@ -20,7 +20,8 @@ ax.bar('ALL-IN', sum(certified)/sum(DC_processed))
 ax.set_ylabel('% DC Performance')
 ax.set_xlabel('ERAS')
 ax.set_ylim([0, 1.])
-ax.set_title('DC Performance from Recorded Luminosity per ERA')
+ax.set_title('2022 Performance of Data Certification per ERA')
+
 
 plt.legend((eras[0]+' - '+ str(np.round(100*certified[0]/DC_processed[0], 1))+'%', 
             eras[1]+' - '+ str(np.round(100*certified[1]/DC_processed[1], 1))+'%', 
@@ -34,7 +35,7 @@ plt.legend((eras[0]+' - '+ str(np.round(100*certified[0]/DC_processed[0], 1))+'%
             ncol=2,
             fontsize=8)
 #plt.show()
-plt.savefig('eras_DC_performance.png')
+plt.savefig('2022_eras_DC_performance.png')
 
 print('The sum of lhc_delivered is ', sum(lhc_delivered), '/fb')
 print('The sum of CMS_recorded is ', sum(cms_recorded), '/fb')
