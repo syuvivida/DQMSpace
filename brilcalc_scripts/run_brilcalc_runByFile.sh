@@ -4,4 +4,4 @@ pip install --user brilws
 #brilcalc --version
 
 awk '{print "./run_brilcalc_run.sh",$1}' $1 | bash > testlumi.txt
-~/scripts/colsum 1 testlumi.txt
+./colsum 1 testlumi.txt
