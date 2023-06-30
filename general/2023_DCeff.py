@@ -3,11 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #declaring lists
-lhc_delivered = [1347.232724045,10953.189454178]
-cms_recorded = [1206.336949574,10066.438915417] 
+lhc_delivered = [1347.232724045,20147.450546086]
+cms_recorded = [1206.336949574,18536.923754774] 
 #certified = [0.08, 4.88, 2.90, 5.53, 15.91]
-DC_processed = [1170.901819678, 10059.744398394]
-certified = [696.926160397, 9892.709906906]
+DC_processed = [1167.28,18265.8]
+certified = [646.606229207, 17745.217124303]
 eras = ['ERA B', 'ERA C']
 
 fig, ax = plt.subplots()
