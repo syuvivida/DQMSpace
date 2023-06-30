@@ -7,6 +7,7 @@ Folder that contains scripts to compute luminosity with brilcalc
 ```
 git clone git@github.com:syuvivida/DQMSpace.git
 cd DQMSpace/brilcalc_scripts
+chmod 755 *sh
 ```
 
 2. Provide a list of runs for computation
