@@ -12,3 +12,4 @@ activate () {
 activate
 
 pip install runregistry 
+pip install cernrequests==0.3.3
