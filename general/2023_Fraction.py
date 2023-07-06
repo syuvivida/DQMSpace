@@ -2,12 +2,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-#declaring lists
-lhc_delivered = [1347.232724045,20147.450546086]
-cms_recorded = [1206.336949574,18536.923754774] 
-#certified = [0.08, 4.88, 2.90, 5.53, 15.91]
-DC_processed = [1167.28,18265.8]
-certified = [646.606229207, 17745.217124303]
+lhc_delivered = [1347.233,20293.138]
+cms_recorded = [1206.337,18678.383] 
+DC_processed = [1166.744,18393.594]
+certified = [646.606, 17885.342]
 eras = ['ERA B', 'ERA C']
 
 fig, ax = plt.subplots()
