@@ -69,17 +69,20 @@ for run, lumis in brilcalc_lumis.items():
   print( "process run ", run )
 #  if str(run) not in json_data:
 #    continue
-
+  run_obj = runregistry.get_run(run_number=run)
+  nls_cmsActive = run_obj['oms_attributes']['last_lumisection_number']
   rr_lumisections = runregistry.get_lumisections(run, options.dataset)
   oms_lumisections = runregistry.get_oms_lumisections(run, options.dataset)
+  nls_rr = len(rr_lumisections)
 
+  if nls_cmsActive > nls_rr: print( "Warning!! run", run, "has", nls_cmsActive, "cms-active LSs but ", nls_rr,"in offline RR" )
+      
 
   for lumi_number, lumi_data in lumis.items():
-    if lumi_number > len(rr_lumisections):
-      print( "run", run, "lumi", lumi_number, "not available in rr data, skip! with size = ", len(rr_lumisections) )
-      continue
-
-    loss = True
+    if lumi_number > nls_rr: 
+      print( "run", run, "lumi", lumi_number, "not available in rr data, skip! with size = ", len(rr_lumisections) ) 
+      continue 
+    loss = True 
 
     if str(run) in json_data:
       json_lumis = json_data[ str(run) ]

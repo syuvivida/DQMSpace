@@ -170,13 +170,18 @@ if __name__ == '__main__':
         cms_inclusive_loss [ icms ] += recorded 
         detector_blame = detector_blame + icms + " "
         count += 1
-      
-    if count > 1: 
+    ## Since L1T and HLT mark a LS bad due to upstream detector issues
+    ## put the exclusive loss of L1T and HLT into Mixed
+    if count > 1 or "L1T" in detector_blame or "HLT" in detector_blame: 
       cms_numerator_exclusive_loss [ "Mixed" ] += recorded
     elif count == 1: 
-      cms_numerator_exclusive_loss [ detector_blame ] += recorded
+     cms_numerator_exclusive_loss [ detector_blame ] += recorded
 
     if count >= 1:
+      if count == 1 and ("L1T" in detector_blame or "HLT" in detector_blame):
+        detector_blame = detector_blame+ "+ detectors"
+      elif count == 2 and "L1T" in detector_blame and "HLT" in detector_blame:
+        detector_blame = detector_blame+ "+ detectors"        
       cms_exclusive_loss [ detector_blame ] += recorded
       total_loss += recorded
 
@@ -225,10 +230,10 @@ if __name__ == '__main__':
   # CMS subsystem exclusive loss
   if len(sorted_cms_exclusive_loss)>12:
     small_labelsize = 6
-  plot_dict['cms_exclusive_loss'] = MyPlot('Exclusive Loss from Each CMS Subsystem', xtitle_default, ytitle_default, small_labelsize, sorted_cms_exclusive_loss)
+  plot_dict['cms_exclusive_loss'] = MyPlot('Exclusive Loss from Each Category', xtitle_default, '', small_labelsize, sorted_cms_exclusive_loss)
 
   #Now make a detailed bar chart: fraction of exclusive loss due to each subdetector
-  plot_dict['cms_detailed_fraction_exclusive_loss'] = MyPlot('Fraction of Exclusive Loss from Each CMS Subsystem', 'Percentage %', ytitle_default, labelsize_default, sorted_cms_detailed_frac_exclusive_loss)
+  plot_dict['cms_detailed_fraction_exclusive_loss'] = MyPlot('Fraction of Exclusive Loss from Each Category', 'Percentage %', '', labelsize_default, sorted_cms_detailed_frac_exclusive_loss)
 
   #loop over plot_dict
   icount=0
@@ -307,7 +312,7 @@ if __name__ == '__main__':
   plt.pie( list(sorted_cms_frac_exclusive_loss.values()), labels=color_keys,  autopct='%1.1f%%', explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys]) ## example plot here
 #  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
 #  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
-  plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
+  plt.title('Fraction of Exclusive Loss from Each Category', fontsize=titlesize_default)
   plt.savefig( outputdir+"/cms_piechart_exclusive_loss_"+postfix+".png", bbox_inches='tight')
 
 

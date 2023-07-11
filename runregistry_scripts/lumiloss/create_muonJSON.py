@@ -26,13 +26,18 @@ def get_run_ls( run_in ):
      print(run_in)
      if options.verbose is True: print(oms_lumisections[lumi])
      check_lumi_range = False
+     run_obj = runregistry.get_run(run_number=run_in)
+     nls_cmsActive = run_obj['oms_attributes']['last_lumisection_number']
      nLS_oms = len(oms_lumisections)
      nLS_rr  = len(rr_lumisections)
-     if nLS_oms != nLS_rr: 
-       print("NLS in OMS = ", nLS_oms, " and in offline RR = ", nLS_rr)
-     nLS = min(nLS_oms, nLS_rr)  
 
-     for lumi in range(0,nLS):
+     if nls_cmsActive > nLS_rr: 
+       print( "Warning!! run", run, "has", nls_cmsActive, "cms-active LSs but ", nLS_rr,"in offline RR" )
+
+#     nLS = min(nLS_oms, nLS_rr)  
+
+#     for lumi in range(0,nLS):
+     for lumi in range(0,nls_cmsActive):
 
        if any(flag not in oms_lumisections[lumi] for flag in omsflags_list):continue
 	
