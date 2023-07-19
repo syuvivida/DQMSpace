@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-lhc_delivered = [1347.233,20293.138]
-cms_recorded = [1206.337,18678.383] 
-DC_processed = [1166.744,18393.594]
-certified = [646.606, 17885.342]
-eras = ['ERA B', 'ERA C']
+lhc_delivered = [1347.233,20293.138,528.661]
+cms_recorded = [1206.337,18678.383,489.304] 
+DC_processed = [1166.744,18393.594,373.808]
+certified = [646.606, 17885.342,353.318]
+eras = ['ERA B', 'ERA C', 'ERA D']
 
 fig, ax = plt.subplots()
 
@@ -22,7 +22,8 @@ ax.set_title('2023 Fraction of Recorded Data for Physics Analysis per ERA')
 
 plt.legend((eras[0]+' - '+ str(np.round(100*certified[0]/cms_recorded[0], 1))+'%', 
             eras[1]+' - '+ str(np.round(100*certified[1]/cms_recorded[1], 1))+'%', 
-            'BC - '+ str(np.round(100*sum(certified)/sum(cms_recorded), 1))+'%'),
+            eras[2]+' - '+ str(np.round(100*certified[2]/cms_recorded[2], 1))+'%', 
+            'BCD - '+ str(np.round(100*sum(certified)/sum(cms_recorded), 1))+'%'),
             scatterpoints=1,
             loc='lower left',
             ncol=2,
