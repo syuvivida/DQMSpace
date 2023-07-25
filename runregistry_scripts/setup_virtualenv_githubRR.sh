@@ -17,7 +17,7 @@ activate
 
 pip install requests
 pip install matplotlib
-pip install cernrequests>=0.4.1
+pip install cernrequests==0.4.1
 
 
 ## By default there is no need for argument

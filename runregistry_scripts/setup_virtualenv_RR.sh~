@@ -11,5 +11,5 @@ activate () {
 
 activate
 
-pip install cernrequests==0.4.1
+pip install cernrequests>=0.4.1
 pip install --index-url https://test.pypi.org/simple runregistry==1.0.0
