@@ -6,8 +6,8 @@ source /opt/rh/rh-python36/enable
 python -V 
 source $WORKDIR/setup_virtualenv.sh
 pip install requests
-pip install cernrequests==0.3.3
 pip install matplotlib
+pip install cernrequests>=0.4.1
 
 ## By default there is no need for argument
 ## checkout run registry from master or pip
