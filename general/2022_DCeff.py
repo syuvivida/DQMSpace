@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-#declaring lists
+#declaring lists for eras B, C, D, E, F, G
 lhc_delivered = [128.677708816, 6923.811533014, 3744.766288761, 6591.521279814,  19963.428480688, 3588.249028983]
 cms_recorded = [115.431714499, 6301.260269901, 3323.165454419, 6117.173986822, 18364.160197481, 3247.131159904]
                                                                                                             

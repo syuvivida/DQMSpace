@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-#declaring lists
+#declaring lists for eraB, C, and D
 lhc_delivered = [1347.233,20293.138,528.661]
 cms_recorded = [1206.337,18678.383,489.304] 
 DC_processed = [1166.744,18393.594,373.808]
