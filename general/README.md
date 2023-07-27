@@ -17,6 +17,7 @@ brilcalc lumi -b "STABLE BEAMS" --amodetag PROTPHYS --begin xxxxxx --end yyyyyy 
 
 
 3. Find out the DC Processed luminosity. There are two ways to obtain these numbers. The first one is more precise but the difference between these two numbers is less than 1%. 
+
    a. Use the output of the inputcsv step from the luminosity loss scripts, say eraC.json. This step includes all the LSs from Collision runs (of a given list) that have beam_present and beam_stable flags = true and magnetic field >=3.7 Tesla
 ```
 bash
@@ -24,6 +25,7 @@ export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
 pip install --user brilws
 brilcalc lumi -b "STABLE BEAMS" -c web -i eraC.json -u /pb 
 ```
+
    b. Use the list of runs you send for DC. For example, eraC_runs.txt and this script https://github.com/syuvivida/DQMSpace/blob/main/brilcalc_scripts/run_brilcalc_runByFile.sh
 ```
   ./run_brilcalc_runByFile.sh eraC_runs.txt
