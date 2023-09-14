@@ -1,6 +1,6 @@
 # Scripts to obtain luminosity loss figures
 
-The update is for Muon DPG/POG and ECAL. See https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/lumiloss/muonJSON.txt 
+Example JSON logic can be found here: https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/lumiloss/goldenJSON.txt and https://github.com/syuvivida/DQMSpace/tree/v2.0/runregistry_scripts/lumiloss/muonJSON.txt 
 
 
 Note, if you need to update lumiloss figures because of an update of certain 
