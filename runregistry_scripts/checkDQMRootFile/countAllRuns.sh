@@ -1,7 +1,7 @@
 #!/bin/bash
 
 workdir=$PWD
-source $workdir/setup_virtualenv_RR.sh
+source $workdir/setup_runregistry.sh
 
 infile=$1
 

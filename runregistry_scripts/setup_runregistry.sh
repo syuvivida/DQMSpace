@@ -1,12 +1,11 @@
 #!/bin/bash
-source /opt/rh/rh-python36/enable
-python -V 
+/usr/bin/virtualenv -p `which python3` venv
+source venv/bin/activate
 
-source $PWD/setup_virtualenv.sh
+pip install --upgrade pip
 pip install matplotlib
-pip install cernrequests==0.4.1
-pip install --index-url https://test.pypi.org/simple runregistry==1.0.0
+pip install cernrequests
+pip install runregistry
 
 
-#pip install pyplot
 

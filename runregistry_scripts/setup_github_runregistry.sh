@@ -2,12 +2,12 @@
 
 WORKDIR=$PWD
 rm -rf $WORKDIR/venv
-source /opt/rh/rh-python36/enable
-python -V 
-source $WORKDIR/setup_virtualenv.sh
-pip install requests
+virtualenv -p `which python3` venv
+source venv/bin/activate
+pip install --upgrade pip
 pip install matplotlib
-pip install cernrequests==0.4.1
+pip install cernrequests
+
 
 ## By default there is no need for argument
 ## checkout run registry from master or pip

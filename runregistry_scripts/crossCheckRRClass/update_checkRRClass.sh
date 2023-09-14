@@ -68,7 +68,7 @@ fi
 
 
 echo "Run range to process: $minRun -- $maxRun"
-source $workdir/setup_virtualenv_RR.sh
+source $workdir/setup_runregistry.sh
 echo -e "\n"
 
 
