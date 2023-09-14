@@ -9,11 +9,15 @@ runs, please see point 8.
 If you need to create lumiloss figure for ReReco dataset, see point 10.
 
 ## Normal running 
-0. Setup SSO
-https://github.com/cms-DQM/runregistry_api_client/wiki/20230712_SSO_Migration
+0. Setup SSO: register your application to obtain your SSO client ID and 
+secret and prepare a .env file in your work directory
+https://github.com/CMSTrackerDPG/cernrequests#for-cern-apis-using-the-new-sso
 
-to check if your setup is ready, please read 
-https://github.com/syuvivida/DQMSpace/tree/main/runregistry_scripts#readme
+To check if your setup for the new CERN SSO is ready, please read steps 1-4 
+of https://github.com/syuvivida/DQMSpace/tree/main/runregistry_scripts#readme 
+
+Note, setup_runregistry.sh is sourced in the major script runAllSteps_lumiloss.sh mentioned below.
+
 
 1. Check out the DQMSpace package
 ```
