@@ -7,7 +7,8 @@ inputJSONFile=$2
 inputCSVFile=$3
 dataset=$4
 class=$5
-mode=$6 # either with HLT to require HLT path or no
+## default is no HLT path and apply normTag
+mode=$6 # either with HLT to require HLT path or no, apply normTag or not
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"

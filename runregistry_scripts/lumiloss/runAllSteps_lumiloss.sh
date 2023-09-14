@@ -31,10 +31,12 @@ class='Collisions23'
 
 ## The following is not an input argument
 ## must be set by hand
-## If mode is default, take all luminosity
-## If mode is hlt, take lumi with a certain HLT path
+## If mode is default, take all luminosity and apply normTag
+## If mode is hlt, take lumi with a certain HLT path, and apply normTag
+## If mode is none, take all luminosity and do not apply normTag
 mode='default'
 #mode='hlt'
+#mode='none'
 
 if [ $# -eq 1 ]
 then
@@ -90,10 +92,12 @@ echo -e "\n"
 print_steps
 # first get the list of runs from the run registry, given a run range                                                                                
 
-if [ "$mode" == "hlt" ]; then
-    echo "Computing luminosity loss by requiring HLT path HLT_DoublePhoton70 or HLT_PFJet500"
+if [ "$mode" == "default" ]; then
+    echo "Computing luminosity loss by requiring normTag"
+elif [ "$mode" == "hlt" ]; then
+    echo "Computing luminosity loss by requiring normTag and HLT_PFJet500"
 else
-    echo "Computing luminosity loss without requiring HLT path"
+    echo "Computing luminosity loss without requiring HLT path or normTag"
 fi
 
 if [ -d "$dir" ]; then
