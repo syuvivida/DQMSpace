@@ -8,7 +8,6 @@ https://github.com/CMSTrackerDPG/cernrequests#for-cern-apis-using-the-new-sso
 
 1. Copy all necessary files from DQMSpace to your work directory. Here, /tmp/$USER/RR is just an example. 
 ```
-bash
 workdir=/tmp/$USER/RR
 mkdir -p $workdir
 cd $workdir
@@ -20,6 +19,7 @@ cp -p DQMSpace/runregistry_scripts/setup_runregistry.sh .
 
 3. Set up the required packages for run registry
 ```
+bash
 source setup_runregistry.sh
 ```
 
