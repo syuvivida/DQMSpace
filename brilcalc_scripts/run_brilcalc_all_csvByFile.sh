@@ -16,7 +16,7 @@ mkdir -p $tempdir
 
 echo "Getting information without restricting to stable beams"
 
-awk -v myvar=$tempdir '{print "brilcalc lumi --byls --amodetag PROTPHYS --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_BRIL.json -r",$1," -o "myvar"/"$1".csv"}' $1 | bash
+awk -v myvar=$tempdir '{print "brilcalc lumi -c web --byls --amodetag PROTPHYS --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_BRIL.json -r",$1," -o "myvar"/"$1".csv"}' $1 | bash
 
 output=${timestamp}_${prefix}.csv
 cat $tempdir/*.csv > $output
