@@ -1,6 +1,6 @@
 #!/bin/bash
 scriptname=`basename $0`
-EXPECTED_ARGS=5
+EXPECTED_ARGS=4
 
 
 ## produce DCS-only JSON, requiring pixel/strip in DAQ and with HV on, 
@@ -8,9 +8,7 @@ EXPECTED_ARGS=5
 class='Cosmics23'
 minRun=363380
 maxRun=999999
-#workdir=$PWD
-workdir=/afs/cern.ch/user/c/cmsdqm/cronjob_DCSJSON
-githubmode=0 ## by default, pick up RR from github
+workdir=$PWD
 
 
 if [ $# -eq 1 ]
@@ -25,28 +23,21 @@ then
     class=$1
     minRun=$2
     maxRun=$3
-elif [ $# -eq 4 ]
-then
-    class=$1
-    minRun=$2
-    maxRun=$3
-    workdir=$4
 elif [ $# -eq $EXPECTED_ARGS ]
 then
     class=$1
     minRun=$2
     maxRun=$3
     workdir=$4
-    githubmode=$5
 else
-    echo "Usage: $scriptname classname minRun maxRun workdir githubmode"
-    echo "Example: ./$scriptname $class $minRun $maxRun $workdir $githubmode"
+    echo "Usage: $scriptname classname minRun maxRun workdir"
+    echo "Example: ./$scriptname $class $minRun $maxRun $workdir"
     echo "Use the default values listed above" 
 fi
 
 # first check if there is any existing json files 
 # the minimum run number will be over-written
-outputdir=/eos/user/c/cmsdqm/www/CAF/certification/Cosmics23
+outputdir=$workdir
 fileprefix=${class}_CRUZET
 
 # change to work directory
@@ -83,14 +74,8 @@ fi
 
 echo "Run range to process: $minRun -- $maxRun"
 echo "Run class: $class"
-if [ $githubmode -eq 0 ]
-then
-    echo "Will install runregistry via pip install"
-    source $workdir/setup_runregistry.sh
-else
-    echo "Will install runregistry from github"
-    source $workdir/setup_github_runregistry.sh default
-fi
+echo "Will install runregistry via pip install"
+source $workdir/setup_virtualenv_RR.sh
 echo -e "\n"
 
 

@@ -123,7 +123,7 @@ if __name__ == '__main__':
     parser.add_argument("-zb", "--zerobfield",
             dest="zeroBField", action="store_true", default=False, help="Zero B field (CRUZET)")
     parser.add_argument("-g", "--group",
-        dest="dataset_group", type=str, default="Collisions22", help="Run class type")
+        dest="dataset_group", type=str, default="Collisions23", help="Run class type")
     parser.add_argument("-v", "--verbose",
             dest="verbose", action="store_true", default=False, help="Display more info")
 
