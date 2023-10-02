@@ -15,6 +15,7 @@ import sys
 from operator import itemgetter
 
 isCollisionClass=False
+isHICollisions=False
 
 def runs_list(filter_in): 
   runs = runregistry.get_runs(filter = filter_in)
@@ -137,6 +138,10 @@ if __name__ == '__main__':
     if 'Collisions' in options.dataset_group:
       isCollisionClass=True
       print("this is a Collision class and beam requirements will be imposed\n")
+      # Check if the class is a Heavy Ion class
+      if 'HI' in options.dataset_group:
+        isHICollisions=True
+        print("this is a heavy ion collision run\n")
       
 
     # generate filter 
@@ -180,7 +185,11 @@ if __name__ == '__main__':
       else:  
         infotag='_CRUZET_'
 
-    if isCollisionClass and options.minEnergy >= 6500 and options.maxEnergy <= 7000:
+    # In 2023 HI runs, beam energy of lead is 6.8 TeV *Z=82, for each 
+    # nucleon, the energy is 6.8*82/208=2.68 TeV, so sqrt(s_NN)=5.36 TeV
+    if isHICollisions and options.minEnergy >= 6500 and options.maxEnergy <= 7000:   
+      infotag='_5p36TeV_'
+    elif isCollisionClass and options.minEnergy >= 6500 and options.maxEnergy <= 7000:
       infotag='_13p6TeV_'
     elif isCollisionClass and options.minEnergy >= 400 and options.maxEnergy <= 500:
       infotag='_900GeV_'

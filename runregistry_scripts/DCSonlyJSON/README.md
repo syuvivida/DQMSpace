@@ -19,13 +19,19 @@ bash
 cd DQMSpace/runregistry_scripts/DCSonlyJSON/
 ```
 
-3. If you want to produce DCS-only JSON files for Collision runs. You could add more input parameters depending on the situation. See the script or type ./update_dcsonlyjson_Collisions.sh to get an idea.
+3. If you want to produce DCS-only JSON files for pp Collision runs. You could add more input parameters depending on the situation. See the script or type ./update_dcsonlyjson_Collisions.sh to get an idea.
 ```
 ./update_dcsonlyjson_Collisions.sh Collisions23 366000 
 
 ```
 
-4. If you want to produce DCS-only JSON files for Cosmics runs with 3.8 Tesla. You could add more input parameters depending on the situation. See the script or type ./update_dcsonlyjson_CRAFT.sh to get an idea.
+4. If you want to produce DCS-only JSON files for HI Collision runs. You could add more input parameters depending on the situation. See the script or type ./update_dcsonlyjson_HICollisions.sh to get an idea.
+```
+./update_dcsonlyjson_HICollisions.sh Collisions23HI 374280 
+
+```
+
+5. If you want to produce DCS-only JSON files for Cosmics runs with 3.8 Tesla. You could add more input parameters depending on the situation. See the script or type ./update_dcsonlyjson_CRAFT.sh to get an idea.
 ```
 ./update_dcsonlyjson_CRAFT.sh Cosmics23 363000 
 
