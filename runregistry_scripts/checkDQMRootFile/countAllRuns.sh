@@ -7,7 +7,7 @@ infile=$1
 
 outfile='temp.txt'
 rm -rf $outfile
-echo "Run File OMSLS DQMROOT" >> outfile
+echo "Run File OMSLS DQMROOT" >> $outfile
 
 
 while read -r line; do 
