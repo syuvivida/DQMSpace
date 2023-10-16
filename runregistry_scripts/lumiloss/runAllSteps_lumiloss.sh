@@ -23,8 +23,10 @@ print_steps(){
 
 step='all'
 dir='testoutput'
-dataset='/PromptReco/Collisions2023/DQM'
-class='Collisions23'
+dataset='/PromptReco/Collisions2023HI-HIPhysicsRawPrime/DQM'
+class='Collisions23HI'
+#dataset='/PromptReco/Collisions2023/DQM'
+#class='Collisions23'
 #dataset='/PromptReco/Collisions2022/DQM'
 #dataset='/ReReco/Run2022B_10Dec2022/DQM'
 #class='Collisions22'

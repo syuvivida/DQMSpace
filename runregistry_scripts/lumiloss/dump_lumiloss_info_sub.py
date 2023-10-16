@@ -122,8 +122,8 @@ if __name__ == '__main__':
   for row in lumi_file_reader:
     run  = int(row[0])
     #  print("Run ",run)
-    delivered = float(row[2])/1000000.
-    recorded  = float(row[3])/1000000.
+    delivered = float(row[2])
+    recorded  = float(row[3])
     total_recorded += recorded
     bits = eval( row[4] )
     if not bits : continue # all good in JSON
@@ -180,8 +180,8 @@ if __name__ == '__main__':
 
 
 
-  print( "Total recorded luminosity for these runs is: ", total_recorded, "/pb")
-  print( "Total recorded luminosity loss for these runs is: ", total_loss, "/pb")
+  print( "Total recorded luminosity for these runs is: ", total_recorded, "/ub")
+  print( "Total recorded luminosity loss for these runs is: ", total_loss, "/ub")
 
 # sort all dictionaries
   sorted_subsystems_loss = sort_dict(subsystems_loss)
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     print(filename)
     file = open(filename, "w")
     for irun in list(subsystem_run_loss[isub]):
-      thisline = str(irun) + ' : ' + str(subsystem_run_loss[isub][irun]) + ' /pb \n'
+      thisline = str(irun) + ' : ' + str(subsystem_run_loss[isub][irun]) + ' /ub \n'
       file.write(thisline)
     file.close()
 
@@ -212,7 +212,7 @@ if __name__ == '__main__':
   import matplotlib.pyplot as plt
 
 # NOW MAKE PLOT FROM DICTIONARY VALUES
-  xtitle_default = 'Luminosity Loss (/pb)'
+  xtitle_default = 'Luminosity Loss (/ub)'
   ytitle_default = 'Subsystem'
   labelsize_default = 10
   small_labelsize = labelsize_default 
