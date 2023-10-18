@@ -481,7 +481,7 @@ def FormatCMSEnergy(beam_energy, accel_mode, year, include_units=True):
     cms_energy_str = "???"
     if accel_mode == "PROTPHYS":
         width = 0
-        if year == 2022:
+        if year == 2022 or year == 2023:
             width = 1
         cms_energy_str = "%.*f" % \
                          (width, 1.e-3 * cms_energy)
