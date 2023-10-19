@@ -421,6 +421,12 @@ def GetUnits(year, accel_mode, mode):
         "cum_week" : "ub^{-1}",
         "cum_year" : "ub^{-1}",
         "max_inst" : "Hz/mb",
+        },
+        2023 : {
+        "cum_day" : "ub^{-1}",
+        "cum_week" : "ub^{-1}",
+        "cum_year" : "ub^{-1}",
+        "max_inst" : "Hz/mb",
         }
         },
         "PAPHYS" : {
@@ -504,7 +510,10 @@ def FormatCMSEnergy(beam_energy, accel_mode, year, include_units=True):
         if include_units:
             if accel_mode == "ALLIONS":
                 cms_energy_str = particle_type_strings[this_accel_mode] + " " + cms_energy_str
-            cms_energy_str += " TeV/nucleon"
+            if accel_mode == "IONPHYS":
+                cms_energy_str += " TeV"
+            else:
+                cms_energy_str += " TeV/nucleon"
 
     return cms_energy_str
 
@@ -1333,9 +1342,12 @@ if __name__ == "__main__":
                         t.set_font_properties(FONT_PROPS_TICK_LABEL)
 
                     # Set titles and labels.
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                        sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
                     fig.suptitle(r"CMS Peak Luminosity Per Day, " \
-                                 "%s, %d, $\mathbf{\sqrt{s} =}$ %s" % \
-                                 (particle_type_str, year, cms_energy_str),
+                                 "%s, %d, %s %s" % \
+                                 (particle_type_str, year, sqrts_str, cms_energy_str),
                                  fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_begin, str_end),
@@ -1403,9 +1415,12 @@ if __name__ == "__main__":
                     for t in leg.get_texts():
                         t.set_font_properties(FONT_PROPS_TICK_LABEL)
                     # Set titles and labels.
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                        sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
                     fig.suptitle(r"CMS Integrated Luminosity Per Day, " \
-                                 "%s, %d, $\mathbf{\sqrt{s} =}$ %s" % \
-                                 (particle_type_str, year, cms_energy_str),
+                                 "%s, %d, %s %s" % \
+                                 (particle_type_str, year, sqrts_str, cms_energy_str),
                                  fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_begin, str_end),
@@ -1484,9 +1499,13 @@ if __name__ == "__main__":
                         t.set_font_properties(FONT_PROPS_TICK_LABEL)
 
                     # Set titles and labels.
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                       sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
+
                     fig.suptitle(r"CMS Integrated Luminosity, " \
-                                 r"%s, %d, $\mathbf{\sqrt{s} =}$ %s" % \
-                                 (particle_type_str, year, cms_energy_str),
+                                 r"%s, %d, %s %s" % \
+                                 (particle_type_str, year, sqrts_str, cms_energy_str),
                                  fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_begin, str_end),
@@ -1627,9 +1646,12 @@ if __name__ == "__main__":
                         t.set_font_properties(FONT_PROPS_TICK_LABEL)
 
                     # Set titles and labels.
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                        sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
                     fig.suptitle(r"CMS Peak Luminosity Per Week, " \
-                                 "%s, %d, $\mathbf{\sqrt{s} =}$ %s" % \
-                                 (particle_type_str, year, cms_energy_str),
+                                 "%s, %d, %s %s" % \
+                                 (particle_type_str, year, sqrts_str, cms_energy_str),
                                  fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_begin, str_end),
@@ -1699,9 +1721,13 @@ if __name__ == "__main__":
                         t.set_font_properties(FONT_PROPS_TICK_LABEL)
 
                     # Set titles and labels.
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                        sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
+
                     fig.suptitle(r"CMS Integrated Luminosity Per Week, " \
-                                 "%s, %d, $\mathbf{\sqrt{s} =}$ %s" % \
-                                 (particle_type_str, year, cms_energy_str),
+                                 "%s, %d, %s %s" % \
+                                 (particle_type_str, year, sqrts_str, cms_energy_str),
                                  fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_begin, str_end),
@@ -1770,9 +1796,12 @@ if __name__ == "__main__":
                         t.set_font_properties(FONT_PROPS_TICK_LABEL)
 
                     # Set titles and labels.
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                        sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
                     fig.suptitle(r"CMS Integrated Luminosity, " \
-                                 r"%s, %d, $\mathbf{\sqrt{s} =}$ %s" % \
-                                 (particle_type_str, year, cms_energy_str),
+                                 r"%s, %d, %s %s" % \
+                                 (particle_type_str, year, sqrts_str, cms_energy_str),
                                  fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_begin, str_end),
@@ -1979,12 +2008,15 @@ if __name__ == "__main__":
                     # Set titles and labels. If there's only one center-of-mass energy, put it in the title
                     # (we can use the existing cms_energy_str because it's the same for everything in that case,
                     # yay!)
+                    sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                    if accel_mode == "IONPHYS":
+                        sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
                     if (len(cms_energy_strings) > 1):
                         fig.suptitle(r"CMS Integrated Luminosity Delivered, %s" % particle_type_str,
                                      fontproperties=FONT_PROPS_SUPTITLE)
                     else:
-                        fig.suptitle(r"CMS Integrated Luminosity Delivered, %s, $\mathbf{\sqrt{s} =}$ %s" % \
-                                     (particle_type_str, cms_energy_str), fontproperties=FONT_PROPS_SUPTITLE)
+                        fig.suptitle(r"CMS Integrated Luminosity Delivered, %s, %s %s" % \
+                                     (particle_type_str, sqrts_str, cms_energy_str), fontproperties=FONT_PROPS_SUPTITLE)
                     ax.set_title("Data included from %s to %s UTC \n" % \
                                  (str_data_begin, str_data_end),
                                  fontproperties=FONT_PROPS_TITLE)
@@ -2161,9 +2193,12 @@ if __name__ == "__main__":
                             t.set_font_properties(FONT_PROPS_TICK_LABEL)
 
                         # Set titles and labels.
+                        sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                        if accel_mode == "IONPHYS":
+                            sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
                         fig.suptitle(r"CMS Integrated Luminosity, " \
-                                     r"%s, $\mathbf{\sqrt{s} =}$ %s" % \
-                                     (particle_type_str, cms_energy_str),
+                                     r"%s, %s %s" % \
+                                     (particle_type_str, sqrts_str, cms_energy_str),
                                      fontproperties=FONT_PROPS_SUPTITLE)
                         ax_kwargs = dict(fontproperties=FONT_PROPS_TITLE)
                         if do_cutouts:
@@ -2340,12 +2375,16 @@ if __name__ == "__main__":
 
                 # Set titles and labels. If there's only one center-of-mass energy,
                 # put it in the title.
+                sqrts_str = "$\mathbf{\sqrt{s} =}$"
+                if accel_mode == "IONPHYS":
+                    sqrts_str = "$\mathbf{\sqrt{s_{NN}} =}$"
+
                 if len(cms_energy_strings) > 1:
                     fig.suptitle(r"CMS Peak Luminosity Per Day, %s" % particle_type_str,
                                  fontproperties=FONT_PROPS_SUPTITLE)
                 else:
-                    fig.suptitle(r"CMS Peak Luminosity Per Day, %s, $\mathbf{\sqrt{s} =}$ %s " % \
-                                     (particle_type_str, cms_energy_str), fontproperties=FONT_PROPS_SUPTITLE)
+                    fig.suptitle(r"CMS Peak Luminosity Per Day, %s, %s %s " % \
+                                     (particle_type_str, sqrts_str, cms_energy_str), fontproperties=FONT_PROPS_SUPTITLE)
                 
                 ax.set_title("Data included from %s to %s UTC \n" % \
 #                             (str_begin, str_end),

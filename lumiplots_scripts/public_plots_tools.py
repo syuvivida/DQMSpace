@@ -166,7 +166,9 @@ class ColorScheme(object):
 	    2015 : "purple",
             2016 : "orange",
             2017 : "deepskyblue",
-            2018 : "navy"
+            2018 : "navy",
+            2022 : "green",
+            2023 : "red"
             }
         self.color_line_pileup = "black"
         self.color_fill_pileup = "blue"
