@@ -11,7 +11,7 @@ https://github.com/CMSTrackerDPG/cernrequests#for-cern-apis-using-the-new-sso
 workdir=/tmp/$USER/RR
 mkdir -p $workdir
 cd $workdir
-git clone git@github.com:syuvivida/DQMSpace.git  
+git clone -b pp2023 git@github.com:syuvivida/DQMSpace.git  
 cp -p DQMSpace/runregistry_scripts/setup_runregistry.sh .
 ```
 

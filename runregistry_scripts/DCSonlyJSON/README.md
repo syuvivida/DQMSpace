@@ -10,7 +10,7 @@ of https://github.com/syuvivida/DQMSpace/tree/main/runregistry_scripts#readme
 
 1. Check out the DQMSpace package
 ```
-git clone git@github.com:syuvivida/DQMSpace.git 
+git clone -b pp2023 git@github.com:syuvivida/DQMSpace.git 
 ```
 
 2. Go to the proper directory
