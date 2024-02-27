@@ -1,7 +1,6 @@
 #!/bin/bash
 ## produce input.csv
-## need to be in python 2.7 environment
-source ./setup_json.sh 
+## need to be in python 3 environment
 JSON1=$1
 JSON2=$2
 
@@ -13,7 +12,7 @@ fi
 ##############################################################################
 echo -e "\n"
 echo "Now we are going to compare the original JSON $JSON1 and the modified JSON $JSON2"
-python compareJSON.py --diff $JSON1 $JSON2 
+python3 compareJSON.py --diff $JSON1 $JSON2 
 
 
 

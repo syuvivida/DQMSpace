@@ -1,22 +1,23 @@
 #!/bin/bash
 ## produce input.csv
-## need to be in python 2.7 environment
+## need to be in python 3 environment
 JSON=$1
-source ./setup_json.sh 
 
-python checkJSON.py $JSON
+python3 checkJSON.py $JSON
 
 if [ $? -ne 0 ]; then
+    echo "Removing this empty JSON file $JSON"
+    rm -rf $JSON
     exit 1
 fi
 
 
 if [ $# -eq 1 ] 
 then 
-    python printJSON.py $JSON 
+    python3 printJSON.py $JSON 
 elif [ $# -eq 2 ] 
 then
-    python printJSON.py $JSON --$2
+    python3 printJSON.py $JSON --$2
 else 
     echo -e "\n" 
     echo "=======================================================================" 

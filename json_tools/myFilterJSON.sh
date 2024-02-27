@@ -1,7 +1,6 @@
 #!/bin/bash
 ## produce input.csv
-## need to be in python 2.7 environment
-source ./setup_json.sh 
+## need to be in python 3 environment
 runnumber=$1
 oldJSON=$2
 outputJSON=$3

@@ -5,10 +5,11 @@ EXPECTED_ARGS=4
 
 ## produce DCS-only JSON, requiring pixel/strip in DAQ and with HV on, 
 # beam present and stable
-class='Collisions23HI'
-minRun=374270
+class='Collisions24HI'
+minRun=376824
 maxRun=999999
 workdir=$PWD
+githubmode=0 ## by default, pick up RR from github
 
 
 if [ $# -eq 1 ]
@@ -62,7 +63,7 @@ else
   existOldJSONFile=true
   lastjsonfilename=`tail -n 1 out.txt | awk '{print $9}'`	
   echo "The latest JSON file created is $lastjsonfilename"
-  ./myPrintJSON.sh ${lastjsonfilename} range | tee out2.txt; test ${PIPESTATUS[0]} -eq 0  || exit 2
+  ./myPrintJSON.sh ${lastjsonfilename} | tee out2.txt; test ${PIPESTATUS[0]} -eq 0  || exit 2
   ## The minimum run number from the latest JSON file (produced previously)
   minRunOld=`tail -n 2 out2.txt | head -n 1`
   ## Use the maximum run number from the  latest JSON file
@@ -75,7 +76,7 @@ fi
 echo "Run range to process: $minRun -- $maxRun"
 echo "Run class: $class"
 echo "Will install runregistry via pip install"
-source $workdir/setup_virtualenv_RR.sh
+source $workdir/setup_runregistry.sh
 echo -e "\n"
 
 
@@ -101,7 +102,7 @@ tempJSONfile=${outputdir}/${fileprefix}_${minRun}_${maxRun}_${postfix}
 
 #tempJSONfile=`ls -lrt ${outputdir}/${fileprefix} | tail -n 1 | awk '{print $9}'` 
 # Now check the maximum and minimum run numbers in the JSON file produced in this job
-./myPrintJSON.sh ${tempJSONfile} range | tee out3.txt;  test ${PIPESTATUS[0]} -eq 0  || exit 3 
+./myPrintJSON.sh ${tempJSONfile} | tee out3.txt;  test ${PIPESTATUS[0]} -eq 0  || exit 3 
 minRunNew=`tail -n 2 out3.txt | head -n 1`
 maxRunNew=`tail -n 1 out3.txt`
 

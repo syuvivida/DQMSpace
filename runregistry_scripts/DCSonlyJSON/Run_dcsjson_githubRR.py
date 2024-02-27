@@ -15,6 +15,7 @@ import sys
 from operator import itemgetter
 
 isCollisionClass=False
+isHICollisions=False
 
 def runs_list(filter_in): 
   runs = runregistry.get_runs(filter = filter_in)
@@ -31,10 +32,11 @@ def get_run_ls( run_in ):
      check_lumi_range = False
      print(run_in)
 
-     if options.verbose is True:
-       print(oms_lumisections[lumi])
-
      for lumi in range(0, len(oms_lumisections)):
+
+       if options.verbose is True:
+         print(oms_lumisections[lumi])
+
        # first check if flags exist in OMS
        if any(flag not in oms_lumisections[lumi] for flag in 
               ['fpix_ready','bpix_ready','tecm_ready','tecp_ready','tob_ready','tibtid_ready','cms_active']):
@@ -78,8 +80,8 @@ def get_run_ls( run_in ):
 
        # for runs > 355208, impose beam present requirement 
        # OMS beam present flags are not working for runs <= 355208
-       if isCollisionClass and not ( (run_in <= 355208) or 
-                                     (run_in>355208 
+       if isCollisionClass and not ( (run_in >= 355100 and run_in <= 355208) or 
+                                     ( (run_in>355208 or run_in < 355100)
                                       and oms_lumisections[lumi]["beam1_present"] == True 
                                       and oms_lumisections[lumi]["beam2_present"] == True)):
          check_lumi_range=False
@@ -117,8 +119,12 @@ if __name__ == '__main__':
             description='Give DCS-only JSONs for Online datasets')
     parser.add_argument("-min", "--min_run", dest="min_run", type=int, default=362167, help="minimum run for json")
     parser.add_argument("-max", "--max_run", dest="max_run",type=int, default=999999, help="maximum run for json")
+    parser.add_argument("-minE", "--min_energy", dest="minEnergy", type=int, default=6500, help="minimum beam energy")
+    parser.add_argument("-maxE", "--max_energy", dest="maxEnergy", type=int, default=7000, help="maximum beam energy")
+    parser.add_argument("-zb", "--zerobfield",
+            dest="zeroBField", action="store_true", default=False, help="Zero B field (CRUZET)")
     parser.add_argument("-g", "--group",
-        dest="dataset_group", type=str, default="Collisions22", help="Run class type")
+        dest="dataset_group", type=str, default="Collisions23", help="Run class type")
     parser.add_argument("-v", "--verbose",
             dest="verbose", action="store_true", default=False, help="Display more info")
 
@@ -132,6 +138,10 @@ if __name__ == '__main__':
     if 'Collisions' in options.dataset_group:
       isCollisionClass=True
       print("this is a Collision class and beam requirements will be imposed\n")
+      # Check if the class is a Heavy Ion class
+      if 'HI' in options.dataset_group:
+        isHICollisions=True
+        print("this is a heavy ion collision run\n")
       
 
     # generate filter 
@@ -139,7 +149,6 @@ if __name__ == '__main__':
                    'class': { 'like': options.dataset_group},
                    'significant': { "=": True},
                    'state': { "=": 'SIGNOFF'},
-                   'oms_attributes.b_field': {">=": 3.7},
                    'oms_attributes.tracker_included': {"=": True},
                    'oms_attributes.pixel_included': {"=": True}
                    }
@@ -151,14 +160,42 @@ if __name__ == '__main__':
 
     main_obj = {}                                                                                                                                            
     for run in out_runs:
+         # make beam energy requirement if this is a collision class
+         # somehow the filter doesn't work, and one needs to apply requirements here
+         if isCollisionClass and run["oms_attributes"]["energy"] < options.minEnergy:
+           continue
+         if isCollisionClass and run["oms_attributes"]["energy"] > options.maxEnergy:
+           continue
+         if options.zeroBField is False and run["oms_attributes"]["b_field"] < 3.7:
+           continue
+         elif options.zeroBField is True and run["oms_attributes"]["b_field"] > 1.0:
+           continue
+  
          main_obj[run["run_number"]]= get_run_ls(run["run_number"])
 
     for el in main_obj:
          main_obj[el] = sorted(main_obj[el], key=itemgetter(0))
 
     postfix='_DCSOnly_TkPx.json'     
-#    if isCollisionClass:
-#      postfix='_13p6TeV_DCSOnly_TkPx.json'
-    output_file = options.outpath+ '/Cert_'+options.dataset_group+'_'+str(options.min_run)+'_'+str(options.max_run)+ postfix
+
+    infotag='_'
+    if 'Cosmics' in options.dataset_group: 
+      if options.zeroBField is False:
+        infotag='_CRAFT_'
+      else:  
+        infotag='_CRUZET_'
+
+    # In 2023 HI runs, beam energy of lead is 6.8 TeV *Z=82, for each 
+    # nucleon, the energy is 6.8*82/208=2.68 TeV, so sqrt(s_NN)=5.36 TeV
+    if isHICollisions and options.minEnergy >= 6500 and options.maxEnergy <= 7000:   
+      infotag='_5p36TeV_'
+    elif isCollisionClass and options.minEnergy >= 6000 and options.maxEnergy <= 6500:
+      infotag='_13TeV_'
+    elif isCollisionClass and options.minEnergy >= 6500 and options.maxEnergy <= 7000:
+      infotag='_13p6TeV_'
+    elif isCollisionClass and options.minEnergy >= 400 and options.maxEnergy <= 500:
+      infotag='_900GeV_'
+
+    output_file = options.outpath+ '/'+options.dataset_group+ infotag +str(options.min_run)+'_'+str(options.max_run)+ postfix
     write_json(main_obj,output_file)
 
