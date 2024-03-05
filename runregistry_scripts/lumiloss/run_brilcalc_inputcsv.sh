@@ -1,7 +1,6 @@
 #!/bin/bash
-export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
-pip install --user brilws
-#brilcalc --version
+source ./install_brilcalc.sh
+
 
 # default: normTag + no HLT
 # hlt: normTag + HLT

@@ -10,9 +10,9 @@
 # 355101
 # 355102 
 
-export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
-pip install --user brilws
-#brilcalc --version
+
+source ./install_brilcalc.sh
+
 inputRunList=$1
 miniLumi=80 #/nb
 lumiUnit=nb

@@ -1,8 +1,7 @@
 #!/bin/bash
 #Note, the end date needs to add 1 day
 # 08/18/22 - 08/24/22
-export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
-pip install --user brilws
+source ./install_brilcalc.sh
 
 brilcalc lumi -c web -b "STABLE BEAMS" --byls --beamenergy 6800 \
 	 --amodetag PROTPHYS\

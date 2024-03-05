@@ -1,0 +1,1 @@
+../brilcalc_scripts/install_brilcalc.sh

@@ -1,7 +1,6 @@
 #!/bin/bash
-#export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
-#pip install --user brilws
-#brilcalc --version
+
+#source ./install_brilcalc.sh
 
 brilcalc lumi -b "STABLE BEAMS" -c web --amodetag PROTPHYS --byls \
 	 --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_BRIL.json \
