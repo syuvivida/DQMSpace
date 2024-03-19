@@ -49,12 +49,12 @@ def get_run_ls( run_in ):
          continue
 
        # check if forward pixel DCS status is good
-       if oms_lumisections[lumi]['fpix_ready'] != True: 
+       if options.stripOnly==False and oms_lumisections[lumi]['fpix_ready'] != True: 
          check_lumi_range=False
          continue 
 
        # check if barrel pixel DCS status is good
-       if oms_lumisections[lumi]["bpix_ready"] != True:
+       if options.stripOnly==False and oms_lumisections[lumi]["bpix_ready"] != True:
          check_lumi_range=False
          continue
 
@@ -123,6 +123,8 @@ if __name__ == '__main__':
     parser.add_argument("-maxE", "--max_energy", dest="maxEnergy", type=int, default=7000, help="maximum beam energy")
     parser.add_argument("-zb", "--zerobfield",
             dest="zeroBField", action="store_true", default=False, help="Zero B field (CRUZET)")
+    parser.add_argument("-so", "--stripOnly",
+            dest="stripOnly", action="store_true", default=False, help="only requiring strip DCS (no requirement on pixel)")
     parser.add_argument("-g", "--group",
         dest="dataset_group", type=str, default="Collisions24", help="Run class type")
     parser.add_argument("-v", "--verbose",
@@ -184,6 +186,8 @@ if __name__ == '__main__':
         infotag='_CRAFT_'
       else:  
         infotag='_CRUZET_'
+      if options.stripOnly is True:
+        infotag= infotag + 'stripOnly_'
 
     # In 2024 HI runs, beam energy of lead is 6.8 TeV *Z=82, for each 
     # nucleon, the energy is 6.8*82/208=2.68 TeV, so sqrt(s_NN)=5.36 TeV
