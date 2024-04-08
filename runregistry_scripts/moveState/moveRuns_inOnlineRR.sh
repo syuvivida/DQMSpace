@@ -34,7 +34,7 @@ else
 fi
 
 echo "Will install runregistry from github"
-source $workdir/setup_github_runregistry.sh dev
+source $workdir/setup_runregistry.sh
 
 echo -e "\n"
 

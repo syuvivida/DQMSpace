@@ -16,7 +16,7 @@ if githubstring in os.environ:
 
 import runregistry
 ## Note by default it is set to production
-runregistry.setup( "development" ) 
+#runregistry.setup( "development" ) 
 #runregistry.setup( "production" ) 
 
 def runs_list(filter_in): 
@@ -87,7 +87,7 @@ if options.verbose is True:
 for run in out_runs:
   answer = runregistry.move_datasets( options.fromstate, options.tostate, options.dataset_name, run=run["run_number"], workspace=options.workspace )
 #  answer = runregistry.move_datasets( 'waiting dqm gui', 'OPEN', options.dataset_name, run=run["run_number"], options.workspace )
-  print( answer, answer.text )
+#  print( answer, answer.text )
   print(run["run_number"])
                                
 

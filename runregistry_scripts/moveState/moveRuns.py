@@ -15,9 +15,6 @@ if githubstring in os.environ:
 
 
 import runregistry
-## Note by default it is set to production
-runregistry.setup( "development" ) 
-#runregistry.setup( "production" ) 
 
 def runs_list(filter_in): 
   runs = runregistry.get_runs(filter = filter_in)
