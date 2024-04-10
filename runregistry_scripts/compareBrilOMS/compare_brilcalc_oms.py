@@ -79,10 +79,10 @@ for run, lumis in brilcalc_lumis.items():
     recorded_lumi   = lumiData[3]
     humanLumiIndex  = lumiNumber + 1
     if oms_beam_stable != bril_beam_stable:
-      print( run, humanLumiIndex, delivered_lumi, recorded_lumi, ", OMS stableFlag:", oms_beam_stable, ", brilcalc stableFlag:", bril_beam_stable)
+      print( run, ":", humanLumiIndex, delivered_lumi, recorded_lumi, ", OMS stableFlag:", oms_beam_stable, ", brilcalc stableFlag:", bril_beam_stable)
     # Only alert if brilcalc has stable beam but cmsActive flag is not consistent  
     if bril_beam_stable == True and oms_cms_active != bril_cms_active:
-      print( run, humanLumiIndex, delivered_lumi, recorded_lumi, ", OMS cmsActive:", oms_cms_active, ", brilcalc cmsActive:", bril_cms_active)
+      print( run, ":", humanLumiIndex, delivered_lumi, recorded_lumi, ", OMS cmsActive:", oms_cms_active, ", brilcalc cmsActive:", bril_cms_active)
     if bril_cms_active and bril_beam_stable: Nbril_stableActive += 1  
 
     if bril_cms_active: Nbril_active += 1 
