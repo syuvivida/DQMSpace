@@ -37,3 +37,5 @@ Example: ./runCompareBrilCalcOMS.sh 355100 362760 runsToCheck_bril.txt checkResu
 ```
 ./runCompareBrilCalcOMS.sh 378238
 ```
+
+6. From the screen printout of the job output, you could see the difference between brilcalc and OMS. The scripts compare the total number of LSs in which cms DAQ is active and also with stable beam. The scripts also compare lumisection by lumisection the beam_stable status and cmsActive status when the data are available in brilcalc.
