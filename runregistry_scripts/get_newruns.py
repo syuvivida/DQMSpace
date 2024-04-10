@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument("-min", "--min_run", dest="min_run", type=int, default=355100, help="minimum run for json") 
     parser.add_argument("-max", "--max_run", dest="max_run",type=int, default=999999, help="maximum run for json")  
     parser.add_argument("-c", "--runClass",
-                        dest="runClass", type=str, default="Collisions23", help="run registry class")
+                        dest="runClass", type=str, default="Collisions24", help="run registry class")
     options = parser.parse_args() 
     print(sys.argv)
  
