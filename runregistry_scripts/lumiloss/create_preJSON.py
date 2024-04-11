@@ -15,8 +15,10 @@ def runs_list(filter_in):
 def get_run_ls( run_in ):
 
      oms_lumisections = runregistry.get_oms_lumisections(run_in,options.dataset)
+     rr_lumisections = runregistry.get_lumisections(run_in,options.dataset)
      lumi_store = []
      flags_list = ['beam1_present','beam2_present','beam1_stable','beam2_stable']
+     ## as far as we know, HLT DQM flag is marked bad only for emergency prescale column
      if run_in not in main_obj:
           main_obj[run_in] = []
      
@@ -26,7 +28,10 @@ def get_run_ls( run_in ):
      for lumi in range(0, len(oms_lumisections)):
 
        if any(flag not in oms_lumisections[lumi] for flag in flags_list):
-         continue;
+         continue
+       if options.nohlt == False and ('hlt-hlt' not in rr_lumisections[lumi]):
+         continue
+
        quality = True
 
        # for call 7, OMS beam1_present and beam2_present flags are not correct
@@ -39,6 +44,10 @@ def get_run_ls( run_in ):
          if oms_lumisections[lumi][flag] == False:
            quality = False
            break
+         
+       if options.nohlt == False and rr_lumisections[lumi]['hlt-hlt']['status'] != 'GOOD':
+         quality = False
+
        if quality is False:
          check_lumi_range=False           
          continue
@@ -87,8 +96,8 @@ if __name__ == '__main__':
         dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
     parser.add_argument("-c", "--class",
 	dest="runclass", type=str, default="Collisions22", help="Run class type")
-
-
+    parser.add_argument("-n", "--nohlt",
+            dest="nohlt", action="store_true", default=False, help="apply hlt-hlt requirement")
     options = parser.parse_args()
     print(sys.argv)
     # use run range if using default mode

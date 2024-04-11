@@ -7,8 +7,8 @@ inputJSONFile=$2
 inputCSVFile=$3
 dataset=$4
 class=$5
-## default is no HLT path and apply normTag
-mode=$6 # either with HLT to require HLT path or no, apply normTag or not
+## default is asking for hlt-hlt cuts and apply normTag
+mode=$6 
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"
@@ -19,7 +19,11 @@ fi
 echo -e "\n"
 echo "Now we are going to produce $inputJSONFile"
 testFile=test.json
-python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class
+if [ "$mode" == "nohlt" ]; then
+    python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class --nohlt
+else
+    python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class
+fi
 
 if [ $? -ne 0 ]; then
     echo -e "\n"

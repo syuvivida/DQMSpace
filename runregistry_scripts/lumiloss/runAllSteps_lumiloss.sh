@@ -23,19 +23,16 @@ print_steps(){
 
 step='all'
 dir='testoutput'
-dataset='/PromptReco/Collisions2023/DQM'
-class='Collisions23'
-#dataset='/PromptReco/Collisions2022/DQM'
-#dataset='/ReReco/Run2022B_10Dec2022/DQM'
-#class='Collisions22'
+dataset='/PromptReco/Collisions2024/DQM'
+class='Collisions24'
 
 ## The following is not an input argument
 ## must be set by hand
-## If mode is default, take all luminosity and apply normTag
-## If mode is hlt, take lumi with a certain HLT path, and apply normTag
-## If mode is none, take all luminosity and do not apply normTag
+## If mode is default, take all luminosity passing hlt-hlt and apply normTag
+## If mode is nohlt, take lumi without requiring hlt-hlt to be good, and apply normTag
+## If mode is none, take all luminosity without hlt-hlt and without normTag
 mode='default'
-#mode='hlt'
+#mode='nohlt'
 #mode='none'
 
 if [ $# -eq 1 ]
@@ -93,11 +90,11 @@ print_steps
 # first get the list of runs from the run registry, given a run range                                                                                
 
 if [ "$mode" == "default" ]; then
-    echo "Computing luminosity loss by requiring normTag"
-elif [ "$mode" == "hlt" ]; then
-    echo "Computing luminosity loss by requiring normTag and HLT_PFJet500"
+    echo "Computing luminosity loss by requiring normTag and hlt-hlt"
+elif [ "$mode" == "nohlt" ]; then
+    echo "Computing luminosity loss by requiring normTag without hlt-hlt cuts"
 else
-    echo "Computing luminosity loss without requiring HLT path or normTag"
+    echo "Computing luminosity loss without normTag and without hlt-hlt"
 fi
 
 if [ -d "$dir" ]; then
