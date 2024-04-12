@@ -16,6 +16,8 @@ def get_run_ls( run_in ):
 
      oms_lumisections = runregistry.get_oms_lumisections(run_in,options.dataset)
      rr_lumisections = runregistry.get_lumisections(run_in,options.dataset)
+     run_obj = runregistry.get_run(run_number=run_in)
+     nls_cmsActive = run_obj['oms_attributes']['last_lumisection_number']
      lumi_store = []
      flags_list = ['beam1_present','beam2_present','beam1_stable','beam2_stable']
      ## as far as we know, HLT DQM flag is marked bad only for emergency prescale column
@@ -25,7 +27,7 @@ def get_run_ls( run_in ):
      print(run_in)
      #print(oms_lumisections[lumi])
      check_lumi_range = False
-     for lumi in range(0, len(oms_lumisections)):
+     for lumi in range(0, nls_cmsActive):
 
        if any(flag not in oms_lumisections[lumi] for flag in flags_list):
          continue
