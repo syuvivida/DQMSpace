@@ -16,6 +16,7 @@ from operator import itemgetter
 
 isCollisionClass=False
 isHICollisions=False
+isCosmics=False
 
 def runs_list(filter_in): 
   runs = runregistry.get_runs(filter = filter_in)
@@ -78,6 +79,15 @@ def get_run_ls( run_in ):
          check_lumi_range=False
          continue
 
+       # for cosmics runs, require LSs do not have beam
+       if isCosmics and (oms_lumisections[lumi]["beam1_present"] == True 
+                         or oms_lumisections[lumi]["beam2_present"] == True
+                         or oms_lumisections[lumi]["beam1_stable"] == True
+                         or oms_lumisections[lumi]["beam2_stable"] == True
+                         ):
+         check_lumi_range=False
+         continue
+       
        # for runs > 355208, impose beam present requirement 
        # OMS beam present flags are not working for runs <= 355208
        if isCollisionClass and not ( (run_in <= 355208) or 
@@ -144,7 +154,11 @@ if __name__ == '__main__':
       if 'HI' in options.dataset_group:
         isHICollisions=True
         print("this is a heavy ion collision run\n")
-      
+
+    # Check if the class is a Cosmics class
+    if 'Cosmics' in options.dataset_group:
+        isCosmics=True
+        print("this is a Collision class and LSs with beam will be removed")
 
     # generate filter 
     filter_arg = { 'run_number': { 'and':[ {'>=': options.min_run}, {'<=': options.max_run}] }, 
