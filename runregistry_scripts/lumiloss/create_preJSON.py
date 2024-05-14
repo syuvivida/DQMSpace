@@ -14,8 +14,8 @@ def runs_list(filter_in):
 
 def get_run_ls( run_in ):
 
-     oms_lumisections = runregistry.get_oms_lumisections(run_in,options.dataset)
-     rr_lumisections = runregistry.get_lumisections(run_in,options.dataset)
+     oms_lumisections = runregistry.get_oms_lumisections(run_in)
+     rr_lumisections = runregistry.get_lumisections(run_in)
      run_obj = runregistry.get_run(run_number=run_in)
      nls_cmsActive = run_obj['oms_attributes']['last_lumisection_number']
      lumi_store = []
@@ -94,8 +94,8 @@ if __name__ == '__main__':
         dest="outfile", type=str, default="eraB_allLS.json", help="Output file name")
     parser.add_argument("-v", "--verbose",
             dest="verbose", action="store_true", default=False, help="Display more info")
-    parser.add_argument("-d", "--dataset",
-        dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
+#    parser.add_argument("-d", "--dataset",
+#        dest="dataset", type=str, default="/PromptReco/Collisions2022/DQM", help="run registry dataset name")
     parser.add_argument("-c", "--class",
 	dest="runclass", type=str, default="Collisions22", help="Run class type")
     parser.add_argument("-n", "--nohlt",

@@ -119,7 +119,7 @@ inputJSONFile=${dir}/${period}.json
 inputCSVFile=${dir}/input_${period}.csv
 scriptCSV=produce_inputcsv.sh
 if [[ "$step" == "inputcsv" || "$step" == "all" ]]; then
-    ./$scriptCSV $inputRunFile $inputJSONFile $inputCSVFile $dataset $class $mode
+    ./$scriptCSV $inputRunFile $inputJSONFile $inputCSVFile $class $mode
     if [ $? -ne 0 ]; then
 	echo "step inputcsv failed!"
 	exit 1

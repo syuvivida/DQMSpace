@@ -5,10 +5,9 @@ source ./setup_runregistry.sh
 inputRunFile=$1
 inputJSONFile=$2
 inputCSVFile=$3
-dataset=$4
-class=$5
+class=$4
 ## default is asking for hlt-hlt cuts and apply normTag
-mode=$6 
+mode=$5 
 
 if [ ! -f $inputRunFile ]; then
     echo "The run list $inputRunFile does not exist!"
@@ -20,9 +19,9 @@ echo -e "\n"
 echo "Now we are going to produce $inputJSONFile"
 testFile=test.json
 if [ "$mode" == "nohlt" ]; then
-    python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class --nohlt
+    python create_preJSON.py -i $inputRunFile -o $testFile -c $class --nohlt
 else
-    python create_preJSON.py -i $inputRunFile -o $testFile -d $dataset -c $class
+    python create_preJSON.py -i $inputRunFile -o $testFile -c $class
 fi
 
 if [ $? -ne 0 ]; then
