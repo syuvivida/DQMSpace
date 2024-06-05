@@ -1,4 +1,4 @@
-
+from contextlib import redirect_stdout
 from collections import defaultdict
 import runregistry
 import matplotlib
@@ -76,8 +76,9 @@ detector_sub["EGamma"] = ["egamma-egamma"]
 
 
 detector_loss = defaultdict(dict)
-# For dumping run vs lumi loss for each system
+# For dumping run,LS vs lumi loss for each system
 subsystem_run_loss = defaultdict()
+subsystem_run_LS = defaultdict()
 
 ## Initialize the values of detector_loss
 cms_sub = list(detector_sub.keys())
@@ -121,7 +122,8 @@ if __name__ == '__main__':
 
   for row in lumi_file_reader:
     run  = int(row[0])
-    #  print("Run ",run)
+    LS   = int(row[1])
+    #  print("Run ",run, ":", LS)
     delivered = float(row[2])/1000000.
     recorded  = float(row[3])/1000000.
     total_recorded += recorded
@@ -168,7 +170,10 @@ if __name__ == '__main__':
       total_loss += recorded
       if detector_blame not in subsystem_run_loss:
         subsystem_run_loss[detector_blame] = defaultdict(float)
-      subsystem_run_loss[detector_blame][ run ] += recorded
+      if detector_blame not in subsystem_run_LS:
+        subsystem_run_LS[detector_blame] = defaultdict(list)
+      subsystem_run_loss[detector_blame][run] += recorded
+      subsystem_run_LS[detector_blame][run].append(LS)
 
 # After accumulation of all LSs
 # Check the fraction of luminosity loss due to each subsystem
@@ -194,111 +199,19 @@ if __name__ == '__main__':
   sorted_cms_detailed_frac_exclusive_loss = sort_dict(cms_detailed_frac_exclusive_loss, 2)
 
   print(subsystem_run_loss)
+#  print(subsystem_run_LS)
   #dump loss vs run in text files
   dirName = options.dirname
 #  os.mkdir(dirName)
-#  for isub in list(subsystem_run_loss.keys()):
+#  for isub in list(subsystem_runLS_loss.keys()):
   for isub in list(sorted_cms_detailed_frac_exclusive_loss.keys()):
     filename = isub.replace(' ', '_')
     filename = dirName + '/' + filename + 'loss_'+ postfix + '.txt'
     print(filename)
-    file = open(filename, "w")
-    for irun in list(subsystem_run_loss[isub]):
-      thisline = str(irun) + ' : ' + str(subsystem_run_loss[isub][irun]) + ' /pb \n'
-      file.write(thisline)
+    with open(filename,'w') as file:
+      with redirect_stdout(file):
+        for irun in list(subsystem_run_loss[isub]):
+          print(irun, ":", subsystem_run_LS[isub][irun])
+          print(irun, ":", subsystem_run_loss[isub][irun], '/pb \n')
     file.close()
 
-"""
-  import matplotlib.pyplot as plt
-
-# NOW MAKE PLOT FROM DICTIONARY VALUES
-  xtitle_default = 'Luminosity Loss (/pb)'
-  ytitle_default = 'Subsystem'
-  labelsize_default = 10
-  small_labelsize = labelsize_default 
-  titlesize_default = 14
-  
-  # DQM flag
-  plot_dict = defaultdict(MyPlot)
-  plot_dict['subsystemDQMFlag_loss'] = MyPlot('DQM Flags vs. Inclusive Loss', xtitle_default, 'DQM Flag', labelsize_default, sorted_subsystems_loss)
-  
-  # DCS bits
-  plot_dict['DCS_loss'] = MyPlot('DCS Bits vs. Inclusive Loss', xtitle_default, 'DCS Bit', labelsize_default, sorted_dcs_loss)
-
-  # CMS subsystem inclusive loss
-  plot_dict['cms_inclusive_loss'] = MyPlot('Inclusive Loss from Each CMS Subsystem', xtitle_default, ytitle_default, labelsize_default, sorted_cms_inclusive_loss)
-  
-  # CMS subsystem exclusive loss
-  if len(sorted_cms_exclusive_loss)>12:
-    small_labelsize = 6
-  plot_dict['cms_exclusive_loss'] = MyPlot('Exclusive Loss from Each CMS Subsystem', xtitle_default, ytitle_default, small_labelsize, sorted_cms_exclusive_loss)
-
-  #Now make a detailed bar chart: fraction of exclusive loss due to each subdetector
-  plot_dict['cms_detailed_fraction_exclusive_loss'] = MyPlot('Fraction of Exclusive Loss from Each CMS Subsystem', 'Percentage %', ytitle_default, labelsize_default, sorted_cms_detailed_frac_exclusive_loss)
-
-  #loop over plot_dict
-  icount=0
-  for isub in list(plot_dict.keys()):
-    dict_this = defaultdict(float)
-    dict_this = plot_dict[isub].inputdict
-#    print(dict_this)
-    icount += 1
-#    axes = plt.figure(icount, [5, 20]) # this line moved and figure size changed to suit data
-    axes = plt.figure(icount) # this line moved and figure size changed to suit data
-    plt.tick_params(axis='both', which='major', labelsize=plot_dict[isub].labelsize) # makes axis labels smaller
-    bar_plot(dict_this,ax=axes)
-    plt.title(plot_dict[isub].title, fontsize=titlesize_default)
-    plt.xlabel(plot_dict[isub].xtitle, fontsize=titlesize_default)
-    plt.ylabel(plot_dict[isub].ytitle, fontsize=titlesize_default)
-    plt.savefig( isub+".png", bbox_inches='tight')
-
-
-
-
-#Now make inclusive loss due to each sub system separately
-  for isub in cms_sub:
-    list2 = list(detector_sub[isub])
-    dict_this = defaultdict(float)
-    icount +=1
-    for isub2 in list2:
-        dict_this[isub2] = detector_loss[isub][isub2]
-    sorted_thissub = sort_dict(dict_this)
-    axes = plt.figure(icount)
-    bar_plot(sorted_thissub,ax=axes)
-    plt.title('Inclusive Loss of ' + isub + ' System', fontsize=titlesize_default)
-    plt.xlabel(xtitle_default, fontsize=titlesize_default)
-    plt.ylabel('Component', fontsize=titlesize_default)
-    plt.savefig( isub+"_loss.png", bbox_inches='tight')
-
-
-
-
-#Now make a pie chart: fraction of exclusive loss due to each subdetector
-  colors=['brown', 'purple', 'red', 'green', 'orange', 'blue', 'pink', 'gray', 'olive' ]
-  colors_dict = defaultdict(str)
-  colors_dict['Mixed'] = colors[0]
-  icolor=1
-  for icms in cms_sub:
-    colors_dict[icms+' '] = colors[icolor]
-    icolor += 1
-  print(colors_dict)
-  color_keys = list(sorted_cms_frac_exclusive_loss.keys())
-  print(color_keys)
-#  axes = plt.figure(icount+1)  
-  myexplode = []
-  ele = 0
-  for isub in color_keys:
-    myexplode.append(0.01+ele*0.01)
-    ele +=1 
-  plt.figure(icount+1)
-  plt.pie( list(sorted_cms_frac_exclusive_loss.values()), labels=color_keys,  autopct='%1.1f%%', explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys]) ## example plot here
-#  pie_plot(sorted_cms_frac_exclusive_loss,ax=axes,explode=myexplode,normalize=True,colors=[colors_dict[key] for key in color_keys])
-#  plt.legend(loc='lower right',labels=list(sorted_cms_frac_exclusive_loss.keys()))
-  plt.title('Fraction of Exclusive Loss from Each CMS Subsystem', fontsize=titlesize_default)
-  plt.savefig( "cms_piechart_exclusive_loss.png", bbox_inches='tight')
-
-
-
-#plt.show()
-#plt.close('all')
-"""
