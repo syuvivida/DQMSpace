@@ -5,7 +5,7 @@ import matplotlib
 import os
 import argparse
 import sys
-
+import json
 
 class MyPlot:
   def __init__(self, title, xtitle, ytitle, labelsize, inputdict):
@@ -76,9 +76,13 @@ detector_sub["EGamma"] = ["egamma-egamma"]
 
 
 detector_loss = defaultdict(dict)
-# For dumping run,LS vs lumi loss for each system
-subsystem_run_loss = defaultdict()
-subsystem_run_LS = defaultdict()
+# For dumping run,LS vs exclusive lumi loss for each system
+subsystem_run_exclusiveLoss = defaultdict()
+subsystem_run_LS_exclusive = defaultdict()
+
+# For dumping run,LS vs exclusive lumi loss for each system
+subsystem_run_inclusiveLoss = defaultdict()
+subsystem_run_LS_inclusive = defaultdict()
 
 ## Initialize the values of detector_loss
 cms_sub = list(detector_sub.keys())
@@ -107,7 +111,7 @@ if __name__ == '__main__':
   parser.add_argument("-p", "--period",
                     dest="period", type=str, default="eraB", help="Period name, will be used as postfix")
   parser.add_argument("-d", "--dir",
-                    dest="dirname", type=str, default="textFiles", help="output directory")
+                    dest="dirname", type=str, default="textFiles", help="output directory for loss information")
 
   options = parser.parse_args()
   print(sys.argv)
@@ -156,7 +160,14 @@ if __name__ == '__main__':
     detector_blame = "" 
     for icms in cms_sub:
       if cms_status [ icms ] == False: 
-        cms_inclusive_loss [ icms ] += recorded 
+        cms_inclusive_loss [ icms ] += recorded
+        ## Filling up information for inclusive loss text files
+        if icms not in subsystem_run_inclusiveLoss:
+          subsystem_run_inclusiveLoss[icms] = defaultdict(float)
+        if icms not in subsystem_run_LS_inclusive:
+          subsystem_run_LS_inclusive[icms] = defaultdict(list)
+        subsystem_run_inclusiveLoss[icms][run] += recorded
+        subsystem_run_LS_inclusive[icms][run].append(LS)          
         detector_blame = detector_blame + icms + " "
         count += 1
       
@@ -168,12 +179,13 @@ if __name__ == '__main__':
     if count >= 1:
       cms_exclusive_loss [ detector_blame ] += recorded
       total_loss += recorded
-      if detector_blame not in subsystem_run_loss:
-        subsystem_run_loss[detector_blame] = defaultdict(float)
-      if detector_blame not in subsystem_run_LS:
-        subsystem_run_LS[detector_blame] = defaultdict(list)
-      subsystem_run_loss[detector_blame][run] += recorded
-      subsystem_run_LS[detector_blame][run].append(LS)
+      ## filling information for exclusive loss text files
+      if detector_blame not in subsystem_run_exclusiveLoss:
+        subsystem_run_exclusiveLoss[detector_blame] = defaultdict(float)
+      if detector_blame not in subsystem_run_LS_exclusive:
+        subsystem_run_LS_exclusive[detector_blame] = defaultdict(list)
+      subsystem_run_exclusiveLoss[detector_blame][run] += recorded
+      subsystem_run_LS_exclusive[detector_blame][run].append(LS)
 
 # After accumulation of all LSs
 # Check the fraction of luminosity loss due to each subsystem
@@ -198,20 +210,39 @@ if __name__ == '__main__':
   sorted_cms_frac_exclusive_loss = sort_dict(cms_frac_exclusive_loss, 1)
   sorted_cms_detailed_frac_exclusive_loss = sort_dict(cms_detailed_frac_exclusive_loss, 2)
 
-  print(subsystem_run_loss)
-#  print(subsystem_run_LS)
-  #dump loss vs run in text files
+  print(subsystem_run_exclusiveLoss)
+#  print(subsystem_run_LS_exclusive)
+  #dump exclusive loss vs run in text files
   dirName = options.dirname
-#  os.mkdir(dirName)
-#  for isub in list(subsystem_runLS_loss.keys()):
+#  for isub in list(subsystem_run_exclusiveLoss.keys()):
   for isub in list(sorted_cms_detailed_frac_exclusive_loss.keys()):
     filename = isub.replace(' ', '_')
-    filename = dirName + '/' + filename + 'loss_'+ postfix + '.txt'
-    print(filename)
+    filename = dirName + '/' + filename + 'exclusiveLoss_'+ postfix + '.txt'    
     with open(filename,'w') as file:
       with redirect_stdout(file):
-        for irun in list(subsystem_run_loss[isub]):
-          print(irun, ":", subsystem_run_LS[isub][irun])
-          print(irun, ":", subsystem_run_loss[isub][irun], '/pb \n')
+        print('================================================================================')
+        print(isub)
+        print('--------------------------------------------------------------------------------')
+        for irun in list(subsystem_run_exclusiveLoss[isub]):
+          print(irun, ":", subsystem_run_LS_exclusive[isub][irun])
+          print(irun, ":", subsystem_run_exclusiveLoss[isub][irun], '/pb \n')
+        print('================================================================================')
     file.close()
-
+  summaryFileName = dirName + '/summary_exclusiveLoss_'+postfix+'.txt'
+  os.system('cat '+dirName + '/*_exclusiveLoss_'+ postfix + '.txt >> '+summaryFileName)
+  
+  #dump inclusive loss vs run in a summary text file
+  print(subsystem_run_inclusiveLoss)
+  summaryFileName = dirName + '/summary_inclusiveLoss_'+postfix+'.txt'
+  with open(summaryFileName,'w') as file:
+    for isub in list(subsystem_run_inclusiveLoss.keys()):
+      with redirect_stdout(file):
+        print('================================================================================')
+        print(isub)
+        print('--------------------------------------------------------------------------------')
+        for irun in list(subsystem_run_inclusiveLoss[isub]):
+          print(irun, ":", subsystem_run_LS_inclusive[isub][irun])
+          print(irun, ":", subsystem_run_inclusiveLoss[isub][irun], '/pb \n')
+        print('================================================================================')
+  file.close()
+    
