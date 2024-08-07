@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import runregistry
+runregistry.setup( "development" )    
 import json
 import argparse
 import sys
@@ -31,9 +32,6 @@ def get_run_ls( run_in ):
 
        if any(flag not in oms_lumisections[lumi] for flag in flags_list):
          continue
-       if options.nohlt == False and ('hlt-hlt' not in rr_lumisections[lumi]):
-         continue
-
        quality = True
 
        # for call 7, OMS beam1_present and beam2_present flags are not correct
@@ -47,8 +45,9 @@ def get_run_ls( run_in ):
            quality = False
            break
          
-       if options.nohlt == False and rr_lumisections[lumi]['hlt-hlt']['status'] != 'GOOD':
-         quality = False
+       if options.nohlt == False and 'prescale_name' in oms_lumisections[lumi] and 'prescale_index' in oms_lumisections[lumi]:
+         if oms_lumisections[lumi]['prescale_name']=='Emergency' and oms_lumisections[lumi]['prescale_index']==0:
+           quality = False
 
        if quality is False:
          check_lumi_range=False           
