@@ -3,9 +3,9 @@
 source venv/bin/activate
 
 pip install --upgrade pip
-pip install matplotlib
-pip install cernrequests
-pip install runregistry
+pip install --upgrade matplotlib
+pip install --upgrade cernrequests
+pip install --upgrade runregistry
 
 
 
