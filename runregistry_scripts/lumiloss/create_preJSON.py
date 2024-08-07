@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import runregistry
-runregistry.setup( "development" )    
 import json
 import argparse
 import sys
