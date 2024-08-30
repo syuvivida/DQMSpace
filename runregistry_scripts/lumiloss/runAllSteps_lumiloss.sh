@@ -29,7 +29,7 @@ class='Collisions24'
 ## The following is not an input argument
 ## must be set by hand
 ## If mode is default, take all luminosity passing hlt-hlt and apply normTag
-## If mode is nohlt, take lumi without requiring hlt-hlt to be good, and apply normTag
+## If mode is nohlt, take lumi without excluding the LSs with emergency prescale columns and apply normTag
 ## If mode is none, take all luminosity without hlt-hlt and without normTag
 mode='default'
 #mode='nohlt'
