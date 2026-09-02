@@ -4,6 +4,7 @@ with open('Cert_Collisions2022_355100_362760_Golden.json') as f:
     data = json.load(f)
 
 eras = {
+    'BtoG': (355065, 362760),
     'B': (355065, 355793),
     'C': (355794, 357486),
     'D': (357487, 359021),
